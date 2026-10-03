@@ -69,6 +69,14 @@ STUDY.push({
    "https://openspec.dev/"
   ],
   [
+   "Live 28/07/2026 · Safer (UX e DX com IA, skills e Lagune)",
+   "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-07-28"
+  ],
+  [
+   "Live 30/09/2026 · SEO, GEO e AEO",
+   "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-30"
+  ],
+  [
    "Indicação 1: Teixeira, F. Introdução e boas práticas em UX Design (Casa do Código, 2014). Antropocentrismo digital, user journey e personas; base para validar protótipos gerados por IA quanto a usabilidade e acessibilidade",
    ""
   ],
@@ -105,6 +113,10 @@ STUDY.push({
   {
    "id": "d05-b4",
    "label": "IA dentro da aplicação: Genkit e BragBot"
+  },
+  {
+   "id": "d05-b5",
+   "label": "Lives complementares"
   }
  ],
  "topics": [
@@ -504,7 +516,8 @@ STUDY.push({
    "aplica": [
     "Configurar o MCP oficial do framework do seu projeto antes de qualquer geração de código com agente.",
     "Começar toda feature com uma tarefa de esqueleto sem estilo, validar a estrutura e só depois estilizar.",
-    "Exigir plano e lista de arquivos antes de qualquer alteração automática."
+    "Exigir plano e lista de arquivos antes de qualquer alteração automática.",
+    "A live de 28/07 aprofunda o uso de MCPs (Context7, Magnific) e skills de agente no mesmo fluxo: <a href=\"#D5-16\">Live Safer</a>."
    ],
    "pros": [
     "Menos código desatualizado: o agente consulta a fonte oficial em vez de confiar só no treino.",
@@ -616,7 +629,8 @@ STUDY.push({
    "aplica": [
     "Transformar o briefing de marca de qualquer cliente em tokens antes da primeira tela.",
     "Fazer do modal, do formulário e dos botões da sua biblioteca interna componentes que nascem com ARIA e teclado.",
-    "Manter um Prompt Garden para tokens e componentes e reutilizá-lo entre projetos."
+    "Manter um Prompt Garden para tokens e componentes e reutilizá-lo entre projetos.",
+    "A live de 30/09 mostra a hierarquia semântica de títulos e os dados estruturados que ajudam a máquina a ler a página: <a href=\"#D5-17\">Live SEO, GEO e AEO</a>."
    ],
    "pros": [
     "Troca de tema ou de cor da marca em um único lugar.",
@@ -859,7 +873,8 @@ STUDY.push({
    "aplica": [
     "Auditar telas geradas por agente com DevTools antes do PR.",
     "Corrigir problemas de contraste usando os tokens já existentes.",
-    "Fazer ajustes de responsividade com prompts curtos e específicos."
+    "Fazer ajustes de responsividade com prompts curtos e específicos.",
+    "A live de 28/07 aprofunda a revisão visual com a skill <code>cdp</code> (desktop, tablet e mobile) e a segurança com Lagune: <a href=\"#D5-16\">Live Safer</a>. A live de 30/09 estende a revisão a performance (LCP, INP) e SEO: <a href=\"#D5-17\">Live SEO, GEO e AEO</a>."
    ],
    "pros": [
     "Correções rápidas e localizadas, com o agente já conhecendo os arquivos.",
@@ -926,6 +941,160 @@ STUDY.push({
       "O prompt de <code>correcao_css.md</code> mistura dois pedidos independentes num arquivo e cita um token (<code>--color-text-light</code>) que o design system do repo não declara.",
       "Com o menu ausente, a navegação lateral segue ocupando largura fixa em telas pequenas: o problema 2 da aula continua aberto no repo.",
       "O contraste dos links do menu (invisíveis no tema claro, ver tópico anterior) é do mesmo tipo de bug que esta aula ensina a caçar."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "D5-16",
+   "bloco": "d05-b1",
+   "mod": "Live · 28/07/2026",
+   "emoji": "🔐",
+   "read": "9 min",
+   "title": "Live Safer: skills de agente, MCP e Lagune no fluxo de uma landing page",
+   "short": "Uma landing page fictícia vira laboratório de UX e DX com IA: skills de convenção e UI, MCPs, loop de revisão visual e segurança com Lagune.",
+   "oneliner": "A live <b>Safer</b> monta, em React + TypeScript + Vite + Tailwind, uma landing page fictícia para ensinar <b>UX e DX com IA</b>: o agente recebe <b>skills</b> (engineering, ui, cdp, writer), <b>MCPs</b> (Context7, Magnific) e o <b>Lagune</b> para levar a segurança do levantamento de riscos à verificação das correções.",
+   "vovo": [
+    "Imagine contratar uma equipe para montar uma loja a partir de uma foto de inspiração. Você não entrega só a foto: entrega o manual de obra (convenções de código), o guia de acabamento (detalhes visuais), um inspetor que olha a loja pronta em três tamanhos de tela e um engenheiro de segurança que lista os riscos antes e confere as correções depois.",
+    "O agente de IA é a equipe. As skills são esses manuais e inspetores em forma de arquivo, e o PRD é o pedido da obra, com o que construir e como revisar."
+   ],
+   "oque": [
+    "<b>O projeto:</b> a Safer é uma landing page fictícia criada para ensinar UX e DX de forma simplificada com IA, em React, TypeScript, Vite e Tailwind, todos na versão <code>latest</code>. No PRD, o nome troca o «Sentry» da imagem de inspiração por <b>Safer</b>. A página é gerada ao vivo a partir do PRD: o repositório da live traz só a configuração e os prompts.",
+    "<b>Agente intercambiável:</b> os exemplos usam o Claude Code, mas o README diz que dá para usar outros agentes, trocando o identificador do agente (cada CLI tem a sua lista de agentes suportados, em lagune.ai/docs/supported-agents e no README do skills.sh).",
+    "<b>Lagune:</b> segundo o README, reforça a segurança dentro do fluxo de desenvolvimento de ponta a ponta, guiando o agente do levantamento de riscos até a verificação das correções aplicadas. Aqui usa as especializações <code>owasp</code> e <code>javascript</code> (<code>npx -y lagune@latest init claude --skills owasp javascript</code>); quem clona um projeto já configurado roda <code>npx -y lagune@latest pull</code>. A live de SEO do mesmo curso descreve o fluxo do Lagune em cinco passos: Charter, Detect, Plan, Harden e Verify (<a href=\"#D5-17\">tópico da live de SEO, GEO e AEO</a>).",
+    "<b>Especialização sob medida:</b> o primeiro prompt pede <code>/lagune.specialize</code> uma especialização chamada <code>react</code>, para vulnerabilidades comuns de React, Vite e JavaScript no navegador (DOM e Virtual DOM), onde a segurança é subestimada por «ser só frontend». As tags são Vite, DOM, Virtual DOM e JSX, e o prompt manda usar a skill <code>/writer</code> para uma escrita clara e objetiva.",
+    "<b>Políticas de segurança:</b> o segundo prompt, <code>/lagune.charter</code>, entende o escopo do projeto a partir do <code>@PRD.md</code> e estende o conhecimento ao <code>@.lagune/skills/react.md</code> (a especialização gerada no passo anterior).",
+    "<b>Skills de wellwelwel/skills:</b> <code>engineering</code> (convenções de código, tipos, testes e mensagens de commit), <code>ui</code> (detalhes visuais e de interação que fazem a interface parecer acabada), <code>cdp</code> (verificação do que o navegador realmente renderiza, via Chrome DevTools) e <code>writer</code> (como a prosa do projeto é escrita e revisada). Instalação: <code>npx skills@latest add wellwelwel/skills --agent claude-code --skill engineering ui cdp writer -y</code>.",
+    "<b>PRD como prompt de construção:</b> pede para se basear na imagem de inspiração (<code>resources/inspiration.webp</code>) e usar React + TypeScript com Vite e Tailwind. Ferramentas: MCP <b>Context7</b> para documentação atualizada e MCP <b>Magnific</b> para gerar imagens conforme necessário. Skill <code>/engineering</code> para boas práticas e DX, com desacoplamento inteligente entre componentes e separação entre UI e lógica de negócio (hooks, context). Skill <code>/ui</code> para equilibrar visual e experiência: toda transição suave e toda interação com feedback visual.",
+    "<b>Loop de revisão:</b> o PRD fecha com a skill <code>/cdp</code> para comparar visualmente a landing page com a referência, testando desktop, tablet e mobile, e com a skill <code>/lagune</code> para garantir a segurança do projeto de ponta a ponta.",
+    "<b>Regras do repositório (CLAUDE.md):</b> o PRD diz o que e como construir, o README diz como preparar o ambiente. Antes de dar uma mudança por concluída, rodar <code>lint</code> e <code>typecheck</code>; o Prettier é dono da formatação, então nunca formatar à mão. O <code>AGENTS.md</code> e o <code>.github/copilot-instructions.md</code> são links simbólicos para o mesmo <code>CLAUDE.md</code>, então outros agentes leem a mesma instrução."
+   ],
+   "como": [
+    "Instalar dependências (<code>npm ci</code> e <code>npx -y playwright install chromium</code>).",
+    "Preparar o agente: <code>lagune init</code> com as especializações <code>owasp</code> e <code>javascript</code> e <code>skills add</code> com as quatro skills.",
+    "Prompt 1: gerar a especialização <code>react</code> com <code>/lagune.specialize</code>.",
+    "Prompt 2: gerar as políticas de segurança com <code>/lagune.charter</code>, lendo o PRD e a especialização.",
+    "Prompt do PRD: construir a landing page com as skills e os MCPs listados.",
+    "Loop de revisão: <code>/cdp</code> compara com a referência em três resoluções e <code>/lagune</code> verifica a segurança; ajustar e repetir até <code>lint</code> e <code>typecheck</code> passarem."
+   ],
+   "aplica": [
+    "Registrar o PRD, as skills e as regras do agente (<code>CLAUDE.md</code>) no repositório, para o resultado não depender de quem digitou o prompt.",
+    "Tornar a segurança parte do fluxo desde o escopo, em vez de uma auditoria no fim: charter antes do código, verificação depois.",
+    "Usar uma imagem de referência e uma checagem visual automatizada em desktop, tablet e mobile para fechar o loop de UI, em vez de confiar só no que o agente diz que fez.",
+    "Ligar com o que a disciplina mostra antes: <a href=\"#D5-03\">MCP no ambiente do agente</a>, <a href=\"#D5-06\">revisão visual do que a IA gerou</a> e <a href=\"#D5-08\">skills em Markdown como Prompt as Code</a>. Do lado de segurança, o OWASP aparece na <a href=\"#D10-07\">Disciplina 10</a>."
+   ],
+   "pros": [
+    "Skills e regras versionadas deixam o comportamento do agente transparente e repetível entre pessoas e entre agentes.",
+    "O loop de revisão visual (cdp) e de segurança (Lagune) dá critério de validação ao agente, em vez de deixar o julgamento só para o fim.",
+    "A especialização gerada sob medida cobre o ponto cego de segurança do frontend."
+   ],
+   "contras": [
+    "O repositório da live não traz o código da landing page nem a saída do agente, só configuração e prompts: o que o agente de fato gerou não pode ser estudado ali.",
+    "Depende de ferramentas externas e recentes (Lagune, skills, MCPs Context7 e Magnific), instaladas com <code>@latest</code>: o comportamento pode mudar sem aviso.",
+    "A live descreve os comandos e o fluxo, mas o repositório não mostra resultados de segurança nem a verificação dos achados (não verifiquei o Lagune rodando)."
+   ],
+   "traps": [
+    "Rodar <code>npx -y ...@latest</code> e <code>skills add ... -y</code> sem fixar versão nem ler o que será instalado: código remoto roda no seu projeto. Esta é uma observação minha de supply chain, não algo dito na live.",
+    "Tratar o PRD como suficiente sem o loop de revisão: o PRD termina com o loop (cdp e Lagune) como etapa obrigatória; a leitura de que isso existe porque o agente não percebe sozinho o que o navegador renderiza é inferência minha.",
+    "Achar que «é só frontend» dispensa segurança: foi o argumento do prompt de especialização.",
+    "Confundir a especialização <code>react</code> (gerada por prompt, fica em <code>.lagune/skills/react.md</code>) com as especializações <code>owasp</code> e <code>javascript</code> do <code>init</code>."
+   ],
+   "tip": "A live aprofunda, no tema UX e DX, o que os tópicos de MCP, revisão visual e skills mostram: o repositório é pequeno e vale ler os dois prompts, o PRD e o CLAUDE.md na ordem em que são usados.",
+   "cola": [
+    [
+     "Lagune",
+     "Ferramenta que guia o agente de IA em segurança, do levantamento de riscos à verificação das correções; usa especializações (skills de segurança) por stack"
+    ],
+    [
+     "Especialização",
+     "Conjunto de conhecimento de segurança para uma stack (<code>owasp</code>, <code>javascript</code>, <code>react</code>), instalado no agente"
+    ],
+    [
+     "/lagune.specialize",
+     "Prompt que gera uma especialização nova (aqui, <code>react</code>)"
+    ],
+    [
+     "/lagune.charter",
+     "Prompt que define as políticas de segurança do projeto a partir do PRD"
+    ],
+    [
+     "skills.sh",
+     "CLI (<code>npx skills</code>) que instala skills de agente a partir de um repositório"
+    ],
+    [
+     "engineering / ui / cdp / writer",
+     "Skills de convenção de código, acabamento de UI, verificação via Chrome DevTools e escrita"
+    ],
+    [
+     "Context7",
+     "MCP de documentação atualizada de bibliotecas"
+    ],
+    [
+     "Magnific",
+     "MCP de geração de imagens"
+    ],
+    [
+     "PRD",
+     "Documento com o que e como construir, usado como prompt de construção"
+    ],
+    [
+     "DX",
+     "Developer Experience: a experiência de quem desenvolve (convenções, desacoplamento, lint, typecheck)"
+    ]
+   ],
+   "links": [
+    [
+     "Live Safer no repositório do curso (GitHub)",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-07-28"
+    ],
+    [
+     "Lagune",
+     "https://lagune.ai"
+    ],
+    [
+     "Lagune: agentes suportados",
+     "https://lagune.ai/docs/supported-agents"
+    ],
+    [
+     "skills.sh: agentes suportados",
+     "https://github.com/vercel-labs/skills#supported-agents"
+    ],
+    [
+     "wellwelwel/skills",
+     "https://github.com/wellwelwel/skills"
+    ],
+    [
+     "Context7 (llms.txt)",
+     "https://context7.com/llms.txt"
+    ],
+    [
+     "Magnific (MCP)",
+     "https://docs.magnific.com/modelcontextprotocol.md"
+    ]
+   ],
+   "codigo": [
+    {
+     "proj": "lives/2026-07-28 (Safer)",
+     "link": "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-07-28",
+     "resumo": "Estado «pré-live» do projeto: só configuração, PRD e prompts. Não há <code>src/</code>, <code>vite.config</code>, <code>tsconfig</code> nem código React; a landing page nasce dos prompts durante a live. Também não há slides.",
+     "fluxo": [
+      "<code>README.md</code> descreve a instalação (<code>npm ci</code>, <code>npx -y playwright install chromium</code>), a preparação do Lagune (<code>init claude --skills owasp javascript</code>, <code>pull</code> depois de clonar) e das skills (<code>engineering ui cdp writer</code>), e aponta os prompts em ordem de execução.",
+      "<code>resources/prompts.md</code> tem dois prompts: <code>/lagune.specialize</code> (cria a especialização <code>react</code> com as tags Vite, DOM, Virtual DOM e JSX, usando <code>/writer</code>) e <code>/lagune.charter</code> (escopo pelo <code>@PRD.md</code>, conhecimento estendido a <code>@.lagune/skills/react.md</code>).",
+      "<code>PRD.md</code> é o prompt de construção: imagem de inspiração <code>resources/inspiration.webp</code>, stack, MCPs Context7 e Magnific, skills <code>/engineering</code> e <code>/ui</code>, e o loop de revisão com <code>/cdp</code> (desktop, tablet e mobile) e <code>/lagune</code>.",
+      "<code>CLAUDE.md</code> fixa as regras do agente (scripts <code>lint</code>, <code>lint:fix</code> e <code>typecheck</code>; rodar lint e typecheck antes de concluir; Prettier manda na formatação). <code>AGENTS.md</code> e <code>.github/copilot-instructions.md</code> são links simbólicos para ele.",
+      "<code>package.json</code> traz só devDependencies: <code>prettier</code>, <code>@ianvs/prettier-plugin-sort-imports</code>, <code>playwright</code>, <code>tsx</code> e <code>@types/node</code>."
+     ],
+     "rodar": [
+      "<code>npm ci</code> e <code>npx -y playwright install chromium</code>.",
+      "<code>npx -y lagune@latest init claude --skills owasp javascript</code> e <code>npx skills@latest add wellwelwel/skills --agent claude-code --skill engineering ui cdp writer -y</code> (não executei: dependem do agente e de pacotes remotos).",
+      "Depois, colar os prompts de <code>resources/prompts.md</code> e o <code>PRD.md</code> no agente, nessa ordem."
+     ],
+     "armadilhas": [
+      "<code>npm run typecheck</code> roda <code>tsc --noEmit</code>, mas o <code>package.json</code> não declara <code>typescript</code> (o <code>package-lock.json</code> também não tem <code>node_modules/typescript</code>) e não há <code>tsconfig.json</code>. Como está, o script provavelmente só passa depois que o scaffold do Vite trouxer o TypeScript; o <code>CLAUDE.md</code> já exige o typecheck antes de concluir.",
+      "Não há arquivo de configuração do Prettier (nem <code>.prettierrc</code> nem chave <code>prettier</code> no <code>package.json</code>), então o plugin <code>@ianvs/prettier-plugin-sort-imports</code> instalado não é carregado por nenhuma config do repositório. Hipótese: a config vem junto com o scaffold ou com a skill <code>engineering</code>.",
+      "O <code>tsx</code> está instalado, mas nenhum script o usa. O papel do Playwright também não é documentado: o README liga a skill <code>cdp</code> ao Chrome DevTools; que o <code>cdp</code> use o Playwright é hipótese minha.",
+      "O README instala o Lagune com <code>--skills owasp javascript</code>, e o PRD manda usar <code>/lagune</code>; a especialização <code>react</code> usada no <code>charter</code> só existe depois do prompt <code>/lagune.specialize</code> (ordem importa).",
+      "O PRD cita a skill <code>/writer</code> apenas no prompt de especialização; no resto do fluxo ela não é chamada."
      ]
     }
    ]
@@ -1074,7 +1243,8 @@ STUDY.push({
    "aplica": [
     "Features que cruzam front, back, contratos, validação, testes e acessibilidade.",
     "Entrada de pessoas novas num projeto grande: o explore gera o mapa.",
-    "Qualquer time que queira rastreabilidade de por que algo foi construído daquele jeito."
+    "Qualquer time que queira rastreabilidade de por que algo foi construído daquele jeito.",
+    "A live de 28/07 usa skills em Markdown (<code>engineering</code>, <code>ui</code>, <code>cdp</code>, <code>writer</code>) e um PRD como prompt de construção: <a href=\"#D5-16\">Live Safer</a>."
    ],
    "pros": [
     "Menos interpretação, menos retrabalho e menos tokens gastos em tentativas.",
@@ -1937,6 +2107,126 @@ STUDY.push({
       "O comentário JSDoc do <code>server.ts</code> é o do scaffold do Angular CLI e descreve exemplos de API que o arquivo agora implementa."
      ]
     }
+   ]
+  },
+  {
+   "id": "D5-17",
+   "bloco": "d05-b5",
+   "mod": "Live · 30/09/2026",
+   "emoji": "🔎",
+   "read": "11 min",
+   "title": "Live SEO, GEO e AEO: ser encontrado por buscadores, IAs e redes sociais",
+   "short": "Quatro frentes que se reforçam: SEO clássico, dados estruturados, conteúdo pronto para IAs (GEO/LLMO) e performance com compartilhamento social.",
+   "oneliner": "SEO, GEO e AEO são <b>quatro frentes que se reforçam</b>: <b>SEO clássico</b> (rastreamento, indexação e on-page), <b>dados estruturados</b> (base de AEO e GEO), <b>GEO/LLMO</b> (conteúdo pronto para IAs) e <b>performance e compartilhamento social</b>. Cada prática vem de projetos reais, o Awesome You e o Lagune.ai.",
+   "vovo": [
+    "Pense numa loja de bairro. SEO clássico é ter a placa na rua certa e o endereço no mapa (o buscador te acha). Dados estruturados são a ficha técnica colada em cada produto, em formato que máquina lê. GEO é deixar na entrada um folheto curto e limpo que a IA possa ler e citar sem errar o seu nome. Performance e redes sociais são a vitrine que abre rápido e aparece bonita quando alguém compartilha o endereço.",
+    "A ideia da live é que as quatro coisas se ajudam: a ficha técnica ajuda o mapa e o folheto, e a vitrine rápida ajuda os dois."
+   ],
+   "oque": [
+    "<b>Origem das práticas:</b> o estudo parte das métricas e observações de SEO, GEO e AEO do <b>Awesome You</b> e da <b>Lagune.ai</b>, apresentadas na live (30/09/2026, professores Aurélio Oliveira e Weslley Araújo; curadoria do material por Weslley Araújo). O README avisa: cada abordagem é uma prática real desses projetos, inspiração para adaptar, não recomendação absoluta. Ambos são públicos e open source, e dá para explorá-los com o Gitingest.",
+    "<b>1. SEO técnico (rastreamento e indexação):</b> <code>robots.txt</code> com liberação total e link para o sitemap (funciona porque todo o conteúdo é público; com áreas privadas ou preview, gerencie o que é rastreado); meta robots <code>index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1</code>; sitemap XML com prioridade por nível (home 1.0, <code>/docs</code> 0.9 e assim por diante) e <code>lastmod</code> (o Google se guia pelo <code>lastmod</code> e costuma ignorar <code>priority</code> e <code>changefreq</code>); <code>llms.txt</code> e <code>llms-full.txt</code> dentro do sitemap; URLs canônicas com forma única e sem barra final; build que falha com qualquer link, âncora ou link Markdown quebrado; datas de publicação e modificação vindas do primeiro e do último commit do arquivo, usadas como sinal de frescor.",
+    "<b>2. SEO on-page:</b> título por página no formato palavra-chave mais marca; meta description por página (controla o snippet e influencia o CTR); meta keywords com impacto praticamente nulo no Google; idioma e localidade (<code>lang</code>, <code>og:locale</code>, <code>inLanguage</code>); um único H1 e hierarquia H2/H3, com linkagem interna por TOC, sidebar, paginação e rodapé; clusters de conteúdo por intenção (glossário, paper metodológico, comparação com concorrentes) para buscas informacionais e comparativas.",
+    "<b>3. Dados estruturados (Schema.org em JSON-LD):</b> blocos com <code>@id</code> estáveis que se referenciam, formando um <b>grafo de entidades</b> (<code>#author</code>, <code>#organization</code>, <code>#website</code>, <code>#software</code>). Tipos: <code>Person</code> (E-E-A-T), <code>Organization</code> com <code>disambiguatingDescription</code> para não ser confundida com um nome parecido, <code>WebSite</code> (nome do site na SERP), <code>SoftwareApplication</code> (categoria, oferta gratuita, <code>featureList</code>), <code>HowTo</code> (5 passos), <code>FAQPage</code>, <code>BreadcrumbList</code>, <code>TechArticle</code> e <code>ScholarlyArticle</code>, <code>WebPage</code>.",
+    "<b>Ressalvas do próprio material sobre rich results:</b> o rich result visual de HowTo foi descontinuado pelo Google, mas a marcação segue útil para AEO; o rich result de FAQ hoje é restrito pelo Google a sites de governo e saúde, e o maior ganho está em featured snippets, «As pessoas também perguntam», assistentes de voz e respostas de IA que extraem o par pergunta e resposta.",
+    "<b>4. GEO/LLMO:</b> <code>llms.txt</code> gerado no build (resumo do produto e lista de docs com link <code>.md</code> e descrição); <code>llms-full.txt</code> com todo o corpus em um arquivo (ideal para assistentes de código e RAG); <b>twins Markdown</b> de cada página na URL com sufixo <code>.md</code>, com cabeçalho <code>Canonical:</code> e <code>Last updated:</code>; <code>&lt;link rel=\"alternate\" type=\"text/markdown\"&gt;</code> nas docs; boas-vindas nominais a robôs de IA no <code>robots.txt</code> (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended e outros); conteúdo desenhado para citação, com definições diretas e frases-resumo autocontidas; descrições escritas para NLP parsing no Awesome You (entidades e relações extraídas do texto).",
+    "<b>5. AEO:</b> não é uma prática nova, é a leitura das anteriores pelo papel nos motores de resposta: FAQPage e FAQ renderizado com perguntas reais, HowTo com passos numerados, descrições autocontidas (frontmatter e <code>featureList</code>) e snippets sem limite de tamanho, para servir o conteúdo como resposta direta sem exigir clique.",
+    "<b>6. SMO:</b> Open Graph completo (<code>og:type</code>, <code>og:site_name</code>, <code>og:locale</code>, <code>og:url</code>, título, descrição, <code>og:image</code> com <code>secure_url</code>, 1280x640 e <code>alt</code> por página) e Twitter Card <code>summary_large_image</code>, com imagem social padrão para páginas sem imagem própria. Uma página <code>/share</code> com QR code leva o público de eventos direto ao repositório.",
+    "<b>7. Performance e Core Web Vitals:</b> critical CSS inline na home (melhora FCP e LCP); só WOFF2; imagens WebP com <code>srcset</code>, <code>fetchpriority=\"high\"</code> e <code>loading=\"eager\"</code> na imagem ativa e carregamento adiado nas demais; shader pesado carregado sob demanda e rodando em worker com OffscreenCanvas (ajuda INP e TBT); cache HTTP agressivo (assets imutáveis por 1 ano, imagens 30 dias, HTML 1 hora); site estático pré-renderizado (SSG), para que robôs que não executam JavaScript, a maioria dos robôs de IA, leiam todo o conteúdo e o JSON-LD."
+   ],
+   "como": [
+    "Começar pelo rastreamento: <code>robots.txt</code> coerente, sitemap com <code>lastmod</code>, canônicas e build que quebra com link inválido.",
+    "Definir título e description por página e uma hierarquia H1/H2/H3 clara, com linkagem interna.",
+    "Modelar as entidades (pessoa, organização, site, produto) em JSON-LD com <code>@id</code> estáveis e ligar os tipos entre si.",
+    "Gerar no build o <code>llms.txt</code>, o <code>llms-full.txt</code> e o espelho Markdown de cada página, anunciando o espelho com <code>rel=\"alternate\"</code>.",
+    "Declarar Open Graph e Twitter Card com dimensões e <code>alt</code>, e medir LCP, INP e TBT (critical CSS, imagens responsivas, cache, pré-renderização)."
+   ],
+   "aplica": [
+    "Documentação de produto ou de projeto open source que precisa ser citada corretamente por buscadores e por IAs.",
+    "Site estático pré-renderizado: tudo já está no HTML, o que é a condição para robôs de IA que não executam JavaScript.",
+    "Projeto com nome ambíguo: <code>Organization</code> com <code>disambiguatingDescription</code> evita a confusão (o caso da Lagune com a «Laguna AI»).",
+    "Ligação com o resto da disciplina: <a href=\"#D5-04\">HTML semântico e acessibilidade</a> ajudam a hierarquia e a leitura por máquina, e a <a href=\"#D5-06\">revisão visual no DevTools</a> pode ser estendida a LCP e INP. A <a href=\"#D5-16\">live Safer</a> usa o mesmo Lagune."
+   ],
+   "pros": [
+    "Dados estruturados e Markdown limpo diminuem a alucinação da IA e garantem a atribuição correta, com URL oficial e data.",
+    "Muitas práticas são automáticas no build (llms.txt, twins Markdown, datas do Git, canônicas, link quebrado), então não dependem de lembrança humana.",
+    "As frentes se reforçam: o mesmo FAQ ou HowTo serve SEO, AEO e GEO."
+   ],
+   "contras": [
+    "Várias marcações têm efeito limitado hoje: o Google ignora meta keywords, <code>priority</code> e <code>changefreq</code>, o rich result de HowTo foi descontinuado e o de FAQ é restrito.",
+    "O material descreve práticas de dois projetos específicos (conteúdo todo público, site estático em inglês); não são recomendação absoluta.",
+    "O README não traz medições antes e depois; os ganhos descritos como «na ponta» são os esperados, não resultados medidos (não verifiquei)."
+   ],
+   "traps": [
+    "Copiar o <code>robots.txt</code> de liberação total em projeto com áreas privadas, ambientes de preview ou rotas sem valor de busca.",
+    "Marcar FAQ ou HowTo esperando o rich result visual no Google, que hoje não aparece na maioria dos sites.",
+    "Publicar <code>llms.txt</code> sem o espelho <code>.md</code> das páginas, deixando a IA com HTML ruidoso.",
+    "Renderizar conteúdo e JSON-LD só no cliente: robôs que não executam JavaScript não veem nada.",
+    "Declarar <code>og:image</code> sem dimensões e <code>alt</code>, o que atrasa ou recorta o preview."
+   ],
+   "tip": "O diretório da live tem só o README (extenso, curadoria de Weslley Araújo), sem código nem slides: as práticas vêm do código aberto do Awesome You e da Lagune.ai. Para aplicar, explore esses repositórios (por exemplo, com o Gitingest) e adapte ao seu projeto. O Lagune desta live é o mesmo da live Safer.",
+   "cola": [
+    [
+     "SEO",
+     "Otimização para mecanismos de busca tradicionais, como o Google"
+    ],
+    [
+     "GEO / LLMO",
+     "Otimização para motores generativos (ChatGPT, Perplexity, Claude); no material, LLMO é tratado como equivalente ao GEO"
+    ],
+    [
+     "AEO",
+     "Otimização para motores de resposta, que entregam a informação pronta em vez de uma lista de links"
+    ],
+    [
+     "SMO",
+     "Otimização para o compartilhamento em redes sociais (Open Graph e Twitter Cards)"
+    ],
+    [
+     "JSON-LD",
+     "JSON para dados interligados; o formato em que o Schema.org é embutido na página"
+    ],
+    [
+     "llms.txt / llms-full.txt",
+     "Mapa curado do site para LLMs; versão com todo o corpus em um único arquivo"
+    ],
+    [
+     "Twin Markdown",
+     "Espelho da página em Markdown limpo, na mesma URL com sufixo <code>.md</code>"
+    ],
+    [
+     "E-E-A-T",
+     "Experiência, especialidade, autoridade e confiança: critérios do Google de qualidade"
+    ],
+    [
+     "SERP / CTR",
+     "Página de resultados do buscador / taxa de cliques"
+    ],
+    [
+     "LCP / INP / TBT / FCP",
+     "Métricas de carregamento e interação (maior elemento, resposta a interação, bloqueio da thread principal, primeiro conteúdo)"
+    ],
+    [
+     "SSG",
+     "Site estático com todas as páginas geradas no build"
+    ]
+   ],
+   "links": [
+    [
+     "Live SEO, GEO e AEO no repositório do curso (GitHub)",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-30"
+    ],
+    [
+     "Awesome You",
+     "https://awesomeyou.io"
+    ],
+    [
+     "Lagune.ai",
+     "https://lagune.ai"
+    ],
+    [
+     "Gitingest",
+     "https://gitingest.com/"
+    ]
    ]
   }
  ]

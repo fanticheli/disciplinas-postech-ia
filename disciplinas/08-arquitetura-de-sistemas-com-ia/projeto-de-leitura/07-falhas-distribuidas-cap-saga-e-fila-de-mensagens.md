@@ -38,6 +38,7 @@ Se a agência do hotel demora a responder, você decide antes quanto tempo esper
 - Decidir, por agente, o timeout, o máximo de tentativas, a política CAP e se a operação é idempotente, antes de implementar.
 - Versionar artefatos mutáveis (protocolo v1, v2) em vez de apagar e guardar a versão usada por cada consumidor.
 - Declarar quem dispara a compensação e quais ações desfazem cada etapa, em vez de 'recomeçar do zero'.
+- A live de 26/09 aprofunda o retry com um mock que falha três vezes (503) e deixa a Compensation, o equivalente à Saga, como extensão: [Live Temporal](./15-live-temporal-process-manager.md).
 
 ### Vantagens e limites
 **Vantagens**

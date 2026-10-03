@@ -37,6 +37,7 @@ A ordem respeita a progressão da apostila: da visão conceitual ao consumo de u
 ### Bloco 3: Agents, instructions e skills
 - [04 · Vibe coding: arquivos de instrução, llms.txt e agents especializados](./04-instructions-llms-txt-and-agents.md)
 - [05 · Skills: conhecimento modular carregado sob demanda](./05-agent-skills.md)
+- [16 · Live de MCP e Agent Skills: o caso MySQL2, a ingestão de contexto e a escolha entre Skill e MCP](./16-live-mcp-and-skills-practical-case.md) (live de 24/02/2026)
 
 ### Bloco 4: Servidores MCP do zero e sobre APIs legadas
 - [06 · Servidor MCP do zero: tools, resources, prompts, testes via MCP Client e Inspector](./06-mcp-server-from-scratch.md)
@@ -70,6 +71,7 @@ A ordem respeita a progressão da apostila: da visão conceitual ao consumo de u
 | **U2 · Aula 6** | Usando Services Como Tools: Google Trends API com LangChain.js | [03 · Services como tools: Google Trends com LangChain.js](./03-services-as-tools-google-trends.md) |
 | **U3 · Aula 1** | Entendendo Agents e Instructions | [04 · Vibe coding: arquivos de instrução, llms.txt e agents especializados](./04-instructions-llms-txt-and-agents.md) |
 | **U3 · Aula 2** | Entendendo skills | [05 · Skills: conhecimento modular carregado sob demanda](./05-agent-skills.md) |
+| **Live de 24/02/2026** | MCP e Agent Skills (base teórica no repositório; teoria absorvida nos documentos 00, 04 e 05) e abordagem prática | [16 · Live de MCP e Agent Skills: o caso MySQL2, a ingestão de contexto e a escolha entre Skill e MCP](./16-live-mcp-and-skills-practical-case.md), mais os documentos [00](./00-mcp-protocol-overview.md), [04](./04-instructions-llms-txt-and-agents.md) e [05](./05-agent-skills.md) |
 | **U4 · Aula 1** | Criando um MCP do Zero: Testes Automatizados Via MCP Client, Definindo Tools e Inspecionando MCP Servers | [06 · Servidor MCP do zero: tools, resources, prompts, testes via MCP Client e Inspector](./06-mcp-server-from-scratch.md) |
 | **U4 · Aula 2** | Definindo Resources e Prompts em Servidores MCP + Usando Nosso Servidor MCP no VSCode | [06 · Servidor MCP do zero: tools, resources, prompts, testes via MCP Client e Inspector](./06-mcp-server-from-scratch.md) |
 | **U5 · Aula 1** | Template Inicial e Arquitetura + Boas Práticas de Organização de Código e Estrutura de Projeto | [07 · API legada como MCP: não espelhe endpoints, separe camadas](./07-legacy-api-to-mcp-architecture.md) |
@@ -85,7 +87,7 @@ A ordem respeita a progressão da apostila: da visão conceitual ao consumo de u
 | **U7 · Aula 2** | Indo Além em Servidores MCP: Diferentes Transports e Ideias para seu Próximo Servidor | [14 · Transports: STDIO, HTTP, streaming e SSE, e ideias para o próximo servidor](./14-transports-and-next-steps.md) |
 | **U8 · Aula 1** | Criando um Agente para Gerenciar Operações de Clientes com Nosso Customers MCP Server e LangChain.js | [15 · Agente LangChain.js consumindo o Customers MCP publicado](./15-langchain-agent-consuming-mcp.md) |
 
-> As 23 aulas da apostila (8 unidades) estão cobertas em 16 documentos. U1 tem 1 aula, U2 tem 6, U3 tem 2, U4 tem 2, U5 tem 4, U6 tem 5, U7 tem 2 e U8 tem 1. A apostila tem 132 páginas.
+> As 23 aulas da apostila (8 unidades) estão cobertas em 16 documentos (00 a 15), mais o 16, da live de 24/02/2026. U1 tem 1 aula, U2 tem 6, U3 tem 2, U4 tem 2, U5 tem 4, U6 tem 5, U7 tem 2 e U8 tem 1. A apostila tem 132 páginas.
 
 ---
 
@@ -107,7 +109,7 @@ O código dos 12 diretórios listados no Anexo A da apostila está nos documento
 | 07-api-security-auth-rate-limiting-z (API e customers-mcp-z) | [09 · Segurança da API: autenticação com JWT e autorização com RBAC](./09-jwt-and-rbac.md)<br>[10 · Service tokens: credencial persistente para MCPs e integrações](./10-service-tokens.md)<br>[11 · Rate limiting: confiança zero, limite por token e resposta 429](./11-rate-limiting.md)<br>[12 · O MCP como cliente real da API: service token obrigatório e erros estruturados](./12-mcp-with-service-token-and-errors.md) |
 | 08-publishing-mcps-private-npm (customers-mcp-z, API e Verdaccio) | [13 · Publicando o MCP como pacote: Verdaccio (privado) e NPM (público)](./13-publishing-npm-and-verdaccio.md) |
 | 09-using-mcp-with-langchain (agente LangChain.js e API) | [15 · Agente LangChain.js consumindo o Customers MCP publicado](./15-langchain-agent-consuming-mcp.md) |
-| `lives/2026-02-24/base-teorica` (MCP e Agent Skills, material complementar) | [00 · Do plugin e function calling ao MCP: tools, resources, prompts e descoberta](./00-mcp-protocol-overview.md)<br>[05 · Skills: conhecimento modular carregado sob demanda](./05-agent-skills.md) |
+| `lives/2026-02-24/base-teorica` (MCP e Agent Skills, material complementar) | [00 · Do plugin e function calling ao MCP: tools, resources, prompts e descoberta](./00-mcp-protocol-overview.md)<br>[04 · Vibe coding: arquivos de instrução, llms.txt e agents especializados](./04-instructions-llms-txt-and-agents.md)<br>[05 · Skills: conhecimento modular carregado sob demanda](./05-agent-skills.md)<br>[16 · Live de MCP e Agent Skills: o caso MySQL2, a ingestão de contexto e a escolha entre Skill e MCP](./16-live-mcp-and-skills-practical-case.md) |
 
 ---
 
@@ -148,7 +150,7 @@ Checklist de domínio da revisão final: explicar a evolução de plugins e func
 - **Repositório de código:** https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo03-mcp-na-pratica
 - **Pastas do módulo:** 01-multiple-mcp-tools-template e -z, 02-google-trends-agent, 03-dev-instructions-agents/.github/agents, 04-skills, 05-mcps-do-zero-template e -z, 06-your-legacy-api-as-mcp, 07-api-security-auth-rate-limiting-template e -z, 08-publishing-mcps-private-npm, 09-using-mcp-with-langchain
 - **Linguagem principal:** TypeScript no Node.js 24 (strip de tipos nativo, sem transpilação), com LangChain.js, LangGraph, `@modelcontextprotocol/sdk`, Zod e Fastify; a API legada é JavaScript.
-- **Material complementar do repositório:** `lives/2026-02-24/base-teorica` (MCP e Agent Skills), usado nos documentos 00 e 05, sempre marcado como «live».
+- **Material complementar do repositório:** `lives/2026-02-24/base-teorica` (MCP e Agent Skills), usado nos documentos 00, 04, 05 e 16, sempre marcado como «live».
 
 ### Indicações de leitura complementar
 1. **Model Context Protocol: What is the Model Context Protocol (MCP)?** (documentação oficial, 2025). Principal leitura introdutória: o MCP como padrão aberto para conectar aplicações de IA a sistemas externos, expondo tools, resources e workflows/prompts de forma padronizada. Consolida a visão conceitual, a proposta arquitetural e o motivo de ele ter surgido como alternativa mais adequada para integrar LLMs com contexto e ações sob demanda. Relaciona-se com [00 · Do plugin e function calling ao MCP: tools, resources, prompts e descoberta](./00-mcp-protocol-overview.md). https://modelcontextprotocol.io/docs/getting-started/intro

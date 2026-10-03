@@ -43,6 +43,7 @@ A ordem respeita a progressão da apostila: do mercado e do gateway de modelos, 
 - [09 · RAG com Neo4j: executor, autocorreção e resposta analítica](./09-rag-neo4j-executor-correcao-resposta.md)
 - [10 · Modelos multimodais: documentos, áudio e real-time](./10-modelos-multimodais.md)
 - [11 · Monitoramento com Langfuse e evaluation tests](./11-langfuse-e-evaluation.md)
+- [12 · Live NetFibra: suporte com LangGraph, GraphRAG em memória e human-in-the-loop](./12-live-netfibra-langgraph-graphrag-hitl.md) (live de 24/09)
 
 ---
 
@@ -79,8 +80,9 @@ A ordem respeita a progressão da apostila: do mercado e do gateway de modelos, 
 | **U6 · Aula 5** · Cypher Correction e Analytical Response | [09 · RAG com Neo4j: executor, autocorreção e resposta analítica](./09-rag-neo4j-executor-correcao-resposta.md) |
 | **U7 · Aula 1** · Modelos multimodais | [10 · Modelos multimodais: documentos, áudio e real-time](./10-modelos-multimodais.md) |
 | **U7 · Aula 2** · Langfuse e Evaluation Tests | [11 · Monitoramento com Langfuse e evaluation tests](./11-langfuse-e-evaluation.md) |
+| **Live 24/09/2026** · NetFibra: Suporte com IA (LangGraph, GraphRAG em memória, human-in-the-loop, OpenRouter) | [12 · Live NetFibra: suporte com LangGraph, GraphRAG em memória e human-in-the-loop](./12-live-netfibra-langgraph-graphrag-hitl.md) |
 
-> As 28 aulas da apostila (7 unidades) estão cobertas em 12 documentos. U1 tem 4 aulas, U2 tem 5, U3 tem 4, U4 tem 4, U5 tem 4, U6 tem 5 e U7 tem 2.
+> As 28 aulas da apostila (7 unidades) estão cobertas em 12 documentos. U1 tem 4 aulas, U2 tem 5, U3 tem 4, U4 tem 4, U5 tem 4, U6 tem 5 e U7 tem 2. A live de 24/09 entra como o documento 12 e não conta entre as aulas da apostila.
 
 ---
 
@@ -97,6 +99,7 @@ O código dos 7 projetos práticos está dentro dos documentos, na seção **�
 | 05-safeguard-prompt-injection (template e z) | [07 · MCP, PromptTemplate e guardrails: bloqueio antes da tool call](./07-mcp-e-guardrails.md) |
 | 06-rag-neo4j-students (template e z) | [09 · RAG com Neo4j: executor, autocorreção e resposta analítica](./09-rag-neo4j-executor-correcao-resposta.md) |
 | 07-doc-analysis | [10 · Modelos multimodais: documentos, áudio e real-time](./10-modelos-multimodais.md) |
+| lives/2026-09-24 (`app.py`, `graph_data.py`, `llm.py`, `quick_test.py`, `requirements.txt`; falta `agent.py`) | [12 · Live NetFibra: suporte com LangGraph, GraphRAG em memória e human-in-the-loop](./12-live-netfibra-langgraph-graphrag-hitl.md) |
 
 ---
 
@@ -123,6 +126,7 @@ Checklist de domínio da revisão final: explicar por que chamar a API não bast
 - **Repositório de código:** https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo02-integracao-apis-llms
 - **Pastas do módulo:** 01-smart-model-router-gateway, 02-langchain-intro, 03-medical-appointment-template e -z, 04-song-highlights-template e -z, 05-safeguard-prompt-injection-template e -z, 06-rag-neo4j-students-template e -z, 07-doc-analysis
 - **Linguagem principal:** TypeScript no Node.js 24 (TypeScript nativo, sem transpilação), com Fastify, LangChain.js e LangGraph
+- **Live 24/09/2026 (Python):** https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-24
 
 ### Indicações de leitura complementar
 1. **Mastering Advanced RAG Techniques: A Comprehensive Guide** (Ahmed, S., Medium, 22 fev. 2025). Evolui do RAG básico para produção: indexação, pré-retrieval, retrieval e pós-retrieval, com hierarchical indexing, query expansion e decomposition, multi-hop, hybrid search, reranking com cross-encoders, fine-tuning de embeddings e context compression. Reforça começar por melhorias de alto impacto (hybrid search e reranking). Relaciona-se com [08 · RAG com Neo4j: arquitetura, Query Planner e Cypher Generator](./08-rag-neo4j-planner-e-cypher-generator.md). https://medium.com/@sahin.samia/mastering-advanced-rag-techniques-a-comprehensive-guide-f0491717998a

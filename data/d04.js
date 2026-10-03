@@ -63,6 +63,10 @@ STUDY.push({
   [
    "Indicação: Generative Agents (Park et al., arXiv:2304.03442)",
    "https://arxiv.org/abs/2304.03442"
+  ],
+  [
+   "Live de 27/05/2026: SDD enterprise (repositório do curso)",
+   "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-05-27"
   ]
  ],
  "blocos": [
@@ -142,7 +146,7 @@ STUDY.push({
     "Aceitar o resultado do agente sem abrir o diff e os comandos que ele pediu para rodar.",
     "Alterar uma instruction e continuar na mesma conversa sem checar se ela foi carregada."
    ],
-   "tip": "Abra e leia o que o agente gravou. Na Unidade 2, a instrução “siga o Spec Kit” virou uma frase genérica no arquivo e precisou ser reescrita com as etapas explícitas.",
+   "tip": "Abra e leia o que o agente gravou. Na Unidade 2, a instrução “siga o Spec Kit” virou uma frase genérica no arquivo e precisou ser reescrita com as etapas explícitas. A live de 27/05 mostra o mesmo harness com Claude Code: um único <code>CLAUDE.md</code> espelhado por symlink para <code>AGENTS.md</code>, <code>.cursorrules</code> e <code>.windsurfrules</code>. <a href=\"#D4-16\">Veja o tópico da live</a>.",
    "cola": [
     [
      "Harness",
@@ -269,7 +273,7 @@ STUDY.push({
     "Marcar tarefa como feita sem testes e typecheck passando.",
     "Tratar o hook local como única barreira: a própria aula cita CI como terceira camada."
    ],
-   "tip": "A Aula 5 se chama “Guardrails, Revisor e Delegação”, mas o texto da apostila cobre a spec 002 e o exercício da spec 003. Revisor e delegação (issue até PR) não são desenvolvidos na apostila nem no repositório.",
+   "tip": "A Aula 5 se chama “Guardrails, Revisor e Delegação”, mas o texto da apostila cobre a spec 002 e o exercício da spec 003. Revisor e delegação (issue até PR) não são desenvolvidos na apostila nem no repositório. A live de 27/05 aprofunda isso: spec boa contra spec ruim, o limite dos 36% e o custo de manter specs em enterprise. <a href=\"#D4-16\">Veja o tópico da live</a>.",
    "cola": [
     [
      "SDD",
@@ -337,6 +341,152 @@ STUDY.push({
       "A CLI e a API HTTP usam stores diferentes por decisão da spec 002; compartilhar a fonte é o exercício 003, que não está no repositório.",
       "A apostila fala em CI como terceira camada, mas o notas-api não tem workflow.",
       "Os quatro prompt files têm só <code>mode: agent</code> e <code>description</code> no cabeçalho: não há restrição de ferramentas por fase, então o “menor privilégio por fase” da Aula 3 não está aplicado no repositório (a apostila já avisa que a sintaxe varia por versão)."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "D4-16",
+   "bloco": "d04-b0",
+   "mod": "Live · 27/05/2026",
+   "emoji": "🎬",
+   "read": "11 min",
+   "title": "Live de SDD enterprise: spec boa, harness, o limite dos 36% e o fluxo do Spec Kit numa tela estilo Netflix",
+   "short": "A live separa spec estruturada de prompt bem feito, mostra o custo de mantê-la e percorre o Spec Kit com Claude Code até o plano técnico.",
+   "oneliner": "A live pergunta “SDD é só um prompt bem feito?” e responde “Não (Talvez?)”: é uma <b>especificação estruturada</b> escrita antes de o agente tocar no código (comportamento, regras, critérios de aceite, fora do escopo e “não faça”), guardada no <b>harness</b> do agente, com o custo de mantê-la dito às claras. A demo percorre o <b>GitHub Spec Kit</b> com Claude Code numa tela inicial estilo Netflix.",
+   "vovo": [
+    "Pedir “adiciona um limite diário de transferência” é como dizer ao pedreiro “faz uma cozinha bonita”. A spec é a pasta da obra: o que construir, as regras da casa, o que fica de fora e o que ele não pode derrubar. Quanto mais o pedreiro desconhece o prédio, mais a pasta precisa dizer.",
+    "A <b>constituição</b> é o regulamento do condomínio, conferido na hora de aprovar a planta. O <b>CLAUDE.md</b> é o bilhete na geladeira com o jeito de trabalhar da casa. Os <i>symlinks</i> da dica final são o mesmo bilhete exposto em vários cômodos sem fotocópia: se você corrige o original, todos leem a versão nova."
+   ],
+   "oque": [
+    "<b>Definição (slides):</b> SDD é a prática de escrever uma especificação estruturada antes de deixar o agente de IA tocar no código. O slide de abertura define <i>harness</i> como tudo o que envolve uma LLM para torná-la funcional. A pergunta “é só um prompt bem feito?” aparece com a resposta “Não” e depois “Não (Talvez?)”; o PDF não traz a explicação falada, então não sei qual ressalva foi feita.",
+    "<b>Exemplo ruim:</b> “Adiciona um limite diário de transferência. Pra contas premium: R$50k e pra contas normais: R$10k.” Não diz o que é “dia”, quando o saldo conta, o que fazer ao exceder nem o que não tocar.",
+    "<b>Exemplo bom (slide de uma spec em markdown):</b> título; referências do Jira (task, épico e um documento, <code>TDD: bacen-api-tdd.pdf</code>, provavelmente um documento de design técnico, hipótese); comportamento esperado (conta padrão R$ 10.000, premium R$ 50.000); regras de negócio (dia corrido de 00h00 a 23h59 no horário de Brasília, saldo calculado em tempo real somando transferências já liquidadas, agendadas não consomem limite até a liquidação, transferências entre contas do mesmo CPF/CNPJ são isentas, excedente é rejeitado por inteiro, sem aprovação parcial); critérios de aceite no formato QUANDO/ENTÃO (HTTP 422 com código <code>DAILY_LIMIT_EXCEEDED</code> e o saldo restante no corpo; à meia-noite o limite é restaurado); <b>fora do escopo</b> (limite por transação em outro arquivo, PJ na fase 2, notificações com o time de produto); e <b>não faça</b> (não criar endpoint novo, usar o middleware de validação existente; não alterar a tabela de contas, usar tabela auxiliar). O slide parece terminar cortado na lista de “não faça”.",
+    "<b>5W2H como framework:</b> um slide “Um framework útil” mostra o 5W2H (o quê, por quê, quem, onde, quando, como, quanto), logo antes do exemplo bom. A ligação entre cada letra e o exemplo é minha leitura (hipótese): a spec boa responde o quê (comportamento), onde (arquivos existentes) e como (regras), e cita quem e por quê pelas referências do Jira.",
+    "<b>SDD no harness:</b> o slide lista <code>CLAUDE.md</code> e <code>DESIGN.md</code> (Claude), <code>AGENTS.md</code> (Codex/OpenAI) e <code>GEMINI.md</code> (Gemini). O README da live acrescenta a dica de manter um único arquivo e espelhar por <i>symlink</i> para <code>.github/copilot-instructions.md</code> (Copilot), <code>.cursorrules</code> (Cursor), <code>.windsurfrules</code> (Windsurf) e <code>AGENTS.md</code> (Codex, Gemini etc.).",
+    "<b>Enterprise versus startup:</b> os slides contrastam banco e fintech (transatlântico contra veleiro) e mostram dois recortes de notícia sobre “SDD em nível enterprise”: o <i>Auto Approval</i> do iFood (revisão de código 33% mais rápida com avaliação automática de risco; o diagrama mostra webhook do GitLab, uma API, consumidor Kafka, um worker, um proxy interno de IA generativa e o Gemini 2.5 Flash na Vertex AI, com a nota de que a inferência rápida mantém milhares de MRs por dia) e a manchete da Forbes de maio de 2023 “Samsung Bans ChatGPT Among Employees After Sensitive Code Leak”. Os slides são só imagens, sem a conclusão do professor; a leitura mais provável (hipótese) é que enterprise soma escala, risco e confidencialidade.",
+    "<b>O que a academia diz (slides):</b> “só 36% de chance do agente seguir sua spec inteira corretamente”. A conta do slide: cada instrução com 95% de sucesso, spec com 20 itens, 0,95^20 = 36% (confere: 0,95^20 ≈ 0,358). Ela supõe itens independentes e a mesma taxa para todos, o que é uma simplificação, mas dá a ordem de grandeza: spec longa sem verificação não se cumpre sozinha. O mesmo slide fala do custo de manter as specs atualizadas.",
+    "<b>Quando vale a pena:</b> agentes trabalham bem em terreno limpo (feature nova); testes existentes criam uma rede de segurança; manter a spec atualizada precisa ser parte da cultura. O slide seguinte pergunta em que momento a spec deixa de ser ativo e vira passivo, com um “(Lá ele)” que o PDF não explica.",
+    "<b>O gargalo é conhecimento:</b> para escrever uma boa spec você precisa saber algo que o agente não sabe; em grandes empresas esse conhecimento está em processos, na cabeça de sêniores, em documentos antigos, no histórico do Teams e em códigos ilegíveis (o slide escreve “inelegíveis”)."
+   ],
+   "como": [
+    "<b>Instalação (README da live):</b> Python 3.11+, Git e <code>uv</code>; <code>uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0.8.15</code> e <code>specify init . --integration claude</code>. O init cria <code>.specify/</code> (templates, scripts, memória), <code>.claude/skills/</code> (os comandos como skills <code>speckit-*</code>) e o <code>CLAUDE.md</code>. O <code>init-options.json</code> da pasta confirma agente claude, shell <code>sh</code> e versão 0.8.15.",
+    "<b>Comandos, na ordem:</b> <code>/speckit.constitution</code> (princípios; uma vez), <code>/speckit.specify</code> (o quê e por quê, sem tecnologia, gera <code>specs/NNN-nome/spec.md</code>), <code>/speckit.clarify</code> (até cinco perguntas dirigidas, uma por vez; confere com o texto da skill), <code>/speckit.checklist</code> (exige um domínio de foco), <code>/speckit.plan</code> (stack, arquitetura, <code>plan.md</code>, <code>research.md</code>, <code>data-model.md</code>, <code>quickstart.md</code>, <code>contracts/</code>), <code>/speckit.tasks</code>, <code>/speckit.analyze</code> (consistência entre spec, plano e tasks) e <code>/speckit.implement</code>. Caminho mínimo para experimentar: specify, plan, tasks, implement; em enterprise os opcionais deixam de ser opcionais.",
+    "<b>Constitution Check:</b> o template do plano marca o bloco como “GATE: Must pass before Phase 0 research. Re-check after Phase 1 design”, com PASS, FAIL ou N/A por princípio e FAIL indo para “Complexity Tracking” ou bloqueando a feature. É o que, segundo o README, impede que a constituição vire “poster decorativo”.",
+    "<b>Constituição ou CLAUDE.md:</b> a constituição é governança (princípios não negociáveis, gate no plan, versionamento semântico próprio com Sync Impact Report, edição só pelo comando); o <code>CLAUDE.md</code> é instrução operacional (contexto contínuo, sem gate, versionado só pelo Git, edição manual). Regra de bolso do README: precisa de fiscalização ativa, versionamento e propagação, é constituição; é lembrete de como conduzir o trabalho, é <code>CLAUDE.md</code>; princípio inegociável que também precisa de lembrete diário pode estar nos dois.",
+    "<b>Extensão Git:</b> instalada por padrão, acopla hooks <code>before_*</code> e <code>after_*</code> aos comandos. No <code>.specify/extensions.yml</code>, <code>before_constitution</code> (inicializar o repositório) e <code>before_specify</code> (criar a branch da feature) têm <code>optional: false</code> e rodam sozinhos; os commits automáticos antes e depois das demais etapas têm <code>optional: true</code> e perguntam antes.",
+    "<b>Relação com o resto da disciplina:</b> a Unidade 1 monta à mão <i>constitution, specify, plan, tasks, implement</i> (<a href=\"#D4-01\">tópico 01</a>); o Spec Kit traz os mesmos nomes mais <i>clarify, checklist, analyze</i> e o gate da constituição, e a Unidade 2 o adota com o Copilot (<a href=\"#D4-03\">tópico 03</a>). A live o usa com Claude Code, cujo harness é o <code>CLAUDE.md</code> e as skills em <code>.claude/skills</code> (o harness em geral está no <a href=\"#D4-00\">tópico 00</a>).",
+    "<b>Onde a demo parou:</b> a pasta final tem constituição, spec com cinco clarificações, dois checklists, plano, pesquisa, modelo de dados, quickstart e quatro contratos. Não há <code>tasks.md</code>, <code>src/</code> nem testes: analyze e implement não aparecem no que foi versionado (hipótese: não foram executados ou não foram commitados)."
+   ],
+   "aplica": [
+    "Escrever a spec de uma mudança em sistema existente com referências (Jira, documento técnico), regras de negócio numeradas, critérios de aceite verificáveis, fora do escopo e “não faça” apontando para o código que deve ser reaproveitado.",
+    "Manter um único arquivo de instruções do repositório e espelhá-lo por <i>symlink</i> para as ferramentas do time (<code>ln -sf CLAUDE.md AGENTS.md</code> e equivalentes), sem duplicar texto.",
+    "Separar governança de instrução operacional: princípios fiscalizados no plano (constituição) e jeito de trabalhar do agente (<code>CLAUDE.md</code>).",
+    "Usar <code>/speckit.checklist</code> como “teste unitário da escrita da spec” antes do plano, em especial em áreas como acessibilidade, segurança ou auditoria."
+   ],
+   "pros": [
+    "Requisito discutido em texto custa minutos; a lacuna descoberta no meio do código custa dias (argumento do README da live).",
+    "O agente recebe contexto estável: spec, plano e tasks como briefing permanente, e o Spec Kit cuida da numeração, das branches e dos artefatos.",
+    "Rastreabilidade: a decisão de produto está na spec, a técnica no plano, e o <code>research.md</code> registra cada alternativa rejeitada."
+   ],
+   "contras": [
+    "Custo de manter spec, plano e tasks em dia; o slide chama a atenção para o ponto em que a spec vira passivo.",
+    "A conta dos 36%: spec longa tem baixa chance de ser seguida por inteiro se nada a verifica; checklist e analyze ajudam, mas dependem do mesmo modelo.",
+    "O Constitution Check do plano foi preenchido pelo mesmo agente que escreveu o plano (6/6 PASS, sem violações); sem revisão humana ele é uma autoavaliação (observação minha, não da live).",
+    "A boa spec exige conhecimento que o agente não tem e que em grandes empresas está espalhado em pessoas e documentos antigos."
+   ],
+   "traps": [
+    "Tratar a spec como um prompt maior: sem critérios de aceite, fora do escopo e “não faça” ela repete o exemplo ruim.",
+    "Misturar decisão de produto na spec e de stack no plano (o <code>CLAUDE.md</code> da live pede para não misturar).",
+    "Editar à mão arquivos que o Spec Kit mantém (a constituição, os templates, os scripts): o <code>CLAUDE.md</code> da live proíbe, porque quebra o Sync Impact Report e a propagação.",
+    "Confiar no <code>.gitignore.example</code> da live para versionar só <code>.specify/memory</code> e <code>feature.json</code>: as exceções não funcionam (ver armadilhas no código).",
+    "Aceitar o PASS do Constitution Check sem ler a justificativa de cada princípio."
+   ],
+   "tip": "O <code>README.md</code> é idêntico em <code>000-pre-live</code> e <code>001-pos-live</code>. Para ver o que a live produziu, compare o <code>CLAUDE.md</code> e a pasta <code>specs/</code>, não o README.",
+   "cola": [
+    [
+     "SDD",
+     "Spec-Driven Development: especificação estruturada escrita antes de o agente tocar no código"
+    ],
+    [
+     "Harness",
+     "Tudo o que envolve uma LLM para torná-la funcional (slide da live): arquivos de instrução, ferramentas, permissões"
+    ],
+    [
+     "5W2H",
+     "O quê, por quê, quem, onde, quando, como e quanto: checklist para não esquecer partes da spec"
+    ],
+    [
+     "Fora do escopo / Não faça",
+     "Seções da spec boa: o que não será tratado e o que o agente não pode alterar"
+    ],
+    [
+     "Constituição",
+     "Princípios não negociáveis do projeto em <code>.specify/memory/constitution.md</code>, fiscalizados no <code>/speckit.plan</code>"
+    ],
+    [
+     "Constitution Check",
+     "Gate do plano que confere o plano contra cada princípio (PASS, FAIL ou N/A)"
+    ],
+    [
+     "Clarify",
+     "Rodada de até cinco perguntas dirigidas que grava as respostas na spec"
+    ],
+    [
+     "Symlink de instruções",
+     "Atalho de <code>AGENTS.md</code>, <code>.cursorrules</code> etc. para o <code>CLAUDE.md</code>, para manter uma única fonte"
+    ],
+    [
+     "0,95^20",
+     "Conta do slide: 20 instruções com 95% de acerto cada resultam em cerca de 36% de chance de cumprir todas"
+    ]
+   ],
+   "links": [
+    [
+     "Live de 27/05/2026 no repositório do curso",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-05-27"
+    ],
+    [
+     "Slide: SDD com agentes de IA em codebases enterprise (PDF)",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/blob/main/lives/2026-05-27/unipds-sdd-enterprise.pdf"
+    ],
+    [
+     "Estado final da live (001-pos-live)",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-05-27/001-pos-live"
+    ],
+    [
+     "GitHub Spec Kit",
+     "https://github.com/github/spec-kit"
+    ]
+   ],
+   "codigo": [
+    {
+     "proj": "lives/2026-05-27 (000-pre-live e 001-pos-live)",
+     "link": "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-05-27",
+     "resumo": "Um projeto só de artefatos (sem código-fonte) com o Spec Kit 0.8.15 instalado para Claude Code. <code>000-pre-live</code> é o ponto de partida: framework, constituição já ratificada, <code>CLAUDE.md</code> e symlinks. <code>001-pos-live</code> acrescenta a feature <code>001-catalog-browse</code> (tela inicial de catálogo estilo Netflix: hero rotativo e três carrosséis). Li todos os arquivos autorais; não executei o <code>specify</code> nem o Claude Code.",
+     "fluxo": [
+      "<code>README.md</code>: PRD da tela (visão, persona, problema, solução, escopo, métricas, premissas), instalação do Spec Kit, os comandos na ordem com tabela comparativa, extensão Git, valor enterprise e a tabela “constituição x CLAUDE.md”.",
+      "<code>CLAUDE.md</code>: contexto, fluxo canônico (specify, clarify, plan, tasks, analyze, implement), “fonte primária da verdade”, resumo dos cinco princípios, restrições do domínio e regras de operação (não editar README, templates, scripts, integrações, workflows nem skills; mudar a constituição só por <code>/speckit.constitution</code>). <code>AGENTS.md</code>, <code>.cursorrules</code>, <code>.windsurfrules</code> e <code>.github/copilot-instructions.md</code> são symlinks para ele.",
+      "<code>.specify/memory/constitution.md</code> v1.0.0 (ratificada em 2026-05-27): Test-First, Simplicidade e YAGNI, Versionamento Semântico, Performance e UX-First (LCP ≤ 2,5 s, INP ≤ 200 ms, 60 fps) e Acessibilidade WCAG AA; mais restrições de UI, fluxo de desenvolvimento e governança, com o Sync Impact Report no topo.",
+      "<code>specs/001-catalog-browse/spec.md</code>: quatro user stories (três P1 e uma P2), 21 requisitos funcionais (FR-001 a FR-021), sete critérios de sucesso, casos de borda e a seção Clarifications com cinco perguntas respondidas (overlay para o detalhe, seis cards visíveis, sem loop nas bordas, dados por função geradora com latência e erro injetáveis, live region polite no hero).",
+      "<code>checklists/requirements.md</code> (todos os itens marcados) e <code>checklists/accessibility.md</code> (29 itens CHK sobre a qualidade dos requisitos de teclado, foco, contraste, movimento e leitor de tela; nenhum marcado).",
+      "<code>plan.md</code>: React 19, Vite 6, TypeScript 5.6, CSS Modules; Vitest, Testing Library, axe-core e Playwright; orçamento de 80 KB de JS gzip; Constitution Check com seis linhas, todas PASS; estrutura de <code>src/</code> e <code>tests/</code> planejada. <code>research.md</code> registra decisão, racional e alternativas rejeitadas (inclusive Next.js); <code>data-model.md</code> define as entidades e o <code>catalogService</code>; <code>quickstart.md</code> traz scripts e parâmetros de URL para forçar estados.",
+      "<code>contracts/</code>: <code>catalog-service.md</code> (nunca rejeita, latência exata, dados estáveis), <code>region-states.md</code> (<code>DataRegion</code> com os quatro estados e os papéis ARIA), <code>overlay-controller.md</code> (foco, trap, Esc, backdrop) e <code>visual-tokens.md</code> (cores, foco, dimensões).",
+      "<code>.specify/extensions.yml</code> (hooks da extensão Git), <code>.specify/feature.json</code> (<code>{\"feature_directory\": \"specs/001-catalog-browse\"}</code>, só no pós-live), <code>.specify/workflows/speckit/workflow.yml</code> (ciclo “Full SDD Cycle”: specify, gate de revisão da spec, plan, gate de revisão do plano, tasks, implement) e <code>.gitignore.example</code>."
+     ],
+     "rodar": [
+      "Para refazer o fluxo: <code>uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0.8.15</code>, <code>specify version</code> e, numa pasta de trabalho, <code>specify init . --integration claude</code>; depois, no Claude Code, <code>/speckit.constitution</code>, <code>/speckit.specify</code> (com o texto do README), <code>/speckit.clarify</code>, <code>/speckit.checklist</code> (com um domínio) e <code>/speckit.plan</code>. Não executei.",
+      "Dica de espelhamento do README: <code>mkdir -p .github &amp;&amp; ln -sf ../CLAUDE.md .github/copilot-instructions.md</code>; <code>ln -sf CLAUDE.md .cursorrules</code>; <code>ln -sf CLAUDE.md .windsurfrules</code>; <code>ln -sf CLAUDE.md AGENTS.md</code>."
+     ],
+     "templateVsZ": "Pré-live e pós-live têm o mesmo framework, a mesma constituição e o mesmo README. O que a live acrescenta: o bloco <code>SPECKIT START/END</code> no <code>CLAUDE.md</code> apontando para <code>specs/001-catalog-browse/plan.md</code> (é o plano corrente que o <code>/speckit.plan</code> registra, como no <a href=\"#D4-03\">tópico 03</a>), a pasta <code>specs/001-catalog-browse/</code>, o <code>.specify/feature.json</code> e o <code>.gitignore.example</code>.",
+     "armadilhas": [
+      "O <code>.gitignore.example</code> ignora <code>/.specify</code> e tenta reincluir <code>!/.specify/memory</code> e <code>!/.specify/feature.json</code>: o Git não reinclui arquivo cujo diretório pai está ignorado. Verifiquei numa cópia: <code>git check-ignore -v</code> reporta os dois como ignorados pela regra <code>/.specify</code>. O comentário do arquivo também tem um erro de digitação (“bpara”).",
+      "O README diz que o plano fixou <b>Next.js</b>; o <code>plan.md</code> escolheu React 19 + Vite 6 e o <code>research.md</code> rejeita o Next.js, reconhecendo que o README o citava como hipótese inicial. O README é igual nas duas pastas e ficou desatualizado.",
+      "Metas inconsistentes entre artefatos: o LCP é “4G simulada” na constituição e “Fast 3G” no plano; a rolagem é 60 fps no PRD, na constituição e no plano, e 50 fps no SC-007 da spec.",
+      "<code>visual-tokens.md</code> declara contrastes que não conferem com a fórmula WCAG: calculei 18,1:1 (declarado 16,1) para o texto primário, 10,2:1 (7,9) para o secundário, 4,1:1 (5,1) para o <code>--color-accent</code> e 7,0:1 (7,6) para o erro, todos contra <code>#0B0D11</code>. O acento a 4,1:1 passa o mínimo de componente (3:1) mas não o de texto normal (4,5:1), e o contrato o lista também para “CTA”.",
+      "A spec termina com um link vazio <code>[](./PRD.md)</code> e o arquivo não existe (o PRD está no README). O <code>region-states.md</code> cita “FR-024 implícito”, mas a spec vai só até FR-021.",
+      "<code>checklists/accessibility.md</code> está desatualizado: nenhum dos 29 itens foi marcado e as notas ainda tratam o FR-013 como pendente, embora o clarify já o tenha resolvido. O <code>requirements.md</code> diz que o clarify aplicou “mais quatro decisões” e lista seis requisitos.",
+      "O <code>quickstart.md</code> usa pnpm 9 e parâmetros de URL (<code>?hero=loading</code>, <code>?reduce-motion=force</code>) que não aparecem na spec, no plano nem nos contratos; o <code>plan.md</code> lista <code>tasks.md</code>, que não existe, e nada de <code>src/</code> foi gerado."
      ]
     }
    ]
@@ -549,7 +699,8 @@ STUDY.push({
       "O default <code>openai/gpt-4o-mini</code> é pago: sem <code>OPENROUTER_MODEL</code> o projeto não roda a custo zero, apesar do README do módulo."
      ]
     }
-   ]
+   ],
+   "tip": "A live de 27/05 usa o Spec Kit com Claude Code (skills em <code>.claude/skills</code>) e percorre constitution, specify, clarify, checklist e plan numa tela estilo Netflix. <a href=\"#D4-16\">Veja o tópico da live</a>."
   },
   {
    "id": "D4-04",

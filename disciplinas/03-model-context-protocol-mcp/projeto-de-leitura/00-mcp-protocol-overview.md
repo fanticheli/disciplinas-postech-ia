@@ -57,7 +57,7 @@ E, em vez de pedir «prato 12, 14 e 15», o cliente pede «um jantar para duas p
 - Achar que o protocolo substitui arquitetura: a modelagem das ações e a eficiência das integrações continuam críticas.
 - Confundir MCP com «API web pública»: ele pode ser só um processo local falando por stdio (ver [tópico 06](./06-mcp-server-from-scratch.md)).
 
-> 💡 **Dica:** Pergunta-teste para cada tool que você expõe: ela representa uma intenção de negócio ou apenas um endpoint? Se for só um endpoint, provavelmente você está espelhando a API.
+> 💡 **Dica:** Pergunta-teste para cada tool que você expõe: ela representa uma intenção de negócio ou apenas um endpoint? Se for só um endpoint, provavelmente você está espelhando a API. A live de 24/02 também propôs um desafio prático com skills e ferramentas de ingestão de contexto: veja o [tópico da live](./16-live-mcp-and-skills-practical-case.md).
 
 ---
 

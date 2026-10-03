@@ -84,7 +84,7 @@
   .nav-item.read .rd::after{content:"✓";color:#fff;font-size:10px;display:grid;place-items:center;height:100%;margin-top:-1px}
 
   /* ---------- Main ---------- */
-  .main{padding:0}
+  .main{padding:0;min-width:0}
   .topbar{
     display:none;position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);
     padding:10px 16px;align-items:center;gap:12px
@@ -186,6 +186,9 @@
   .cola .row dd{margin:2px 0 0;color:var(--muted);font-size:13.5px}
   .disc-label{cursor:pointer;font-weight:700;font-size:13px;padding:10px 12px;margin:4px 0;border-radius:10px;border:1px solid var(--line);background:var(--panel)}
   .disc-label:hover{border-color:var(--accent)}
+  pre.code{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;font-size:12.5px;line-height:1.5;max-width:100%}
+  pre.code code{background:none;border:0;padding:0;font-size:inherit;overflow-wrap:normal;white-space:pre}
+  .practice-cta{cursor:pointer;border-left:4px solid var(--b4)}
   .code-proj{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:10px 14px;margin:10px 0}
   .code-proj summary{cursor:pointer;font-weight:600;padding:4px 0}
   .code-proj h4{margin:14px 0 6px;font-size:14px}
@@ -253,7 +256,7 @@
   </main>
 </div>
 
-<script>window.STUDY=[];</script>
+<script>window.STUDY=[];window.PRACTICE=[];</script>
 <script src="data/d01.js"></script>
 <script src="data/d02.js"></script>
 <script src="data/d03.js"></script>
@@ -264,6 +267,16 @@
 <script src="data/d08.js"></script>
 <script src="data/d09.js"></script>
 <script src="data/d10.js"></script>
+<script src="data/p01.js"></script>
+<script src="data/p02.js"></script>
+<script src="data/p03.js"></script>
+<script src="data/p04.js"></script>
+<script src="data/p05.js"></script>
+<script src="data/p06.js"></script>
+<script src="data/p07.js"></script>
+<script src="data/p08.js"></script>
+<script src="data/p09.js"></script>
+<script src="data/p10.js"></script>
 <script>
 const COLORS = ["--b1","--b2","--b3","--b4","--b5","--b0"];
 const DISCIPLINES = STUDY.slice().sort((a,b)=>a.disc.num.localeCompare(b.disc.num));
@@ -273,6 +286,17 @@ DISCIPLINES.forEach(d=>{
   d.blocos.forEach((b,i)=>BLOCKS.push({...b, num:i, disc:d.disc.num, color:COLORS[i%COLORS.length]}));
   d.topics.forEach(t=>TOPICS.push({...t, disc:d.disc.num}));
 });
+
+const PRACTICE_ITEMS = [];
+const PRACTICE_INTRO = {};
+(window.PRACTICE||[]).slice().sort((a,b)=>a.disc.localeCompare(b.disc)).forEach(p=>{
+  PRACTICE_INTRO[p.disc] = p.intro || "";
+  p.items.forEach(i=>PRACTICE_ITEMS.push({...i, disc:p.disc}));
+});
+function practiceOf(num){ return PRACTICE_ITEMS.filter(i=>i.disc===num); }
+function practiceForTopic(id){ return PRACTICE_ITEMS.filter(i=>(i.topics||[]).includes(id)); }
+function escapeHtml(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+let practiceMode = false;
 
 const $ = s => document.querySelector(s);
 const content = $("#content");
@@ -290,8 +314,38 @@ function blockOf(t){ return BLOCKS.find(b=>b.id===t.bloco && b.disc===t.disc); }
 function topicsOf(num){ return TOPICS.filter(t=>t.disc===num); }
 function readCount(list){ return list.filter(t=>read.has(t.id)).length; }
 
+function renderPracticeNav(f){
+  nav.innerHTML = "";
+  const back = document.createElement("div");
+  back.className = "disc-label";
+  back.textContent = currentDisc ? `← Teoria da Disciplina ${currentDisc}` : "← Todas as disciplinas";
+  back.onclick = ()=>{ location.hash = currentDisc ? "d/"+currentDisc : ""; closeSide(); };
+  nav.appendChild(back);
+  const discs = currentDisc && !f ? [currentDisc] : DISCIPLINES.map(d=>d.disc.num);
+  discs.forEach(num=>{
+    const items = practiceOf(num).filter(i=>!f || (i.title+" "+i.cenario).toLowerCase().includes(f));
+    if(!items.length) return;
+    const lab = document.createElement("div");
+    lab.className = "bloco-label";
+    lab.innerHTML = `<span class="dot" style="background:var(--b4)"></span> D${num} · Na prática`;
+    lab.style.cursor = "pointer";
+    lab.onclick = ()=>{ location.hash = "pratica/"+num; closeSide(); };
+    nav.appendChild(lab);
+    items.forEach(i=>{
+      const el = document.createElement("div");
+      el.className = "nav-item"+(location.hash==="#"+i.id?" active":"");
+      el.innerHTML = `<span class="num">${i.id.split("-")[1]}</span><span class="tt">${i.title}</span><span class="rd"></span>`;
+      el.onclick = ()=>{ location.hash = i.id; closeSide(); };
+      nav.appendChild(el);
+    });
+  });
+  if(nav.children.length===1) nav.innerHTML += `<div class="empty">Nada encontrado.</div>`;
+  updateProgress();
+}
+
 function renderNav(filter=""){
   const f = filter.trim().toLowerCase();
+  if(practiceMode) return renderPracticeNav(f);
   nav.innerHTML = "";
   const scope = f ? DISCIPLINES : DISCIPLINES.filter(d=>!currentDisc || d.disc.num===currentDisc);
   scope.forEach(d=>{
@@ -360,7 +414,76 @@ function renderHome(){
     </div>`;
   });
   html += `</div>`;
+  if(PRACTICE_ITEMS.length){
+    html += `<div class="materials practice-cta" onclick="location.hash='pratica'"><h3>🛠️ Na prática</h3>
+      <p style="margin:0;font-size:14px;color:var(--muted)">${PRACTICE_ITEMS.length} técnicas aplicadas: cenário real, passo a passo, código curto e quando não usar.</p></div>`;
+  }
   content.innerHTML = html;
+  renderNav($("#search").value);
+}
+
+function practiceCard(i){
+  return `<div class="card" style="--cardc:var(--b4)" onclick="location.hash='${i.id}'">
+    <div class="emoji">🛠️</div>
+    <h4>${i.title}</h4>
+    <p>${i.cenario}</p>
+    <div class="meta"><span>#${i.id}</span>${i.code&&i.code.src?` · <span>💻 ${i.code.lang}</span>`:""}</div>
+  </div>`;
+}
+
+function renderPracticeIndex(num){
+  practiceMode = true;
+  currentDisc = num || null;
+  window.scrollTo(0,0);
+  let html = `<div class="crumb"><a onclick="goHome()">Central</a> › ${num?`<a onclick="location.hash='pratica'">Na prática</a> › <span>Disciplina ${num}</span>`:`<span>Na prática</span>`}</div>`;
+  if(num){
+    const d = discOf(num);
+    html += `<div class="hero"><div class="eyebrow">Na prática · Disciplina ${num}</div><h2>${d?d.disc.titulo:""}</h2>
+      ${PRACTICE_INTRO[num]?`<p class="lead">${PRACTICE_INTRO[num]}</p>`:""}
+      <div class="disc-tag"><b>${practiceOf(num).length} técnicas</b> <a onclick="location.hash='d/${num}'">ver a teoria da disciplina</a></div></div>
+      <div class="cards">${practiceOf(num).map(practiceCard).join("")}</div>`;
+  } else {
+    html += `<div class="hero"><div class="eyebrow">Na prática</div><h2>Cada técnica, aplicada</h2>
+      <p class="lead">Para cada técnica dos módulos: um problema real, como aplicar passo a passo, um trecho de código curto, o resultado esperado e quando não usar.</p></div><div class="cards">`;
+    DISCIPLINES.forEach((d,i)=>{
+      const n = practiceOf(d.disc.num).length;
+      if(!n) return;
+      html += `<div class="card" style="--cardc:var(${COLORS[i%COLORS.length]})" onclick="location.hash='pratica/${d.disc.num}'">
+        <div class="emoji">${d.disc.emoji||"📘"}</div><h4>${d.disc.num} · ${d.disc.titulo}</h4>
+        <p>${PRACTICE_INTRO[d.disc.num]||""}</p><div class="meta"><span>${n} técnicas</span></div></div>`;
+    });
+    html += `</div>`;
+  }
+  content.innerHTML = html;
+  renderNav($("#search").value);
+}
+
+function renderPracticeItem(id){
+  const i = PRACTICE_ITEMS.find(x=>x.id===id);
+  if(!i){ renderHome(); return; }
+  practiceMode = true;
+  currentDisc = i.disc;
+  window.scrollTo(0,0);
+  const list = practiceOf(i.disc);
+  const idx = list.indexOf(i);
+  const prev = list[idx-1], next = list[idx+1];
+  const topicLinks = (i.topics||[]).map(tid=>{ const t = TOPICS.find(x=>x.id===tid); return t?`<a onclick="location.hash='${tid}'">${t.emoji} ${t.title}</a>`:""; }).filter(Boolean);
+  content.innerHTML = `<div style="--cardc:var(--b4)">
+    <div class="crumb"><a onclick="goHome()">Central</a> › <a onclick="location.hash='pratica/${i.disc}'">Na prática · D${i.disc}</a> › <span>#${i.id}</span></div>
+    <div class="t-head"><div class="t-emoji">🛠️</div><div><h2>${i.title}</h2>
+      <div class="badges"><span class="badge mod">Na prática</span><span class="badge">Disciplina ${i.disc}</span><span class="badge">#${i.id}</span></div></div></div>
+    <div class="oneliner"><span class="k">Cenário</span>${i.cenario}</div>
+    <section class="blk"><h3><span class="ic">🪜</span> Passo a passo</h3>${li(i.passos,"steps")}</section>
+    ${i.code&&i.code.src?`<section class="blk"><h3><span class="ic">💻</span> Código <small style="color:var(--muted);font-weight:400">${i.code.lang}</small></h3><pre class="code"><code>${escapeHtml(i.code.src)}</code></pre></section>`:""}
+    <section class="blk"><div class="tip"><b>Resultado:</b> ${i.resultado}</div></section>
+    <section class="blk"><h3><span class="ic">🙅</span> Quando não usar</h3>${li(i.quandoNao)}</section>
+    <section class="blk"><div class="traps"><h3><span class="ic">🚫</span> Armadilha comum</h3><p style="margin:0">${i.armadilha}</p></div></section>
+    ${topicLinks.length?`<section class="blk"><h3><span class="ic">📖</span> Teoria</h3>${li(topicLinks)}</section>`:""}
+    ${i.repo&&i.repo.link?`<p><a href="${i.repo.link}" target="_blank" rel="noopener">${i.repo.label||"Abrir no repo do curso"} ↗</a></p>`:""}
+    <div class="nextprev">
+      ${prev?`<a onclick="location.hash='${prev.id}'"><small>← Anterior</small>${prev.title}</a>`:`<span></span>`}
+      ${next?`<a class="next" onclick="location.hash='${next.id}'"><small>Próximo →</small>${next.title}</a>`:`<span></span>`}
+    </div></div>`;
   renderNav($("#search").value);
 }
 
@@ -375,6 +498,7 @@ function renderDisc(num){
     <h2>${d.disc.titulo}</h2>
     ${d.disc.resumo?`<p class="lead">${d.disc.resumo}</p>`:""}
     <div class="disc-tag"><b>${d.disc.autor}</b> ${d.topics.length} tópicos · ${readCount(topicsOf(num))} lidos</div>
+    ${practiceOf(num).length?`<div class="disc-tag" style="margin-top:8px;cursor:pointer" onclick="location.hash='pratica/${num}'"><b>🛠️ Na prática</b> ${practiceOf(num).length} técnicas aplicadas →</div>`:""}
   </div>`;
   BLOCKS.filter(b=>b.disc===num).forEach(bl=>{
     const items = TOPICS.filter(t=>t.disc===num && t.bloco===bl.id);
@@ -464,6 +588,7 @@ function renderTopic(id){
 
     ${t.curso?`<section class="blk"><h3><span class="ic">🛠️</span> No curso — mão na massa</h3><div class="tip" style="border-style:solid;border-color:var(--line)">${t.curso}</div></section>`:""}
     ${renderCode(t.codigo)}
+    ${practiceForTopic(t.id).length?`<section class="blk"><h3><span class="ic">🛠️</span> Na prática</h3>${li(practiceForTopic(t.id).map(p=>`<a onclick="location.hash='${p.id}'">${p.title}</a>`))}</section>`:""}
 
     <section class="blk"><h3><span class="ic">🧩</span> Cola rápida</h3>
       <dl class="cola">${t.cola.map(([k,v])=>`<div class="row"><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>
@@ -495,7 +620,11 @@ function toggleRead(id){
 function goHome(){ if(location.hash){ location.hash=""; } else { renderHome(); } }
 function route(){
   const h = decodeURIComponent(location.hash.replace("#",""));
+  practiceMode = false;
   if(!h) return renderHome();
+  if(h==="pratica") return renderPracticeIndex(null);
+  if(h.startsWith("pratica/")) return renderPracticeIndex(h.slice(8));
+  if(/^P\d+-\d+$/.test(h)) return renderPracticeItem(h);
   if(h.startsWith("d/")) return renderDisc(h.slice(2));
   if(LEGACY_IDS.includes(h)){ location.replace("#D1-"+h); return; }
   renderTopic(h);

@@ -46,6 +46,8 @@ Antes de contratar os cozinheiros (as estratégias), a gente padroniza a cozinha
 - Manter duas Constitutions e deixar o agente consultar a errada.
 - Variável de ambiente com nome divergente: a aplicação usa o default e você acha que está testando outra coisa.
 
+> 💡 A live de 27/05 usa o Spec Kit com Claude Code (skills em `.claude/skills`) e percorre constitution, specify, clarify, checklist e plan numa tela estilo Netflix. Veja o [tópico da live](./16-live-sdd-enterprise-and-spec-kit-catalog.md).
+
 ---
 
 ## 🧩 Cola rápida

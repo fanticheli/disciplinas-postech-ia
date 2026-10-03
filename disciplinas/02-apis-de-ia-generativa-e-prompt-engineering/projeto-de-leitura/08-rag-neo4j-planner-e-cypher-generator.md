@@ -74,7 +74,7 @@ Para perguntas grandes, ele primeiro quebra em perguntas pequenas, responde cada
 
 ## 💻 No código do repo
 
-O código (nodes, estado, loop e testes) está no projeto `06-rag-neo4j-students`, descrito no [tópico 09](./09-rag-neo4j-executor-correcao-resposta.md).
+O código (nodes, estado, loop e testes) está no projeto `06-rag-neo4j-students`, descrito no [tópico 09](./09-rag-neo4j-executor-correcao-resposta.md). A live de 24/09 aprofunda a alternativa sem Neo4j e sem Cypher gerado por LLM: um GraphRAG com grafo em dicionário e recuperação de 1 salto: [Live NetFibra](./12-live-netfibra-langgraph-graphrag-hitl.md).
 
 ---
 

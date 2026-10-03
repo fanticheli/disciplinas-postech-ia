@@ -41,6 +41,7 @@ Quando os especialistas precisam discutir o prato ('mais sal ou menos?') até co
 - Desconfiar do Sequential 'por hábito': se o agente B só roda depois porque 'faz sentido cronológico' e não usa dado de A, considere Parallel.
 - Usar Supervisor fixo (roteador determinístico) quando o roteamento é simples; um Supervisor com raciocínio próprio custa mais latência e ganha flexibilidade nas fronteiras nebulosas.
 - Reservar Group Chat para divergência real de interpretações (por exemplo, dois agentes discordando se um evento adverso entra no CSR ou só no ICF, exemplo do canvas).
+- A live de 26/09 mostra Parallel em dois pontos de um Process Manager (estoque e pagamento; depois envio e nota) com Sequential entre as fases: [Live Temporal](./15-live-temporal-process-manager.md).
 
 ### Vantagens e limites
 **Vantagens**

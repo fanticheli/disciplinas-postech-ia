@@ -36,6 +36,7 @@ A ordem segue a apostila: das cinco unidades, que acompanham a evolução de um 
 - [04 · Design tokens e componentes acessíveis](./04-design-tokens-e-componentes-acessiveis.md) *(Unidade 2 · Aulas 2 e 3)*
 - [05 · Stitch e Figma: da referência visual ao componente Angular](./05-stitch-e-figma-da-referencia-visual-ao-componente.md) *(Unidade 2 · Aulas 4 e 5)*
 - [06 · Corrigindo a interface com IA: contraste, responsividade e revisão humana](./06-corrigindo-a-interface-com-ia.md) *(Unidade 2 · Aula 6)*
+- [16 · Live Safer: skills de agente, MCP e Lagune no fluxo de uma landing page](./16-live-safer-skills-mcp-e-lagune.md) *(Live · 28/07/2026)*
 
 ### Bloco 3 — Monorepo, Spec-Driven Development e agentes
 - [07 · Fundação enterprise: Nx, shared-types e MCP](./07-fundacao-enterprise-nx-monorepo-shared-types.md) *(Unidade 3 · Aula 1)*
@@ -51,6 +52,9 @@ A ordem segue a apostila: das cinco unidades, que acompanham a evolução de um 
 - [13 · Genkit, setup seguro e interface mockada do BragBot](./13-genkit-setup-seguro-e-interface-mockada.md) *(Unidade 5 · Aulas 1 e 2)*
 - [14 · Flows, Zod e Google AI: o cérebro do Genkit](./14-flows-zod-e-google-ai.md) *(Unidade 5 · Aula 3)*
 - [15 · Micro-BFF full-stack e o Engenheiro AI-Native](./15-micro-bff-fullstack-e-engenheiro-ai-native.md) *(Unidade 5 · Aulas 4 e 5)*
+
+### Bloco 6 — Lives complementares
+- [17 · Live SEO, GEO e AEO: ser encontrado por buscadores, IAs e redes sociais](./17-live-seo-geo-aeo.md) *(Live · 30/09/2026)*
 
 ---
 
@@ -84,14 +88,16 @@ A ordem segue a apostila: das cinco unidades, que acompanham a evolução de um 
 | **U5 · Aula 3** · O Cérebro do Genkit: Flows, Zod e Google AI | [14 · Flows, Zod e Google AI: o cérebro do Genkit](./14-flows-zod-e-google-ai.md) |
 | **U5 · Aula 4** · O Micro-BFF: Integração Full-Stack | [15 · Micro-BFF full-stack e o Engenheiro AI-Native](./15-micro-bff-fullstack-e-engenheiro-ai-native.md) |
 | **U5 · Aula 5** · O Engenheiro AI-Native (Revisão da Jornada e Encerramento) | [15 · Micro-BFF full-stack e o Engenheiro AI-Native](./15-micro-bff-fullstack-e-engenheiro-ai-native.md) |
+| **Live 28/07/2026** · Safer (UX e DX com IA, skills de agente e Lagune) | [16 · Live Safer: skills de agente, MCP e Lagune no fluxo de uma landing page](./16-live-safer-skills-mcp-e-lagune.md) |
+| **Live 30/09/2026** · SEO, GEO e AEO | [17 · Live SEO, GEO e AEO: ser encontrado por buscadores, IAs e redes sociais](./17-live-seo-geo-aeo.md) |
 
-> As **25 aulas** da apostila (5 unidades) estão cobertas em **16 documentos**. U1 tem 6 aulas, U2 tem 6, U3 tem 5, U4 tem 3 e U5 tem 5. Cada unidade termina com uma «Revisão da Unidade» na apostila (checklist de estudo, sem conteúdo novo), absorvida nos documentos de cada bloco e na revisão final do último.
+> As **25 aulas** da apostila (5 unidades) estão cobertas em **16 documentos**, e as duas lives do curso em outros **2** (16 e 17). U1 tem 6 aulas, U2 tem 6, U3 tem 5, U4 tem 3 e U5 tem 5. Cada unidade termina com uma «Revisão da Unidade» na apostila (checklist de estudo, sem conteúdo novo), absorvida nos documentos de cada bloco e na revisão final do último.
 
 ---
 
 ## 🧪 Projetos do repositório absorvidos
 
-O código está dentro dos documentos, na seção **💻 No código do repo**. O repositório do módulo tem cinco pastas (uma por unidade) e todas estão cobertas.
+O código está dentro dos documentos, na seção **💻 No código do repo**. O repositório do módulo tem cinco pastas (uma por unidade) e todas estão cobertas. A pasta `lives/` do repositório do curso tem duas lives absorvidas aqui (linhas finais da tabela).
 
 | Pasta no GitHub | Onde está neste guia |
 |-----------------|----------------------|
@@ -100,6 +106,8 @@ O código está dentro dos documentos, na seção **💻 No código do repo**. O
 | [modulo-03/cfp-platform](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo05-ferramentas-de-IA-para-UI-UX/modulo-03/cfp-platform) (workspace Nx, api, frontend, shared-types, openspec, .agent) | [07 · Fundação enterprise: Nx, shared-types e MCP](./07-fundacao-enterprise-nx-monorepo-shared-types.md); [08 · Spec-Driven Development com OpenSpec](./08-spec-driven-development-com-openspec.md); [09 · Git worktree, agentes em paralelo, integração e archive](./09-worktrees-agentes-paralelos-review-e-archive.md); [10 · Google Jules: agente assíncrono em nuvem](./10-google-jules-agente-assincrono-em-nuvem.md) |
 | [modulo-04/cfp-plataform_v1/cfp-platform_v1](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo05-ferramentas-de-IA-para-UI-UX/modulo-04/cfp-plataform_v1/cfp-platform_v1) (Cypress, `create-event-tests`, `.playwright-mcp`) | [11 · QA no Nx: Cypress tradicional e testes gerados por OpenSpec](./11-qa-no-nx-cypress-e-testes-gerados-por-openspec.md); [12 · cy.prompt, self-healing e Playwright MCP: três estratégias de QA com IA](./12-cy-prompt-self-healing-e-playwright-mcp.md) |
 | [modulo-05/brag-bot](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo05-ferramentas-de-IA-para-UI-UX/modulo-05/brag-bot) | [13 · Genkit, setup seguro e interface mockada do BragBot](./13-genkit-setup-seguro-e-interface-mockada.md); [14 · Flows, Zod e Google AI: o cérebro do Genkit](./14-flows-zod-e-google-ai.md); [15 · Micro-BFF full-stack e o Engenheiro AI-Native](./15-micro-bff-fullstack-e-engenheiro-ai-native.md) |
+| [lives/2026-07-28](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-07-28) (Safer: README, PRD, CLAUDE.md, prompts, imagem de inspiração) | [16 · Live Safer: skills de agente, MCP e Lagune no fluxo de uma landing page](./16-live-safer-skills-mcp-e-lagune.md) |
+| [lives/2026-09-30](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-30) (SEO, GEO e AEO: só README) | [17 · Live SEO, GEO e AEO: ser encontrado por buscadores, IAs e redes sociais](./17-live-seo-geo-aeo.md) |
 
 ---
 
@@ -107,6 +115,7 @@ O código está dentro dos documentos, na seção **💻 No código do repo**. O
 
 - [Repositório oficial: módulo 05](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo05-ferramentas-de-IA-para-UI-UX) (o README do módulo está desatualizado; veja os achados abaixo)
 - Ferramentas citadas na seção «Modulo 05» do README da raiz do repositório do curso: [Google AI Studio](https://aistudio.google.com/), [Google Stitch](https://stitch.withgoogle.com), [Google Jules](https://jules.google/), [Antigravity](https://antigravity.dev/), [Figma](https://www.figma.com/), [Mermaid Live Editor](https://mermaid.live), [Firebase Genkit](https://genkit.dev/), [Nx](https://nx.dev) e [OpenSpec](https://openspec.dev/)
+- Lives do curso: [28/07/2026 · Safer](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-07-28) e [30/09/2026 · SEO, GEO e AEO](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-30)
 - Apostila oficial (75 páginas) e indicações de leitura, em `material/` desta disciplina
 
 ## 📖 Indicações de leitura (PDF da disciplina)
@@ -147,6 +156,7 @@ Resumo do que foi encontrado lendo (e, quando indicado, rodando) o código. Os d
 - **Estado do repo diferente da aula:** o menu mobile e o token `--color-text-light` da aula 6 da unidade 2 não estão no código; `create-event-tests` do OpenSpec não foi arquivada e suas tasks estão desmarcadas.
 - **Design system só no papel:** o `cfp-platform` copia CSS com cores literais em vez de tokens; o `pix-app` tem token inexistente (`--spacing-lg`), `rgba` literal e `rgba(var(--color-primary), ...)` inválido; links do menu invisíveis no tema claro.
 - **API sem endurecimento:** o `cfp-platform` aceita `capacidade` negativa e campos extras (verificado), e a rota `/api/brag` do `brag-bot` não tem autenticação, limite de uso nem validação de tipo (objeto vira 500).
+- **Live Safer (`lives/2026-07-28`):** o script `typecheck` roda `tsc --noEmit`, mas o `package.json` não declara `typescript` (nem o lockfile) e não há `tsconfig.json`; também não há configuração do Prettier, então o plugin de ordenação de imports instalado não é carregado por nada no repositório. Provavelmente ambos vêm do scaffold do Vite durante a live.
 
 ---
 
@@ -154,5 +164,5 @@ Resumo do que foi encontrado lendo (e, quando indicado, rodando) o código. Os d
 
 - Não executei fluxos que dependem de conta ou chave: Google AI Studio, Antigravity, Stitch, Figma, Jules, `cy.prompt` (Cypress Cloud), Playwright MCP e chamadas reais ao Gemini. O que se afirma sobre eles vem da apostila; sobre o código, da leitura, e do que rodei (build, testes, API Nest compilada, rota Express do SSR, sonda de flow) quando está marcado «verifiquei».
 - O PDF de indicações diz que a Indicação 3 complementa «as unidades de RAG e busca semântica da disciplina», mas a apostila desta disciplina não tem unidade de RAG (provável texto reaproveitado de outra disciplina).
-- A pasta `lives/` do repositório tem uma live de 2026-07-28 («Safer», laboratório de UX e DX com IA, ligada a segurança com Lagune e skills de UI). Pelo conteúdo não é claramente desta disciplina e não foi absorvida; fica como leitura complementar opcional. O mesmo vale para a live de 2026-05-27 (Spec-Driven Development em codebases enterprise, de outros professores): é afim ao tópico 08, mas não é material desta disciplina.
+- Lives: a de 28/07 (Safer) virou o tópico 16 e a de 30/09 (SEO, GEO e AEO) o tópico 17. Nenhuma delas tem slides; a Safer tem só configuração, PRD e prompts (o código da landing page não está no repositório) e a de SEO tem só um README. Não executei nada delas (Lagune, skills e MCPs dependem de agente e pacotes remotos). A live de SEO fica longe do foco de UX e UI da disciplina; foi encaixada aqui por ser a candidata mais próxima (front-end, acessibilidade e performance). A live de 2026-05-27 (Spec-Driven Development em codebases enterprise, de outros professores) é afim ao tópico 08, mas não foi pedida nesta etapa.
 - A apostila cita versões e nomes de ferramentas «no momento da gravação» (Angular 21, modelos Gemini, Antigravity); eles mudam rápido e podem estar diferentes quando você rodar.

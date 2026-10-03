@@ -51,6 +51,9 @@ A disciplina é uma só história: o **Trial Forge**, plataforma de agentes da V
 - [13 · Observabilidade de IA em escala e implantação híbrida: Kubernetes, Serverless e Edge](./13-observabilidade-e-implantacao-hibrida.md)
 - [14 · Model Cascading e orçamento por tenant: a arquitetura completa e o critério final](./14-model-cascading-e-orcamento-por-tenant.md)
 
+### Lives complementares
+- [15 · Live Temporal: Process Manager, paralelismo e retry com workflows duráveis](./15-live-temporal-process-manager.md) (live de 26/09)
+
 ---
 
 ## ✅ Cobertura aula a aula (Disciplina 08)
@@ -83,8 +86,9 @@ A disciplina é uma só história: o **Trial Forge**, plataforma de agentes da V
 | **Módulo 5 · Aula 4** · (PT-4): Model Cascading, orçamento por tenant, bloquear antes de gastar | [14 · Model Cascading e orçamento por tenant: a arquitetura completa e o critério final](./14-model-cascading-e-orcamento-por-tenant.md) |
 | Revisões das Unidades 1 a 5 (fluxo visual e checklist) e Revisão final da disciplina | [14 · Model Cascading e orçamento por tenant: a arquitetura completa e o critério final](./14-model-cascading-e-orcamento-por-tenant.md). Seção 'Mentalidade da disciplina' deste README e fechamento de D8-14 |
 | Anexo A · GitHub da disciplina | [14 · Model Cascading e orçamento por tenant: a arquitetura completa e o critério final](./14-model-cascading-e-orcamento-por-tenant.md). Seção 'Materiais oficiais' deste README |
+| **Live 26/09/2026** · Temporal Process Manager Workshop (Process Manager, paralelismo e retry) | [15 · Live Temporal: Process Manager, paralelismo e retry com workflows duráveis](./15-live-temporal-process-manager.md) |
 
-> A apostila tem 23 aulas (U1 com 4, U2 com 5, U3 com 5, U4 com 5 e U5 com 4), a introdução, as cinco revisões de unidade e a revisão final; tudo está coberto em 15 documentos. Os slides dos módulos 1 a 5 (22 PDFs) foram usados para complementar, principalmente em Hybrid Search, Multi-Index e Agentic RAG (que a apostila só menciona), nos números de mercado e nos exemplos de código.
+> A apostila tem 23 aulas (U1 com 4, U2 com 5, U3 com 5, U4 com 5 e U5 com 4), a introdução, as cinco revisões de unidade e a revisão final; tudo está coberto em 15 documentos. A live de 26/09 entra como o documento 15 e não conta entre as aulas da apostila. Os slides dos módulos 1 a 5 (22 PDFs) foram usados para complementar, principalmente em Hybrid Search, Multi-Index e Agentic RAG (que a apostila só menciona), nos números de mercado e nos exemplos de código.
 
 ---
 
@@ -125,6 +129,7 @@ O módulo 08 do repositório tem cinco pastas (`modulo-01-fundamentos-ai-first` 
 | modulo-05 · `trialforge-model-tiering-prototype.js` e `trialforge_model_tiering_prototype.py` | [14 · Model Cascading e orçamento por tenant: a arquitetura completa e o critério final](./14-model-cascading-e-orcamento-por-tenant.md) |
 | modulo-05 · `audit-trail-tiering.jsonl`, `package.json` e `Atividade 5` / `Exemplo - Módulo 5` (PDF) | [14 · Model Cascading e orçamento por tenant: a arquitetura completa e o critério final](./14-model-cascading-e-orcamento-por-tenant.md) |
 | raiz da disciplina · `README.md` (stack central, local versus pago) e `.gitignore` | README deste guia (seção Pré-requisitos) e [00 · AI-First: o modelo é só um componente, os 5 pilares e o diagrama de referência](./00-ai-first-pilares-e-diagrama-de-referencia.md) |
+| lives/2026-09-26 · monorepo pnpm `process-manager`, `inventory`, `billing`, `shipping`, `packages/*`, `compose.yaml`, `CONTEXT.md`, `AGENTS.md` e `scripts/` | [15 · Live Temporal: Process Manager, paralelismo e retry com workflows duráveis](./15-live-temporal-process-manager.md) |
 
 ### Pré-requisitos para rodar
 
@@ -147,6 +152,7 @@ O módulo 08 do repositório tem cinco pastas (`modulo-01-fundamentos-ai-first` 
 - A apostila grafa 'LightLLM' onde o resto do material (e o projeto real) é LiteLLM ([12](./12-stack-enterprise-principios-e-eval-gate.md)).
 - A Atividade 1 manda comparar com `Exemplo - Módulo 1.docx`, mas o repositório entrega o PDF (o `.gitignore` do módulo exclui `*.docx`).
 - O README do módulo (Python sem `requirements.txt`, `gemma4:e2b-mlx` não listado) está resumido nos pré-requisitos acima.
+- A live de 26/09 entrega o esqueleto do workshop: controller, service, activities e workflow estão vazios, falta o `.nvmrc` citado no README e o `nestjs-temporal-core` 3.4.0 declara peer de NestJS até a 11 enquanto o projeto usa a 12 ([15](./15-live-temporal-process-manager.md)).
 
 ---
 
@@ -171,6 +177,7 @@ Perguntas que o professor quer que você consiga responder ao fim: quando usar u
 - **Pastas do módulo:** [modulo-01-fundamentos-ai-first](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo08-arquitetura-de-sistemas-com-ia/modulo-01-fundamentos-ai-first), [modulo-02-single-agent](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo08-arquitetura-de-sistemas-com-ia/modulo-02-single-agent), [modulo-03-multi-agent](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo08-arquitetura-de-sistemas-com-ia/modulo-03-multi-agent), [modulo-04-padroes-ai-especificos](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo08-arquitetura-de-sistemas-com-ia/modulo-04-padroes-ai-especificos), [modulo-05-arquitetura-enterprise](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo08-arquitetura-de-sistemas-com-ia/modulo-05-arquitetura-enterprise)
 - **Linguagens:** Node.js (CommonJS) e Python, com paridade funcional; modelos locais via Ollama (`gemma4:e2b`, `gemma4`, `nomic-embed-text`)
 - **Material do aluno:** apostila oficial (113 páginas), indicações de leitura (20 páginas) e slides dos módulos 1 a 5
+- **Live 26/09/2026 (TypeScript, Temporal):** https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-26
 
 ### Indicações de leitura complementar
 

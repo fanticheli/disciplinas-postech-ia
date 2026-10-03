@@ -31,6 +31,7 @@ A ordem segue a apostila: operar o agente de código, construir o núcleo do Ops
 ### Bloco 1 · Agentes de código e Spec-Driven Development
 - [00 · O agente de código por dentro: harness, modos e context engineering](./00-agente-de-codigo-harness-e-context-engineering.md) (~10 min)
 - [01 · Spec-Driven Development do zero: Constitution, spec, plan, tasks, implement e guardrails](./01-spec-driven-development-do-zero.md) (~11 min)
+- [16 · Live de SDD enterprise: spec boa, harness, o limite dos 36% e o fluxo do Spec Kit numa tela estilo Netflix](./16-live-sdd-enterprise-and-spec-kit-catalog.md) (~11 min, live de 27/05/2026)
 
 ### Bloco 2 · Padrões de raciocínio e o núcleo do OpsPilot
 - [02 · Os três padrões de raciocínio: ReAct, Plan-and-Execute e Reflection](./02-tres-padroes-de-raciocinio.md) (~6 min)
@@ -88,9 +89,10 @@ A ordem segue a apostila: operar o agente de código, construir o núcleo do Ops
 | **U8 · Aula 1** · Implementando a War Room e Modificando a Memória do Agente | [14 · War Room: interface web sobre a mesma API e publicação no GitHub Pages](./14-war-room-e-github-pages.md) |
 | **U8 · Aula 2** · Publicando a War Room no GitHub Pages | [14 · War Room: interface web sobre a mesma API e publicação no GitHub Pages](./14-war-room-e-github-pages.md) |
 | **U9 · Aula 1** · Implementando Multiagentes | [15 · Multi-agent systems: supervisor, papéis, handoffs e blackboard](./15-multi-agent-systems.md) |
+| **Live de 27/05/2026** · Spec-Driven Development com agentes de IA em codebases enterprise (slide, pré e pós-live) | [16 · Live de SDD enterprise: spec boa, harness, o limite dos 36% e o fluxo do Spec Kit numa tela estilo Netflix](./16-live-sdd-enterprise-and-spec-kit-catalog.md) |
 | **Revisão final da disciplina** | Seção [Mentalidade da disciplina](#-mentalidade-da-disciplina) deste README |
 
-> As 25 aulas da apostila (9 unidades) estão cobertas em 16 documentos. U1 tem 5 aulas, U2 tem 7, U3 tem 4, U4 tem 2, U5 tem 2, U6, U7 e U9 têm 1 cada e U8 tem 2.
+> As 25 aulas da apostila (9 unidades) estão cobertas em 16 documentos (00 a 15), mais o 16, da live de 27/05/2026. U1 tem 5 aulas, U2 tem 7, U3 tem 4, U4 tem 2, U5 tem 2, U6, U7 e U9 têm 1 cada e U8 tem 2.
 
 ---
 
@@ -110,12 +112,17 @@ Pasta de código do módulo: `modulo04-criacao-de-agentes-autonomos-novo/`. Toda
 | [08-projeto-pratico-opspilot-publicado](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo04-criacao-de-agentes-autonomos-novo/08-projeto-pratico-opspilot-publicado) | War Room (web/), CORS, workflow de deploy | [14 · War Room: interface web sobre a mesma API e publicação no GitHub Pages](./14-war-room-e-github-pages.md) |
 | [09-multi-agent-systems](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo04-criacao-de-agentes-autonomos-novo/09-multi-agent-systems) | modo equipe (src/team) e estado final do projeto | [15 · Multi-agent systems: supervisor, papéis, handoffs e blackboard](./15-multi-agent-systems.md) |
 
+| Live | O que traz | Onde está neste guia |
+|------|-----------|----------------------|
+| `lives/2026-05-27/000-pre-live` e `001-pos-live` | Spec Kit 0.8.15 com Claude Code, constituição, `CLAUDE.md` com symlinks e a spec da tela estilo Netflix | [16 · Live de SDD enterprise: spec boa, harness, o limite dos 36% e o fluxo do Spec Kit numa tela estilo Netflix](./16-live-sdd-enterprise-and-spec-kit-catalog.md) |
+
 Os arquivos que merecem atenção, por tópico:
 
 | Arquivos | Tópico |
 |----------|--------|
 | `notas-api/.github/*`, `.vscode/settings.json` | [00 · O agente de código por dentro: harness, modos e context engineering](./00-agente-de-codigo-harness-e-context-engineering.md) |
 | `notas-api/specs/*`, `.github/prompts/*`, `.githooks/pre-commit`, `src/*` | [01 · Spec-Driven Development do zero: Constitution, spec, plan, tasks, implement e guardrails](./01-spec-driven-development-do-zero.md) |
+| `lives/2026-05-27/*` (README, `CLAUDE.md`, `.specify/*`, `specs/001-catalog-browse/*`) | [16 · Live de SDD enterprise: spec boa, harness, o limite dos 36% e o fluxo do Spec Kit numa tela estilo Netflix](./16-live-sdd-enterprise-and-spec-kit-catalog.md) |
 | `.specify/*`, `.github/copilot-instructions.md`, `src/domain/types.ts`, `src/agents/model.ts`, `src/trace/builder.ts` | [03 · Spec Kit e a estrutura inicial do OpsPilot: contrato de estratégia, trace e fábrica de modelo](./03-spec-kit-e-estrutura-do-opspilot.md) |
 | `src/agents/react.ts`, `src/strategies/*`, `src/arena.ts`, `src/bench.ts` | [04 · ReAct, Plan-and-Execute e Reflection no código: arena e benchmark](./04-estrategias-arena-e-bench.md) |
 | `src/http/server.ts`, `src/http/chat-schema.ts`, `src/agents/index.ts` | [05 · Uma API que também é um agente: POST /chat, registry e testes sem rede](./05-api-que-tambem-e-um-agente.md) |
@@ -130,7 +137,7 @@ Os arquivos que merecem atenção, por tópico:
 | `web/*`, `src/http/cors.ts`, `.github/workflows/deploy.yml`, `.github/instructions/design.instructions.md` | [14 · War Room: interface web sobre a mesma API e publicação no GitHub Pages](./14-war-room-e-github-pages.md) |
 | `src/team/*` | [15 · Multi-agent systems: supervisor, papéis, handoffs e blackboard](./15-multi-agent-systems.md) |
 
-Vendored e gerados ignorados: `node_modules`, `package-lock.json` e o conteúdo de `.specify/`, `.github/agents` e `.github/prompts` gerados pelo Spec Kit (citados só como estrutura). Os `specs/NNN-*` (cada um com `spec`, `plan`, `tasks`, contratos e checklists) foram consultados por amostragem, sem um tópico por spec.
+Vendored e gerados ignorados: `node_modules`, `package-lock.json` e o conteúdo de `.specify/`, `.github/agents` e `.github/prompts` gerados pelo Spec Kit (citados só como estrutura; a live de 27/05 é a exceção e tem documento próprio). Os `specs/NNN-*` (cada um com `spec`, `plan`, `tasks`, contratos e checklists) foram consultados por amostragem, sem um tópico por spec.
 
 ---
 
@@ -169,6 +176,9 @@ Inconsistências e bugs encontrados lendo (e rodando) o repositório. Cada um es
 | README das pastas 06 e 07 citam `pages.yml` (inexistente) e `web:dev` (script que aponta para uma `web/` ausente) | [14 · War Room: interface web sobre a mesma API e publicação no GitHub Pages](./14-war-room-e-github-pages.md) |
 | Consenso do modo equipe não implementado; executor sem aprovação por ação | [15 · Multi-agent systems: supervisor, papéis, handoffs e blackboard](./15-multi-agent-systems.md) |
 | Prompts do SDD artesanal sem lista de ferramentas: o menor privilégio por fase não está aplicado | [01 · Spec-Driven Development do zero: Constitution, spec, plan, tasks, implement e guardrails](./01-spec-driven-development-do-zero.md) |
+| Live de 27/05: `.gitignore.example` ignora `/.specify` e tenta reincluir `!/.specify/memory` e `!/.specify/feature.json`; o Git não reinclui arquivo de diretório ignorado (verificado com `git check-ignore`) | [16 · Live de SDD enterprise: spec boa, harness, o limite dos 36% e o fluxo do Spec Kit numa tela estilo Netflix](./16-live-sdd-enterprise-and-spec-kit-catalog.md) |
+| Live de 27/05: README diz que o plano fixou Next.js, mas o `plan.md` escolheu React 19 + Vite 6; LCP em “4G” (constituição) contra “Fast 3G” (plano); 60 fps contra 50 fps (SC-007) | [16 · Live de SDD enterprise: spec boa, harness, o limite dos 36% e o fluxo do Spec Kit numa tela estilo Netflix](./16-live-sdd-enterprise-and-spec-kit-catalog.md) |
+| Live de 27/05: contrastes de `visual-tokens.md` não conferem com a fórmula WCAG (acento a 4,1:1, não 5,1:1); link `PRD.md` inexistente; “FR-024 implícito” sem FR-024; checklist de acessibilidade sem nenhum item marcado e com notas desatualizadas; sem `tasks.md` nem `src/` | [16 · Live de SDD enterprise: spec boa, harness, o limite dos 36% e o fluxo do Spec Kit numa tela estilo Netflix](./16-live-sdd-enterprise-and-spec-kit-catalog.md) |
 | Depois da U6, `/chat` não usa mais o registry e `reflect: true` é ignorado quando `strategy` é informado | [05 · Uma API que também é um agente: POST /chat, registry e testes sem rede](./05-api-que-tambem-e-um-agente.md) |
 
 ---
@@ -195,6 +205,7 @@ Checklist de domínio da revisão final: explicar a diferença entre instrução
 - **Repositório de código:** https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo04-criacao-de-agentes-autonomos-novo
 - **Snapshots:** `01-arquitetura-de-agentes-de-codigo`, `02-padroes-de-raciocinio-e-execucao`, `03-function-calling-e-tool-use`, `04-memoria-e-reflexao-em-agentes-autonomos`, `05-gerenciamento-de-contextos`, `06-langgraph-e-workflows-complexos`, `07-observabilidade-e-limites-de-autonomia`, `08-projeto-pratico-opspilot-publicado`, `09-multi-agent-systems`. Cada um tem um `UNIDADE.md` com o que é novo e os desvios em relação ao roteiro.
 - **Linguagem principal:** TypeScript (ESM) no Node 22, com LangChain.js, LangGraph, Express e SQLite nativo; War Room em React 19 e Vite.
+- **Live de 27/05/2026 (SDD enterprise):** https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-05-27 (slide em PDF, `000-pre-live` e `001-pos-live`), usada no documento 16.
 - **Gateway de modelos:** https://openrouter.ai/ (modelos gratuitos: https://openrouter.ai/models?max_price=0).
 
 ### Indicações de leitura complementar
@@ -221,4 +232,4 @@ Documentação técnica de referência (a apostila avisa que muda rápido; vale 
 
 ---
 
-*Guia gerado a partir da apostila oficial (162 págs), das indicações de leitura e do código do repositório do módulo 04.*
+*Guia gerado a partir da apostila oficial (162 págs), das indicações de leitura e do código do repositório do módulo 04, além do material da live de 27/05/2026.*

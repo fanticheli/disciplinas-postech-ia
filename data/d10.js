@@ -897,7 +897,8 @@ STUDY.push({
    "aplica": [
     "Usar o Top 10 como checklist de ameaças no desenho de uma aplicação com LLM, RAG ou agentes.",
     "Definir, para cada ferramenta de um agente, o nível de autonomia permitido e o controle correspondente.",
-    "Incluir limites de consumo e validação de saída no design, não só após o incidente."
+    "Incluir limites de consumo e validação de saída no design, não só após o incidente.",
+    "A live de 28/07 (Safer), na Disciplina 05, mostra segurança no fluxo de desenvolvimento web com agente (Lagune com a especialização OWASP): <a href=\"#D5-16\">Live Safer</a>."
    ],
    "pros": [
     "Referência de mercado que organiza riscos recorrentes numa lista curta.",

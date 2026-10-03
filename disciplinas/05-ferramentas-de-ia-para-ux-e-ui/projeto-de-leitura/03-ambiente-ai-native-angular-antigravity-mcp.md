@@ -37,6 +37,7 @@ O MCP é o livro de normas atualizado; o plano que o agente mostra antes de agir
 - Configurar o MCP oficial do framework do seu projeto antes de qualquer geração de código com agente.
 - Começar toda feature com uma tarefa de esqueleto sem estilo, validar a estrutura e só depois estilizar.
 - Exigir plano e lista de arquivos antes de qualquer alteração automática.
+- A live de 28/07 aprofunda o uso de MCPs (Context7, Magnific) e skills de agente no mesmo fluxo: [Live Safer](./16-live-safer-skills-mcp-e-lagune.md).
 
 ### Vantagens e limites
 **Vantagens**

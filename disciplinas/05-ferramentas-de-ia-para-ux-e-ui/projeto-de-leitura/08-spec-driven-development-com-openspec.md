@@ -38,6 +38,7 @@ A especificação é a planta aprovada, com a lista de serviços e a lista do qu
 - Features que cruzam front, back, contratos, validação, testes e acessibilidade.
 - Entrada de pessoas novas num projeto grande: o explore gera o mapa.
 - Qualquer time que queira rastreabilidade de por que algo foi construído daquele jeito.
+- A live de 28/07 usa skills em Markdown (`engineering`, `ui`, `cdp`, `writer`) e um PRD como prompt de construção: [Live Safer](./16-live-safer-skills-mcp-e-lagune.md).
 
 ### Vantagens e limites
 **Vantagens**

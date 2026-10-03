@@ -115,7 +115,7 @@ STUDY.push({
     "Achar que o protocolo substitui arquitetura: a modelagem das ações e a eficiência das integrações continuam críticas.",
     "Confundir MCP com «API web pública»: ele pode ser só um processo local falando por stdio (ver <a href=\"#D3-06\">tópico 06</a>)."
    ],
-   "tip": "Pergunta-teste para cada tool que você expõe: ela representa uma intenção de negócio ou apenas um endpoint? Se for só um endpoint, provavelmente você está espelhando a API.",
+   "tip": "Pergunta-teste para cada tool que você expõe: ela representa uma intenção de negócio ou apenas um endpoint? Se for só um endpoint, provavelmente você está espelhando a API. A live de 24/02 também propôs um desafio prático com skills e ferramentas de ingestão de contexto: <a href=\"#D3-16\">veja o tópico da live</a>.",
    "cola": [
     [
      "MCP",
@@ -634,7 +634,8 @@ STUDY.push({
       "O <code>developer</code> lista <code>context7/*</code> como ferramenta: o agent assume que esse MCP está configurado."
      ]
     }
-   ]
+   ],
+   "tip": "A live de 24/02 aprofunda o uso de <code>llms.txt</code>, Gitingest e Jina Reader para dar contexto ao agente: <a href=\"#D3-16\">veja o tópico da live</a>."
   },
   {
    "id": "D3-05",
@@ -755,6 +756,128 @@ STUDY.push({
       "<code>computedHash</code> no lock serve para detectar mudança, não prova que a skill é segura (lembre dos números do SkillScan, ainda que não verificados)."
      ]
     }
+   ],
+   "tip": "A live de 24/02 aprofunda isso com um caso prático (migrar os testes do MySQL2 para TypeScript com duas skills e um agent) e casos reais de skills: <a href=\"#D3-16\">veja o tópico da live</a>."
+  },
+  {
+   "id": "D3-16",
+   "bloco": "d03-b2",
+   "mod": "Live · 24/02/2026",
+   "emoji": "🧪",
+   "read": "7 min",
+   "title": "Live de MCP e Agent Skills: o caso MySQL2, a ingestão de contexto e a escolha entre Skill e MCP",
+   "short": "O que a live acrescenta além da teoria já absorvida: o desafio prático com skills, as ferramentas que viram contexto para a LLM e os casos reais.",
+   "oneliner": "A live inaugural de 24/02/2026 propôs um desafio prático (migrar os testes frágeis do <b>MySQL2</b> para TypeScript com duas <b>skills</b> e um <b>agent</b>), mostrou como transformar repositórios e documentação em texto para LLM e comparou, com casos reais, quando um <b>CLI + skill</b> serve melhor que um servidor <b>MCP</b>.",
+   "vovo": [
+    "A teoria da live (o que é um MCP, o que é uma skill) está nos tópicos 00 e 05. Aqui fica a parte de oficina: em vez de só explicar o que é um manual de instruções, o desafio é entregar ao agente os manuais certos para reformar uma casa velha, os testes de um projeto antigo em JavaScript.",
+    "Antes de reformar, o agente precisa das plantas em formato legível: o código e a documentação dos outros projetos, convertidos em texto limpo. E fica a pergunta de quem compra ferramenta: você precisa de uma <i>furadeira</i> (MCP, que age no mundo) ou de um <i>manual</i> (skill, que ensina o processo)?"
+   ],
+   "oque": [
+    "<b>Do que se trata:</b> a live inaugural de aquecimento da pós, em 24/02/2026, com Aurélio Oliveira e Weslley Araújo. O repositório guarda o README e dois textos de base teórica (MCP e Agent Skills). Não há código, slide de skills nem projeto da demonstração: o slide de MCP aparece como “em breve”. O que foi feito ao vivo, portanto, só é conhecido pelo roteiro do README, e eu não sei como o desafio terminou.",
+    "<b>O que já está absorvido, sem repetir aqui:</b> MCP (N×M, host, client e server, primitivas, ciclo de invocação, custo de tokens, gaps semânticos) no <a href=\"#D3-00\">tópico 00</a>; anatomia da skill, divulgação progressiva, <code>npx skills add</code> e o estudo SkillScan no <a href=\"#D3-05\">tópico 05</a>; os <code>llms.txt</code> do Awesome You e da AbacatePay e a propriedade <code>user-invokable</code> no <a href=\"#D3-04\">tópico 04</a>.",
+    "<b>O desafio prático (README):</b> o problema é refatorar código legado do MySQL2 e corrigir testes frágeis cuja tipagem manual vive separada do código principal (JavaScript); a solução é transcrever todos os testes automatizados para TypeScript. A skill 1 encapsula o conhecimento sobre os tipos e interfaces do projeto; a skill 2, o conhecimento sobre os testes (práticas e exemplos de implementação); o agent usa as skills para analisar o código, decidir quando invocá-las, identificar pontos de refatoração, sugerir mudanças e corrigir os testes frágeis.",
+    "<b>Desafios adicionais (README):</b> converter e consumir o código-fonte de projetos externos complexos em formato consumível por LLM; fazer o mesmo com a documentação de sites; gerenciar regras de uso de tokens por divulgação progressiva, para o agente acessar só o necessário em cada contexto; invocar agents e skills local e globalmente; invocar uma skill diretamente, sem passar pelo agent, com <code>user-invokable</code> no front matter.",
+    "<b>Ferramentas que viram contexto:</b> o README lista como <i>utilizadas</i> o Gitingest (repositório em texto; o exemplo foi <code>gitingest.com/wellwelwel/poku</code>) e o Jina Reader (página web em texto limpo; o exemplo foi a documentação do <code>startScript</code> do Poku via <code>r.jina.ai</code>), além do VS Code com a extensão do Claude Code e do skills.sh. O Firecrawl (CLI que converte páginas em texto limpo), Lovable, Jira, Cursor, Windsurf, Codex e Copilot Chat aparecem só como <i>mencionados</i>.",
+    "<b>Casos reais de skills (base teórica):</b> a <code>react-best-practices</code> da Vercel (dez anos de regras de React e Next.js; ao pedir a revisão de performance de um componente no Cursor, ativa mais de 40 regras); a <code>apollographql/skills</code> (evita que a IA gere padrões de GraphQL de 2019); e o Firecrawl como <i>CLI + skills em vez de MCP</i>: em vez de jogar ~75.000 tokens de HTML na conversa, a skill ensina a raspar a página, salvar em <code>.md</code> e usar <code>grep</code>, com redução de quase 98% (números da live, que não verifiquei).",
+    "<b>Contexto histórico (base teórica):</b> as skills foram formalizadas pela Anthropic como padrão aberto no fim de 2025, e o skills.sh da Vercel é chamado de “o momento npm para agentes de IA”. O MCP foi lançado pela Anthropic no fim de 2024.",
+    "<b>Skill ou MCP, segundo a live:</b> o MCP é para conectividade e ferramentas (“acessar o banco de dados”), roda como processo isolado e carrega o catálogo de tools no contexto (50.000 a 150.000 tokens por sessão em ambientes corporativos); a skill é conhecimento procedimental (“como formatar o relatório”), roda no mesmo ambiente do agente, herda as permissões do terminal e custa 30 a 100 tokens até ser ativada. A conclusão da live é que as IAs mais eficientes combinam os dois: MCP como braços e pernas, skills como cérebro.",
+    "<b>Glossário da live que complementa os tópicos 00 e 05:</b> <i>sandbox</i> (ambiente isolado para executar código sem afetar o sistema), <i>prompt injection</i> (instruções maliciosas que manipulam o comportamento da IA), <i>rate limiting</i>, <i>test runner</i>, <i>front matter</i> (bloco YAML entre <code>---</code> que configura agents e skills) e <i>rules</i> com divulgação progressiva."
+   ],
+   "como": [
+    "<b>Um roteiro plausível para repetir o desafio</b> (é a minha leitura do README, não o que foi executado ao vivo): gerar o texto do código do MySQL2 com o Gitingest e o da documentação do Poku com o Jina Reader; escrever uma skill de tipos e uma de testes, cada uma com <code>SKILL.md</code> (<code>name</code> e <code>description</code> como gatilho) e <code>references/</code> para o que for extenso; criar um agent que diga quando invocá-las; migrar os testes aos poucos, com a suíte do projeto como rede de segurança.",
+    "<b>Local e global (hipótese):</b> o README não detalha. A leitura mais provável é skill do projeto (por exemplo <code>.claude/skills/</code>) contra skill instalada para o usuário; no <a href=\"#D3-05\">tópico 05</a> a skill <code>find-skills</code> usa <code>npx skills add ... -g -y</code> para instalar de forma global.",
+    "<b>Divulgação progressiva aplicada às regras:</b> o desafio pede que as regras de uso de tokens sigam a mesma lógica dos três níveis da skill (descoberta, ativação, execução): o agente carrega o mínimo e só abre as referências pesadas quando a tarefa exige.",
+    "<b>Segurança ao instalar:</b> ao escolher skills de terceiros para o desafio, valem as recomendações da base teórica já registradas no <a href=\"#D3-05\">tópico 05</a> (privilégio mínimo, trust tiers, não executar scripts não inspecionados)."
+   ],
+   "aplica": [
+    "Migrar testes ou código legado com skills que carregam o conhecimento do projeto (tipos, convenções, exemplos) em vez de repetir tudo no prompt.",
+    "Dar a um agente a documentação de uma biblioteca externa em texto limpo (Gitingest para repositório, Jina Reader para página, <code>llms.txt</code> quando o site oferece).",
+    "Decidir entre MCP e CLI + skill: se a necessidade é acessar um sistema com segurança e isolamento, MCP; se é ensinar um procedimento sobre uma ferramenta que o agente já executa no terminal, skill."
+   ],
+   "pros": [
+    "O desafio é concreto: um problema real, duas skills com responsabilidades distintas e um agent que decide quando usá-las.",
+    "As ferramentas citadas resolvem o passo que costuma travar o agente: obter o código e a documentação de terceiros em formato consumível.",
+    "Os casos da base teórica mostram a economia de contexto de CLI + skill frente a despejar dados na conversa."
+   ],
+   "contras": [
+    "O repositório não traz código, skills nem resultado da demonstração: não dá para conferir o que foi feito, só o roteiro.",
+    "Os números (75.000 tokens, 98%, 50.000 a 150.000, 13%, SkillScan) vêm da live e não foram verificados.",
+    "A comparação de custo entre MCP e CLI + skill depende do caso: o Firecrawl é um exemplo, não uma regra."
+   ],
+   "traps": [
+    "Tratar o roteiro do README como o que foi executado ao vivo: o material não registra o resultado.",
+    "Converter um repositório inteiro em texto e colar na conversa: o ponto da live é dar ao agente só o necessário, por divulgação progressiva.",
+    "Usar skill de terceiros com scripts sem inspecionar (os riscos da live estão no tópico 05).",
+    "Esperar que uma skill substitua o acesso a sistemas: ela ensina o processo, não abre a conexão."
+   ],
+   "tip": "A seção “Abordagem Prática” do README da live é a única parte dela que não está nos tópicos 00, 04 e 05.",
+   "cola": [
+    [
+     "Gitingest",
+     "Converte um repositório do GitHub em texto para consumo por LLM (<code>gitingest.com/usuario/repo</code>)"
+    ],
+    [
+     "Jina Reader",
+     "Converte uma página web em texto limpo prefixando a URL com <code>r.jina.ai</code>"
+    ],
+    [
+     "Firecrawl",
+     "CLI que converte páginas web em texto limpo; na base teórica, exemplo de CLI + skill no lugar de MCP"
+    ],
+    [
+     "react-best-practices",
+     "Skill da Vercel com mais de 40 regras de otimização de React e Next.js (base teórica)"
+    ],
+    [
+     "user-invokable",
+     "Propriedade do front matter que permite invocar a skill diretamente, sem passar pelo agent (live)"
+    ],
+    [
+     "Skill 1 e Skill 2",
+     "No desafio do MySQL2: conhecimento de tipos e interfaces, e conhecimento dos testes e práticas"
+    ],
+    [
+     "Rules com divulgação progressiva",
+     "Regras de uso de tokens carregadas em camadas, conforme a necessidade do contexto"
+    ]
+   ],
+   "links": [
+    [
+     "Live de 24/02/2026 no repositório do curso",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-02-24"
+    ],
+    [
+     "Base teórica: MCP",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/blob/main/lives/2026-02-24/base-teorica/mcp-model-context-protocol.md"
+    ],
+    [
+     "Base teórica: Agent Skills",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/blob/main/lives/2026-02-24/base-teorica/agent-skills-conhecimento-procedimental-da-ia.md"
+    ],
+    [
+     "Gitingest",
+     "https://gitingest.com/"
+    ],
+    [
+     "Jina Reader",
+     "https://jina.ai/reader/#what_reader"
+    ],
+    [
+     "Firecrawl",
+     "https://www.firecrawl.dev/"
+    ],
+    [
+     "skills.sh",
+     "https://skills.sh/"
+    ],
+    [
+     "MySQL2 (cobaia da live)",
+     "https://github.com/sidorares/node-mysql2"
+    ],
+    [
+     "Poku (código e documentação usados nos exemplos)",
+     "https://github.com/wellwelwel/poku"
+    ]
    ]
   },
   {

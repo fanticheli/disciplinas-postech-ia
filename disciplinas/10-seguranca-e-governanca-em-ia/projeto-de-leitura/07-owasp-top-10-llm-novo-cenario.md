@@ -35,6 +35,7 @@ IA com agentes é o atendente com a chave do caixa: a segurança continua precis
 - Usar o Top 10 como checklist de ameaças no desenho de uma aplicação com LLM, RAG ou agentes.
 - Definir, para cada ferramenta de um agente, o nível de autonomia permitido e o controle correspondente.
 - Incluir limites de consumo e validação de saída no design, não só após o incidente.
+- A live de 28/07 (Safer), na Disciplina 05, mostra segurança no fluxo de desenvolvimento web com agente (Lagune com a especialização OWASP): [Live Safer](../../05-ferramentas-de-ia-para-ux-e-ui/projeto-de-leitura/16-live-safer-skills-mcp-e-lagune.md).
 
 ### Vantagens e limites
 **Vantagens**

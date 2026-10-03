@@ -39,6 +39,7 @@ O caixa não é lento: é a pausa que faz o banco poder ser auditado.
 - Definir limiar por categoria de tarefa e recalibrá-lo a cada mudança de modelo ou de perfil de pergunta.
 - Em setor regulado, desenhar a trilha já com campos de versão de prompt e de modelo, e com escrita somente de acréscimo.
 - Usar mais de duas saídas (seguir, escalar, bloquear) quando o risco justificar.
+- A live de 24/09 (Disciplina 02) implementa pausa e retomada com `interrupt` e `Command(resume=...)` do LangGraph, com gatilho de ambiguidade: [Live NetFibra](../../02-apis-de-ia-generativa-e-prompt-engineering/projeto-de-leitura/12-live-netfibra-langgraph-graphrag-hitl.md).
 
 ### Vantagens e limites
 **Vantagens**

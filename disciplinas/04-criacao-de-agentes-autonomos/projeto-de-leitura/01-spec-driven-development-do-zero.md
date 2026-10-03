@@ -58,7 +58,7 @@ O pre-commit é o porteiro que não deixa sair da obra com a prumada torta, mesm
 - Marcar tarefa como feita sem testes e typecheck passando.
 - Tratar o hook local como única barreira: a própria aula cita CI como terceira camada.
 
-> 💡 A Aula 5 se chama “Guardrails, Revisor e Delegação”, mas o texto da apostila cobre a spec 002 e o exercício da spec 003. Revisor e delegação (issue até PR) não são desenvolvidos na apostila nem no repositório.
+> 💡 A Aula 5 se chama “Guardrails, Revisor e Delegação”, mas o texto da apostila cobre a spec 002 e o exercício da spec 003. Revisor e delegação (issue até PR) não são desenvolvidos na apostila nem no repositório. A live de 27/05 aprofunda isso: spec boa contra spec ruim, o limite dos 36% e o custo de manter specs em enterprise. Veja o [tópico da live](./16-live-sdd-enterprise-and-spec-kit-catalog.md).
 
 ---
 

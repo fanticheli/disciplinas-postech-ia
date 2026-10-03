@@ -40,6 +40,7 @@ A acessibilidade é a rampa e o aviso em braille na porta. É barato colocar qua
 - Transformar o briefing de marca de qualquer cliente em tokens antes da primeira tela.
 - Fazer do modal, do formulário e dos botões da sua biblioteca interna componentes que nascem com ARIA e teclado.
 - Manter um Prompt Garden para tokens e componentes e reutilizá-lo entre projetos.
+- A live de 30/09 mostra a hierarquia semântica de títulos e os dados estruturados que ajudam a máquina a ler a página: [Live SEO, GEO e AEO](./17-live-seo-geo-aeo.md).
 
 ### Vantagens e limites
 **Vantagens**

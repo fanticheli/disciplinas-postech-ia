@@ -36,6 +36,7 @@ E uma casa que parece ótima no desktop pode ter a porta presa quando a gente a 
 - Auditar telas geradas por agente com DevTools antes do PR.
 - Corrigir problemas de contraste usando os tokens já existentes.
 - Fazer ajustes de responsividade com prompts curtos e específicos.
+- A live de 28/07 aprofunda a revisão visual com a skill `cdp` (desktop, tablet e mobile) e a segurança com Lagune: [Live Safer](./16-live-safer-skills-mcp-e-lagune.md). A live de 30/09 estende a revisão a performance (LCP, INP) e SEO: [Live SEO, GEO e AEO](./17-live-seo-geo-aeo.md).
 
 ### Vantagens e limites
 **Vantagens**
@@ -95,4 +96,4 @@ O prompt das correções está em `prompts/correcao_css.md`, mas o estado do rep
 
 ---
 
-⬅️ [05 · Stitch e Figma: da referência visual ao componente Angular](./05-stitch-e-figma-da-referencia-visual-ao-componente.md)  ·  [07 · Fundação enterprise: Nx, shared-types e MCP](./07-fundacao-enterprise-nx-monorepo-shared-types.md) ➡️
+⬅️ [05 · Stitch e Figma: da referência visual ao componente Angular](./05-stitch-e-figma-da-referencia-visual-ao-componente.md)  ·  [16 · Live Safer: skills de agente, MCP e Lagune no fluxo de uma landing page](./16-live-safer-skills-mcp-e-lagune.md) ➡️

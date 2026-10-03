@@ -75,7 +75,7 @@ O caderno de anotações que a recepcionista leva de mesa em mesa é o estado: o
 
 ## 💻 No código do repo
 
-O código deste tópico e do próximo está no projeto `02-langchain-intro`, descrito no [tópico 03](./03-pipeline-condicional-fallback-testes.md).
+O código deste tópico e do próximo está no projeto `02-langchain-intro`, descrito no [tópico 03](./03-pipeline-condicional-fallback-testes.md). A live de 24/09 aprofunda estado, nodes e edges num agente de suporte com pausa (`interrupt`) e retomada (`Command(resume=...)`): [Live NetFibra](./12-live-netfibra-langgraph-graphrag-hitl.md).
 
 ---
 

@@ -100,4 +100,4 @@ A cola entre a interface e o flow: a rota Express no servidor SSR e o serviço A
 
 ---
 
-⬅️ [14 · Flows, Zod e Google AI: o cérebro do Genkit](./14-flows-zod-e-google-ai.md)
+⬅️ [14 · Flows, Zod e Google AI: o cérebro do Genkit](./14-flows-zod-e-google-ai.md)  ·  [17 · Live SEO, GEO e AEO: ser encontrado por buscadores, IAs e redes sociais](./17-live-seo-geo-aeo.md) ➡️

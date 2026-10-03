@@ -27,6 +27,10 @@ STUDY.push({
   [
    "Indicação 3 (complemento): LangSmith Evaluation Quickstart (sem URL no PDF de indicações)",
    ""
+  ],
+  [
+   "Live 24/09/2026: NetFibra, Suporte com IA (pasta lives/2026-09-24 do repositório do curso)",
+   "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-24"
   ]
  ],
  "blocos": [
@@ -168,7 +172,8 @@ STUDY.push({
     "Comparar modelos rapidamente antes de escrever código, trocando só o nome do modelo.",
     "Montar um gateway interno que centraliza chave, custo e política de modelos para vários produtos.",
     "Escolher critério por cenário: preço no protótipo, latência no chat, throughput em geração longa.",
-    "Justificar custo com os dados de uso por chave e por modelo exportados do painel."
+    "Justificar custo com os dados de uso por chave e por modelo exportados do painel.",
+    "A live de 24/09 usa o OpenRouter como backend de um agente LangGraph via <code>ChatOpenAI</code> com <code>base_url</code> do OpenRouter e modelo em variável de ambiente: <a href=\"#D2-12\">Live NetFibra</a>."
    ],
    "pros": [
     "Fallback e roteamento sem escrever lógica de disponibilidade.",
@@ -342,7 +347,7 @@ STUDY.push({
      "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo02-integracao-apis-llms"
     ]
    ],
-   "tip": "O código deste tópico e do próximo está no projeto <code>02-langchain-intro</code>, descrito no <a href=\"#D2-03\">tópico 03</a>."
+   "tip": "O código deste tópico e do próximo está no projeto <code>02-langchain-intro</code>, descrito no <a href=\"#D2-03\">tópico 03</a>. A live de 24/09 aprofunda estado, nodes e edges num agente de suporte com pausa (<code>interrupt</code>) e retomada (<code>Command(resume=...)</code>): <a href=\"#D2-12\">Live NetFibra</a>."
   },
   {
    "id": "D2-03",
@@ -1003,7 +1008,7 @@ STUDY.push({
      "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo02-integracao-apis-llms"
     ]
    ],
-   "tip": "O código (nodes, estado, loop e testes) está no projeto <code>06-rag-neo4j-students</code>, descrito no <a href=\"#D2-09\">tópico 09</a>."
+   "tip": "O código (nodes, estado, loop e testes) está no projeto <code>06-rag-neo4j-students</code>, descrito no <a href=\"#D2-09\">tópico 09</a>. A live de 24/09 aprofunda a alternativa sem Neo4j e sem Cypher gerado por LLM: um GraphRAG com grafo em dicionário e recuperação de 1 salto: <a href=\"#D2-12\">Live NetFibra</a>."
   },
   {
    "id": "D2-09",
@@ -1328,6 +1333,144 @@ STUDY.push({
     ]
    ],
    "tip": "O repositório do módulo não traz projeto de Langfuse nem de evaluation. O <code>07-doc-analysis</code> (<a href=\"#D2-10\">tópico 10</a>) é só o exemplo multimodal."
+  },
+  {
+   "id": "D2-12",
+   "bloco": "d02-b3",
+   "mod": "Live · 24/09/2026",
+   "emoji": "🕸️",
+   "read": "11 min",
+   "title": "Live NetFibra: suporte com LangGraph, GraphRAG em memória e human-in-the-loop",
+   "short": "Agente de suporte que acha entidades num grafo, recupera a vizinhança de 1 salto, responde via OpenRouter e pausa com interrupt quando um termo é ambíguo.",
+   "oneliner": "A live monta um agente de suporte da NetFibra: o texto do cliente vira <b>entidades de um grafo</b>, a vizinhança de <b>1 salto</b> vira fatos no prompt (<b>GraphRAG</b> sem Neo4j, com um dicionário Python), o fluxo roda num <b>LangGraph</b> e, quando um termo bate em dois nós (o <i>Nexus</i>), ele <b>pausa com <code>interrupt</code></b> e só retoma quando a pessoa escolhe na tela (<b>human-in-the-loop</b>). A UI é Streamlit e o modelo vem pelo OpenRouter. Atenção: o <code>agent.py</code> que monta o grafo <b>não está na pasta</b>.",
+   "vovo": [
+    "Pense num atendente de provedor de internet com um mapa na parede: planos ligados às tecnologias que exigem, roteadores ligados ao que suportam, problemas ligados aos equipamentos que costumam causá-los. Quando o cliente fala, o atendente procura no mapa só as caixinhas citadas e as vizinhas, e responde com base nelas, em vez de chutar.",
+    "Se o cliente diz «meu roteador é o Nexus» e existem dois Nexus (600 e 1000), o atendente não adivinha: levanta a mão, pergunta «qual dos dois?» e guarda a conversa numa pasta com o número do protocolo. Quando o cliente responde, ele abre a pasta e continua exatamente de onde parou. Essa pasta é o estado salvo pelo LangGraph e o protocolo é o <code>thread_id</code>."
+   ],
+   "oque": [
+    "<b>GraphRAG sem banco de grafo:</b> a base é um dicionário <code>NODES</code> (21 nós: 5 planos, 5 equipamentos, 3 tecnologias, 4 regiões, 4 problemas) e uma lista <code>EDGES</code> de tuplas <code>(origem, destino, rótulo)</code> (30 relações). O próprio docstring diz que o dicionário «faz o papel do banco de grafo». Cada nó tem <code>label</code>, <code>type</code>, <code>aliases</code> e <code>attrs</code>. Compare com o <a href=\"#D2-08\">RAG com Neo4j</a>: lá o LLM gera Cypher; aqui a recuperação é código determinístico.",
+    "<b>Gramática do grafo:</b> plano <code>requer</code> tecnologia; equipamento <code>suporta</code> tecnologia; equipamento <code>recomendado_para</code> plano; região <code>disponivel_em</code> tecnologia; problema <code>causa_possivel_de</code> equipamento ou tecnologia. Isso vira texto no prompt e desenho na tela.",
+    "<b>Resolução de entidades:</b> <code>find_entities</code> procura cada alias como substring do texto em minúsculas e devolve <code>{alias: [ids]}</code>. Lista com mais de um id significa <b>ambiguidade</b>, e é o gancho do human-in-the-loop. O alias <code>nexus</code> existe de propósito nos dois modelos para criar essa ambiguidade na demo.",
+    "<b>Recuperação de 1 salto:</b> <code>get_subgraph</code> pega as arestas que tocam as âncoras. O teste usa o conjunto fixo <code>anchors</code>, nunca o conjunto que cresce durante a iteração; senão um nó hub (como a Fibra Óptica) puxaria quase o grafo inteiro em cascata.",
+    "<b>Ponte grafo para texto:</b> <code>facts_from_subgraph</code> converte nós e arestas em frases curtas para o prompt: <code>Turbo 300 (plano) — velocidade_contratada_mbps: 300, ...</code> e <code>Turbo 300 --[requer]--> Fibra Óptica</code>.",
+    "<b>Fluxo do agente (inferido da UI):</b> a trilha em <code>app.py</code> lista cinco nós: <code>router</code>, <code>resolve_entities</code>, <code>retrieve_from_graph</code>, <code>generate_answer</code> e <code>escalate</code>. O resultado de <code>invoke</code> carrega as chaves <code>trace</code>, <code>subgraph</code> e <code>final_answer</code>, e a entrada é <code>{\"user_input\": ...}</code>. A definição real do grafo estaria em <code>agent.py</code>, que não existe na pasta; o que digo dele é hipótese.",
+    "<b>Human-in-the-loop com <code>interrupt</code>:</b> quando um nó chama <code>interrupt(...)</code>, o dict devolvido por <code>invoke</code> ganha a chave <code>__interrupt__</code>; o payload (<code>question</code> e <code>candidates</code> com <code>id</code> e <code>label</code>) está em <code>result[\"__interrupt__\"][0].value</code>. Para retomar: <code>invoke(Command(resume=chosen_id), config)</code> com o mesmo <code>thread_id</code>; a execução volta na linha do <code>interrupt</code> e o valor de <code>resume</code> é o retorno dela. Turno novo é sempre <code>invoke({\"user_input\": ...}, config)</code>.",
+    "<b>Por que precisa de checkpointer:</b> o docstring de <code>app.py</code> afirma que o <code>MemorySaver</code> (dentro de <code>build_agent()</code>) tem de continuar vivo entre mensagens para o human-in-the-loop funcionar. Por isso <code>@st.cache_resource</code> monta o agente uma vez por processo.",
+    "<b>Modelo pelo OpenRouter:</b> <code>llm.py</code> usa <code>ChatOpenAI</code> com <code>base_url=\"https://openrouter.ai/api/v1\"</code>, chave em <code>OPENROUTER_API_KEY</code> (erro explícito se faltar), modelo em <code>OPENROUTER_MODEL</code> com padrão <code>meta-llama/llama-3.3-70b-instruct:free</code> e temperatura 0.2. É o mesmo gateway do <a href=\"#D2-01\">tópico 01</a>, agora consumido via LangChain."
+   ],
+   "como": [
+    "<b>Streamlit refaz o script inteiro a cada interação (rerun).</b> Só <code>st.session_state</code> sobrevive: <code>thread_id</code> (um <code>uuid4</code> por aba do navegador, que isola conversas simultâneas), <code>history</code>, <code>pending</code> (a pausa), <code>last_subgraph</code> e <code>last_trace</code>.",
+    "<b>Pausa na tela:</b> se <code>pending</code> existe, o <code>chat_input</code> nem aparece; a pessoa só vê a pergunta, um <code>st.radio</code> com os rótulos dos candidatos e o botão Confirmar. Ao confirmar, a UI mapeia o rótulo de volta para o id e chama <code>Command(resume=chosen_id)</code>.",
+    "<b>Painel da direita:</b> <code>streamlit-agraph</code> desenha o subgrafo consultado (nós âncora maiores e com borda mais grossa; cor por tipo) e a «Trilha de execução» acende os nós do LangGraph que rodaram naquele turno, com um detalhe por nó; os que não rodaram ficam apagados.",
+    "<b>Roteiro de demo (barra lateral) e o que cada pergunta exercita, conferido nos dados:</b> (1) «Quais tecnologias o Turbo 940 aceita?» casa só o plano Turbo 940, que <code>requer</code> Fibra Óptica; (2) Turbo 300 com Legacy R4: o roteador tem teto de 150 Mbps e Wi-Fi 4, e há a aresta velocidade baixa <code>causa_possivel_de</code> Legacy R4; (3) Wi-Fi que não alcança os cômodos: problema ligado ao Legacy R4; (4) «Meu roteador é o Nexus, funciona com o Turbo 940?»: <code>nexus</code> casa Nexus 600 e Nexus 1000, dispara o human-in-the-loop, e só o Nexus 1000 é <code>recomendado_para</code> o Turbo 940; (5) «quero falar com um atendente»: o nó de escalonamento da trilha (a regra que o aciona não está no repo).",
+    "<b>Mesmo fluxo no terminal:</b> <code>quick_test.py</code> faz duas perguntas na mesma <code>thread_id</code>, imprime <code>[PAUSADO]</code> com os candidatos, lê o id com <code>input()</code> e retoma com <code>Command(resume=...)</code>. É a forma mais rápida de depurar sem esperar o rerun do navegador.",
+    "<b>Logs:</b> <code>app.py</code> e <code>llm.py</code> usam loggers <code>netfibra.*</code> e o docstring manda acompanhar o terminal; a configuração do logging estaria em <code>agent.py</code> (ausente)."
+   ],
+   "aplica": [
+    "Suporte e pré-venda com base relacional pequena (catálogo, compatibilidade, cobertura): o grafo responde «o que se liga a quê» sem vetor.",
+    "Prototipar GraphRAG com dicionário em memória antes de subir Neo4j; a interface (<code>find_entities</code>, <code>get_subgraph</code>, <code>facts_from_subgraph</code>) continua valendo quando o armazenamento trocar.",
+    "Desambiguar antes de responder: pausar o fluxo para a pessoa escolher é mais barato que responder sobre o equipamento errado. Para o formalismo de pausa, limiar e auditoria, veja o <a href=\"#D8-10\">Approval Gate da Disciplina 08</a>; aqui o gatilho é ambiguidade de entidade, não baixa confiança do modelo.",
+    "Mostrar o caminho percorrido (subgrafo e trilha) como explicabilidade para quem opera o atendimento."
+   ],
+   "pros": [
+    "Recuperação determinística e testável: o grafo é um dicionário e as funções são puras.",
+    "Explicável: a tela mostra o subgrafo consultado e os nós executados.",
+    "O human-in-the-loop retoma do ponto exato da pausa, sem reexecutar o turno desde o início.",
+    "Zero infraestrutura de banco para a demo."
+   ],
+   "contras": [
+    "Casamento por substring é frágil. Em cópia do <code>graph_data.py</code> conferi três efeitos: «RadioMax» também casa o alias <code>radio</code> (Tecnologia Rádio), «turbo 1000» casa o alias <code>turbo 100</code> e um «Nexus 600» explícito ainda produz o alias <code>nexus</code> com dois ids. Como o <code>agent.py</code> trata isso, não dá para saber.",
+    "A base é estática e em memória; o <code>MemorySaver</code> também perde tudo ao reiniciar o processo.",
+    "O modelo padrão é um Llama <code>:free</code> do OpenRouter; modelos gratuitos tendem a ter limite de taxa (hipótese, não testei)."
+   ],
+   "traps": [
+    "<code>from agent import build_agent</code> sem o <code>agent.py</code>: <code>app.py</code> e <code>quick_test.py</code> não sobem.",
+    "Usar <code>Command(resume=...)</code> para abrir turno novo, ou <code>{\"user_input\": ...}</code> para retomar uma pausa; são chamadas diferentes.",
+    "Montar o agente a cada rerun do Streamlit: perde o checkpointer e a pausa nunca retoma.",
+    "Compartilhar o <code>thread_id</code> entre abas ou usuários: as conversas se misturam.",
+    "Testar a aresta contra o conjunto que cresce durante o loop do <code>get_subgraph</code>: a busca vira cascata e traz quase o grafo todo."
+   ],
+   "cola": [
+    [
+     "GraphRAG",
+     "Recuperar o trecho de um grafo ligado às entidades da pergunta e entregá-lo como fatos ao modelo"
+    ],
+    [
+     "Resolução de entidades",
+     "Mapear termos do texto para nós do grafo (aqui, por alias em substring)"
+    ],
+    [
+     "Subgrafo de 1 salto",
+     "Âncoras mais vizinhos diretos, com as arestas que tocam as âncoras"
+    ],
+    [
+     "<code>interrupt</code>",
+     "Pausa o grafo e devolve um payload ao chamador, com o estado preservado pelo checkpointer"
+    ],
+    [
+     "<code>Command(resume=...)</code>",
+     "Retoma a execução pausada; o valor vira o retorno do <code>interrupt</code>"
+    ],
+    [
+     "<code>thread_id</code>",
+     "Chave da conversa no checkpointer; um por aba do navegador"
+    ],
+    [
+     "<code>MemorySaver</code>",
+     "Checkpointer em memória citado no docstring do app; não sobrevive a reinício"
+    ],
+    [
+     "<code>st.session_state</code>",
+     "Único estado que sobrevive entre reruns do Streamlit"
+    ],
+    [
+     "<code>@st.cache_resource</code>",
+     "Cria o recurso uma vez por processo (o agente, no caso)"
+    ]
+   ],
+   "links": [
+    [
+     "Pasta da live 24/09 no GitHub",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-24"
+    ],
+    [
+     "OpenRouter · base_url usada em llm.py",
+     "https://openrouter.ai/api/v1"
+    ],
+    [
+     "OpenRouter · chaves de API (citado em llm.py)",
+     "https://openrouter.ai/keys"
+    ]
+   ],
+   "codigo": [
+    {
+     "proj": "lives/2026-09-24 (NetFibra · Suporte com IA)",
+     "link": "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-24",
+     "resumo": "App Streamlit de suporte com LangGraph, GraphRAG em memória e human-in-the-loop via OpenRouter. A pasta tem <code>app.py</code>, <code>graph_data.py</code>, <code>llm.py</code>, <code>quick_test.py</code>, <code>requirements.txt</code> e um README que só diz «Lives UNIPDS». Não há <code>agent.py</code>, então a parte do LangGraph (nós, estado, checkpointer) só aparece pelas chamadas que o app faz.",
+     "fluxo": [
+      "<code>graph_data.py</code>: <code>NODES</code> e <code>EDGES</code> com a gramática do grafo. O docstring diz «21 nós, 30 relações»; conferi (21 e 30).",
+      "<code>find_entities</code> faz o casamento por substring de aliases; <code>get_subgraph</code> expande 1 salto com <code>anchors</code> fixo; <code>facts_from_subgraph</code> gera as frases do prompt.",
+      "<code>llm.py</code>: <code>get_llm</code> cria o <code>ChatOpenAI</code> apontando para o OpenRouter e falha cedo sem <code>OPENROUTER_API_KEY</code>.",
+      "<code>app.py</code>: <code>get_agent()</code> com <code>@st.cache_resource</code>; <code>_init_session_state</code>; <code>apply_result</code> separa pausa (<code>__interrupt__</code>) de turno concluído; coluna do chat com <code>st.radio</code> e Confirmar durante a pausa; coluna do grafo com <code>agraph</code> e a trilha <code>TRACE_ORDER</code>.",
+      "<code>quick_test.py</code>: duas perguntas na mesma thread, tratamento do <code>__interrupt__</code> e retomada com <code>Command(resume=escolha)</code>.",
+      "<code>agent.py</code> (ausente): pelo uso, exporta <code>build_agent()</code>, devolve um grafo compilado com checkpointer e configura o logging. Nós, ordem das arestas e o ponto exato do <code>interrupt</code> são hipótese."
+     ],
+     "rodar": [
+      "<code>pip install -r requirements.txt</code> (streamlit 1.64.0, streamlit-agraph 0.0.45, langgraph 1.2.12, langchain 1.4.2, langchain-openai 1.6.5, langchain-core 1.6.4, python-dotenv 1.2.3, pydantic 2.13.5).",
+      "Criar um <code>.env</code> com <code>OPENROUTER_API_KEY</code> (e, se quiser, <code>OPENROUTER_MODEL</code>); <code>llm.py</code> manda copiar um <code>.env.example</code> que não existe na pasta.",
+      "<code>streamlit run app.py</code> ou <code>python quick_test.py</code>. Ambos importam <code>agent.build_agent</code>; sem o arquivo falham com <code>ModuleNotFoundError</code> (não executei o app; conferi que o arquivo não está na pasta).",
+      "Só a camada de grafo roda sozinha: <code>graph_data.py</code> não tem dependências. Executei <code>find_entities</code> e <code>get_subgraph</code> numa cópia para conferir contagens e ambiguidades."
+     ],
+     "armadilhas": [
+      "<b>Bug:</b> <code>app.py</code> e <code>quick_test.py</code> importam <code>agent</code> (<code>build_agent</code>), mas não existe <code>agent.py</code> na pasta (são 6 arquivos: <code>README.md</code>, <code>app.py</code>, <code>graph_data.py</code>, <code>llm.py</code>, <code>quick_test.py</code>, <code>requirements.txt</code>).",
+      "O README é só o título «Lives UNIPDS»; não há instrução de execução. <code>app.py</code> cita um <code>ROTEIRO.md</code> («Mais 5 exemplos») e <code>llm.py</code> cita um <code>.env.example</code>; nenhum dos dois existe.",
+      "O docstring do <code>get_subgraph</code> diz que a Fibra Óptica «liga a 8 outros nós»; no código atual ela aparece em 10 relações (<code>get_subgraph([\"tec_fibra\"])</code> devolve 11 nós e 10 arestas).",
+      "Na retomada do human-in-the-loop o <code>invoke(Command(...))</code> não tem <code>try/except</code>, ao contrário do caminho de mensagem nova; um erro do modelo ali estoura na tela do Streamlit.",
+      "Dado possivelmente inconsistente: o Legacy R4 tem teto de 150 Mbps e é <code>recomendado_para</code> o plano Casa Conectada 200 (200 Mbps). Pode ser proposital para a demo; não verifiquei.",
+      "Erros de digitação nos docstrings («Paraa», «ISso», «issoé»)."
+     ]
+    }
+   ]
   }
  ]
 });

@@ -55,7 +55,7 @@ O harness é o escritório em volta do estagiário: a mesa, o terminal, o chefe 
 - Aceitar o resultado do agente sem abrir o diff e os comandos que ele pediu para rodar.
 - Alterar uma instruction e continuar na mesma conversa sem checar se ela foi carregada.
 
-> 💡 Abra e leia o que o agente gravou. Na Unidade 2, a instrução “siga o Spec Kit” virou uma frase genérica no arquivo e precisou ser reescrita com as etapas explícitas.
+> 💡 Abra e leia o que o agente gravou. Na Unidade 2, a instrução “siga o Spec Kit” virou uma frase genérica no arquivo e precisou ser reescrita com as etapas explícitas. A live de 27/05 mostra o mesmo harness com Claude Code: um único `CLAUDE.md` espelhado por symlink para `AGENTS.md`, `.cursorrules` e `.windsurfrules`. Veja o [tópico da live](./16-live-sdd-enterprise-and-spec-kit-catalog.md).
 
 ---
 

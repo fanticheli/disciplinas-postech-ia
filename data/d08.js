@@ -107,6 +107,10 @@ STUDY.push({
   [
    "Vídeo: Armchair Architects: Hybrid and Multi-Cloud Architectures, Observability (Microsoft)",
    "https://learn.microsoft.com/en-us/shows/azure-essentials-show/armchair-architects-hybrid-and-multi-cloud-architectures-observability"
+  ],
+  [
+   "Live 26/09/2026: Temporal Process Manager Workshop (pasta lives/2026-09-26 do repositório do curso)",
+   "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-26"
   ]
  ],
  "blocos": [
@@ -129,6 +133,10 @@ STUDY.push({
   {
    "id": "d08-b4",
    "label": "Arquitetura Enterprise"
+  },
+  {
+   "id": "d08-b5",
+   "label": "Lives complementares"
   }
  ],
  "topics": [
@@ -962,7 +970,8 @@ STUDY.push({
     "Mapear <i>dependência por dependência</i> do seu processo, não escolher um padrão para o sistema inteiro.",
     "Desconfiar do Sequential 'por hábito': se o agente B só roda depois porque 'faz sentido cronológico' e não usa dado de A, considere Parallel.",
     "Usar Supervisor fixo (roteador determinístico) quando o roteamento é simples; um Supervisor com raciocínio próprio custa mais latência e ganha flexibilidade nas fronteiras nebulosas.",
-    "Reservar Group Chat para divergência real de interpretações (por exemplo, dois agentes discordando se um evento adverso entra no CSR ou só no ICF, exemplo do canvas)."
+    "Reservar Group Chat para divergência real de interpretações (por exemplo, dois agentes discordando se um evento adverso entra no CSR ou só no ICF, exemplo do canvas).",
+    "A live de 26/09 mostra Parallel em dois pontos de um Process Manager (estoque e pagamento; depois envio e nota) com Sequential entre as fases: <a href=\"#D8-15\">Live Temporal</a>."
    ],
    "pros": [
     "Cada padrão responde a uma dependência concreta, o que torna a escolha explicável.",
@@ -1090,7 +1099,8 @@ STUDY.push({
    "aplica": [
     "Decidir, por agente, o timeout, o máximo de tentativas, a política CAP e se a operação é idempotente, antes de implementar.",
     "Versionar artefatos mutáveis (protocolo v1, v2) em vez de apagar e guardar a versão usada por cada consumidor.",
-    "Declarar quem dispara a compensação e quais ações desfazem cada etapa, em vez de 'recomeçar do zero'."
+    "Declarar quem dispara a compensação e quais ações desfazem cada etapa, em vez de 'recomeçar do zero'.",
+    "A live de 26/09 aprofunda o retry com um mock que falha três vezes (503) e deixa a Compensation, o equivalente à Saga, como extensão: <a href=\"#D8-15\">Live Temporal</a>."
    ],
    "pros": [
     "O sistema deixa de depender do 'caminho feliz'.",
@@ -1547,7 +1557,8 @@ STUDY.push({
     "Qualquer fluxo com agente que chega a um efeito irreversível: pause com estado preservado em vez de abortar.",
     "Definir limiar por categoria de tarefa e recalibrá-lo a cada mudança de modelo ou de perfil de pergunta.",
     "Em setor regulado, desenhar a trilha já com campos de versão de prompt e de modelo, e com escrita somente de acréscimo.",
-    "Usar mais de duas saídas (seguir, escalar, bloquear) quando o risco justificar."
+    "Usar mais de duas saídas (seguir, escalar, bloquear) quando o risco justificar.",
+    "A live de 24/09 (Disciplina 02) implementa pausa e retomada com <code>interrupt</code> e <code>Command(resume=...)</code> do LangGraph, com gatilho de ambiguidade: <a href=\"#D2-12\">Live NetFibra</a>."
    ],
    "pros": [
     "Reduz a classificação de risco do sistema perante o regulador quando há validação humana antes da decisão final.",
@@ -2257,6 +2268,141 @@ STUDY.push({
       "O <code>audit-trail-tiering.jsonl</code> é acrescentado a cada execução (a confiança de resposta da 2ª pergunta varia entre 0,837 e 0,894 nas duas execuções de referência). A entrada <code>bloqueado_por_orcamento</code> não traz tier nem limite, menos que o checklist do canvas pede.",
       "Os custos 0,001 e 0,01 são ilustrativos; os limites de orçamento só fazem sentido em relação a eles.",
       "Simplificações em relação ao gateway do módulo 4: o banco tem 2 cláusulas e a busca é cosseno puro, sem Multi-Index, Hybrid, Agentic RAG nem Semantic Cache. Além disso, se a geração lançar exceção depois de <code>reservarOrcamento</code>, nada libera a reserva (não há <code>try/finally</code>); o <code>catch</code> final só registra <code>falha_tecnica</code>."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "D8-15",
+   "bloco": "d08-b5",
+   "mod": "Live · 26/09/2026",
+   "emoji": "⏱️",
+   "read": "12 min",
+   "title": "Live Temporal: Process Manager, paralelismo e retry com workflows duráveis",
+   "short": "Um pedido vira um Workflow durável que coordena estoque e pagamento em paralelo, depois envio e nota em paralelo, com retry de Activity contra um mock que falha três vezes.",
+   "oneliner": "O <b>Process Manager</b> é o coordenador central que conduz um pedido por várias etapas. Na live ele é um <b>Workflow do Temporal</b>: reserva de estoque e autorização de pagamento rodam <b>em paralelo</b>; só depois, envio e nota fiscal rodam <b>em paralelo</b>; cada chamada externa é uma <b>Activity</b> com <b>retry</b>. É a versão «durável» do que o <a href=\"#D8-06\">tópico 06</a> chama de Sequential + Parallel + Supervisor e do que o <a href=\"#D8-07\">tópico 07</a> chama de retry, idempotência e Saga. Atenção: o repositório entrega o <b>esqueleto</b> do workshop; o workflow e as activities estão vazios.",
+   "vovo": [
+    "Imagine um gerente de pedidos numa loja. Chega um pedido e ele liga ao mesmo tempo para o estoque («separa o produto?») e para o financeiro («o cartão passa?»). Só quando os dois dizem sim ele manda, também ao mesmo tempo, o setor de envio gerar a etiqueta e o fiscal emitir a nota. Se o envio não atende, ele não desiste na primeira: liga de novo, e de novo, até a quarta vez.",
+    "O diferencial do Temporal é que o caderno do gerente nunca se perde: se ele sair almoçar no meio (o processo cair), outro gerente abre o caderno e continua da última ligação feita, sem repetir as que já deram certo."
+   ],
+   "oque": [
+    "<b>Process Manager (padrão de integração):</b> um coordenador que mantém o estado do processo e decide o próximo passo conforme as respostas. O README da live diz que o exemplo se inspira no livro <i>Enterprise Integration Patterns</i> e o atribui a Martin Fowler; pelo meu conhecimento (fora da live), o livro é de Gregor Hohpe e Bobby Woolf, e Fowler é o editor da série.",
+    "<b>Workflow:</b> pelo <code>CONTEXT.md</code>, é «a execução durável que representa a instância do process manager de um pedido»; o glossário pede para não chamá-lo de job nem de controller. <b>Activity:</b> operação externa chamada pelo Workflow (Inventory, Billing, Shipping); evitar «step» e «handler». <b>Compensation:</b> operação corretiva futura que desfaz uma ação concluída, como liberar a reserva de estoque; evitar «rollback».",
+    "<b>Fluxo do pedido:</b> <code>RECEIVED</code> (registrado) → <code>VALIDATING</code> (Inventory reservation e Payment authorization em paralelo) → <code>FULFILLING</code> (Shipment e Invoice em paralelo) → <code>COMPLETED</code>, ou <code>FAILED</code> se uma etapa termina com falha definitiva. O <code>workflowId</code> é igual ao <code>orderId</code>.",
+    "<b>Falhas determinísticas por cenário (mocks):</b> estoque com <code>sku-1</code> responde <code>422 INSUFFICIENT_INVENTORY</code>; SKU desconhecido responde <code>404 PRODUCT_NOT_FOUND</code>; cartão só de zeros responde <code>402 PAYMENT_DECLINED</code>; cartão que não seja só de uns nem só de zeros responde <code>422 UNKNOWN_CARD</code>; o Shipping responde <code>503 SHIPPING_UNAVAILABLE</code> nas três primeiras tentativas de cada <code>orderId</code> e <code>201</code> na quarta.",
+    "<b>Erro de negócio versus erro transitório:</b> 402 e 422 são recusas definitivas (o pedido vai a <code>FAILED</code>), o 503 é transitório (deve ser retentado). O <code>HttpClientError</code> do pacote <code>http-client</code> carrega <code>code</code> e <code>statusCode</code> justamente para permitir essa distinção; como a live classifica isso nas Activities não está no repo (hipótese).",
+    "<b>Escopo declarado do workshop:</b> sem testes automatizados e sem Activities de Compensation no primeiro escopo; persistência dos pedidos em memória (reiniciar descarta tudo). As extensões sugeridas são testes pelas interfaces públicas, Compensation que libera a reserva de Inventory quando uma etapa posterior falha, e repositório em banco."
+   ],
+   "como": [
+    "<b>Monorepo pnpm:</b> <code>apps/*</code> (<code>process-manager</code>, <code>inventory</code>, <code>billing</code>, <code>shipping</code>) e <code>packages/*</code> (<code>contracts</code>, <code>http-client</code>, <code>mock-http</code>). Só o servidor do Temporal roda em container; o resto são processos Node na máquina. <code>pnpm run dev</code> sobe tudo com <code>concurrently</code>.",
+    "<b>Portas:</b> Process Manager 3000, Inventory 3001, Billing 3002, Shipping 3003, Temporal gRPC 7233 e Temporal UI em 8080 (o container mapeia <code>8080:8233</code>). Na UI aparecem o Workflow, as Activities, os retries e o histórico.",
+    "<b>Esqueleto do Process Manager:</b> <code>main.ts</code> espera o Temporal aceitar conexão TCP (tenta de novo a cada 1 s), cria o app Nest e escuta em <code>PORT</code>. O <code>AppModule</code> registra o <code>TemporalModule</code> com task queue <code>order-processing</code>, <code>workflowsPath</code> apontando para <code>order.workflow.js</code> (arquivo compilado) e <code>activityClasses: [OrderActivities]</code>.",
+    "<b>Domínio já pronto:</b> <code>OrderState</code> (enum), <code>OrderEntity</code> (sem número de cartão: ele só serve à autorização) e <code>OrderRepository</code> em <code>Map</code> (<code>save</code> acrescenta <code>createdAt</code>, <code>saveState</code> lança erro se o pedido não existe, <code>remove</code>, <code>find</code>).",
+    "<b>O que o workshop preenche (os estágios incrementais do <code>AGENTS.md</code>):</b> <code>OrdersController</code>, <code>OrdersService</code>, <code>OrderActivities</code> e <code>orderWorkflow()</code> estão vazios. A API pretendida está no README: <code>POST /orders</code> responde 202 com <code>orderId</code> e <code>workflowId</code>; <code>GET /orders/:orderId</code> devolve a entidade.",
+    "<b>Esboço do que a live implementa (hipótese a partir do README e do desenho):</b> o service grava o pedido em <code>RECEIVED</code> e inicia o Workflow com <code>workflowId = orderId</code>; o Workflow muda o estado e dispara <code>Promise.all</code> sobre as Activities de estoque e pagamento, depois sobre envio e nota; as Activities chamam os clientes HTTP injetados pelos tokens <code>INVENTORY_HTTP_CLIENT</code>, <code>BILLING_HTTP_CLIENT</code> e <code>SHIPPING_HTTP_CLIENT</code>. O motivo de o workflow ficar num arquivo isolado é o sandbox determinístico do Temporal (conhecimento do Temporal, não da live).",
+    "<b>Como observar o retry:</b> <code>pnpm run order:create</code> imprime <code>orderId</code>; <code>pnpm run order:get -- ORDER_ID</code> mostra o <code>state</code>. O README diz que, como o Shipping falha 3 vezes, é preciso esperar alguns segundos e consultar de novo para ver a transição até <code>COMPLETED</code>. Os atalhos <code>order:fail:inventory</code> (<code>sku-1</code>) e <code>order:fail:payment</code> (cartão de zeros) levam a <code>FAILED</code>."
+   ],
+   "aplica": [
+    "Processos de negócio longos com várias chamadas a sistemas externos, em que perder o ponto de parada no meio é inaceitável (pedido, onboarding, cobrança).",
+    "Fan-out e fan-in explícitos: paralelizar o que é independente (estoque e pagamento) e sequenciar o que depende (envio só depois de aprovado). É o seletor do <a href=\"#D8-06\">tópico 06</a> aplicado a serviços, não a agentes.",
+    "Orquestrar passos de agentes de IA (chamadas de modelo e de ferramentas) como Activities com retry e timeout, no lugar de um barramento em memória como o do protótipo do <a href=\"#D8-07\">tópico 07</a> (que perde mensagens se o processo cair); aplicação sugerida por analogia, a live não usa LLM.",
+    "Ensinar o vocabulário do domínio com um <code>CONTEXT.md</code> que lista também os termos a evitar."
+   ],
+   "pros": [
+    "Estado e progresso duráveis, com histórico visível na Temporal UI.",
+    "Retry e paralelismo declarados no workflow, não espalhados em controllers e filas.",
+    "Mocks determinísticos tornam cada cenário (sucesso, estoque, pagamento, retry) reproduzível.",
+    "O coordenador único deixa a ordem das etapas legível num só lugar."
+   ],
+   "contras": [
+    "O coordenador conhece todos os serviços: é um ponto central de acoplamento (o mesmo trade-off do Supervisor).",
+    "Exige operar o Temporal e respeitar as regras de determinismo do workflow (conhecimento do Temporal).",
+    "Compensation, testes e persistência real ficaram fora do escopo do workshop; sem Compensation, nada libera a reserva de Inventory se uma etapa posterior falhar (é a extensão sugerida no README).",
+    "Os mocks guardam estado em memória (contador de tentativas do Shipping): reiniciar o mock zera o retry."
+   ],
+   "traps": [
+    "Tratar 402 e 422 como transitórios e repetir para sempre; ou tratar o 503 como definitivo e falhar o pedido na primeira tentativa.",
+    "Retry sem idempotência: o Billing e o Inventory respondem com ids derivados do <code>orderId</code> (<code>authorization-ORDER</code>, <code>reservation-ORDER</code>), mas os mocks não guardam estado, então isso não prova que o retry de uma Activity real seria seguro.",
+    "Colocar lógica de I/O dentro do arquivo do workflow; a live separa o workflow (<code>order.workflow.ts</code>) das Activities.",
+    "Usar a imagem <code>temporalio/temporal:latest</code> sem fixar versão: o ambiente do workshop pode mudar de comportamento entre execuções.",
+    "Esperar o fluxo completo logo após o clone: sem implementar controller, service, activities e workflow, <code>order:create</code> não tem rota para chamar."
+   ],
+   "cola": [
+    [
+     "Process Manager",
+     "Coordenador que mantém o estado do processo e decide o próximo passo"
+    ],
+    [
+     "Workflow (Temporal)",
+     "Execução durável de um processo; aqui, uma por pedido"
+    ],
+    [
+     "Activity (Temporal)",
+     "Operação externa chamada pelo workflow, com retry"
+    ],
+    [
+     "Task queue",
+     "Fila de onde o worker pega trabalho; aqui, <code>order-processing</code>"
+    ],
+    [
+     "Fan-out / fan-in",
+     "Disparar etapas independentes juntas e esperar todas antes de seguir"
+    ],
+    [
+     "Compensation",
+     "Ação que desfaz uma etapa concluída (liberar a reserva de estoque)"
+    ],
+    [
+     "Falha transitória",
+     "Erro que pode passar sozinho (503); retentar"
+    ],
+    [
+     "Falha definitiva",
+     "Recusa de negócio (402, 422); não adianta retentar"
+    ],
+    [
+     "<code>workflowId = orderId</code>",
+     "Casa o pedido com a execução do Temporal; facilita achar o workflow na UI"
+    ]
+   ],
+   "links": [
+    [
+     "Pasta da live 26/09 no GitHub",
+     "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-26"
+    ],
+    [
+     "Temporal UI local (README da live)",
+     "http://localhost:8080"
+    ]
+   ],
+   "codigo": [
+    {
+     "proj": "lives/2026-09-26 (Temporal Process Manager Workshop)",
+     "link": "https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives/2026-09-26",
+     "resumo": "Monorepo pnpm com um Process Manager (NestJS mais Worker do Temporal) e três serviços simulados (Inventory, Billing, Shipping) sobre um <code>json-server</code>, mais scripts para criar e consultar pedidos. O que está no repositório é o <b>ponto de partida do workshop</b>: infraestrutura, contratos, mocks e domínio prontos; controller, service, activities e workflow vazios.",
+     "fluxo": [
+      "<code>package.json</code> e <code>pnpm-workspace.yaml</code>: scripts <code>dev</code>, <code>infra:up</code>/<code>infra:down</code>, <code>*:up</code> por app, <code>order:*</code>, <code>build</code> e <code>typecheck</code>. <code>compose.yaml</code> sobe só o <code>temporalio/temporal:latest</code> com <code>server start-dev</code> (7233 e UI em 8080).",
+      "<code>packages/contracts/src/index.ts</code>: tipos <code>OrderRequest</code> e <code>OrderInput</code> (request mais <code>orderId</code>) e os pares requisição/resposta de reserva, autorização, nota e envio, com status literais <code>RESERVED</code>, <code>AUTHORIZED</code>, <code>ISSUED</code> e <code>ACCEPTED</code>.",
+      "<code>packages/http-client</code>: <code>createHttpClient</code> (axios) converte falhas em <code>HttpClientError(message, code, statusCode, details)</code> lendo <code>error</code> e <code>message</code> do corpo; o módulo global <code>HttpClientsModule</code> expõe um cliente por serviço, com URL em <code>INVENTORY_URL</code>, <code>BILLING_URL</code> e <code>SHIPPING_URL</code> (padrões 3001, 3002 e 3003).",
+      "<code>packages/mock-http</code>: <code>createMockServer</code> tenta primeiro a função <code>route</code>; se ela devolve <code>false</code>, delega ao <code>json-server</code> 1.0.0-beta.15 com banco em memória. <code>respond</code> e <code>readJsonBody</code> são os helpers.",
+      "<code>apps/inventory</code> (<code>POST /inventory/reservations</code>), <code>apps/billing</code> (<code>POST /billing/authorizations</code> e <code>/billing/invoices</code>) e <code>apps/shipping</code> (<code>POST /shipping/shipments</code>, com contador de tentativas por <code>orderId</code>) implementam os cenários da tabela do README.",
+      "<code>apps/process-manager</code>: <code>main.ts</code>, <code>app.module.ts</code>, <code>temporal.runtime.ts</code> (endereço, namespace, task queue <code>order-processing</code>, <code>waitForTemporal</code>), <code>order.entity.ts</code> e <code>orders.repository.ts</code> prontos; <code>orders.controller.ts</code>, <code>orders.service.ts</code>, <code>order.activities.ts</code> e <code>order.workflow.ts</code> são os pontos a preencher.",
+      "<code>scripts/*.mjs</code>: <code>order-client.mjs</code> (<code>fetch</code> com variáveis <code>CUSTOMER_ID</code>, <code>SKU</code>, <code>QUANTITY</code>, <code>CARD_NUMBER</code>, <code>AMOUNT</code>), <code>order-create</code>, <code>order-get</code>, <code>order-fail-inventory</code> e <code>order-fail-payment</code>. <code>CONTEXT.md</code> e <code>AGENTS.md</code> fixam o vocabulário e as regras de escopo."
+     ],
+     "rodar": [
+      "Pré-requisitos do README: Node 24.21.0 (via nvm), pnpm 12.4.2, Docker com Compose e navegador para a Temporal UI.",
+      "<code>pnpm install --frozen-lockfile</code> e <code>pnpm run dev</code> na raiz; depois <code>pnpm run order:create</code> e <code>pnpm run order:get -- SEU_ORDER_ID</code>. Para parar: Ctrl+C e <code>pnpm run infra:down</code>.",
+      "Não executei nada desta live (exigiria <code>pnpm install</code> e Docker). O que afirmo vem da leitura do código. Com o esqueleto atual, esperar o fluxo completo é incorreto, pois o controller não tem handlers."
+     ],
+     "armadilhas": [
+      "<b>README descreve o estado final, o código é o esqueleto:</b> <code>OrdersController</code> não tem rotas, então <code>POST /orders</code> e <code>GET /orders/:id</code> não existem e os scripts <code>order:*</code> receberiam 404; <code>orderWorkflow()</code> é uma função vazia que retorna <code>Promise&lt;void&gt;</code>.",
+      "O README manda rodar <code>nvm install</code> / <code>nvm use</code> e diz que a versão do Node está no <code>.nvmrc</code>, mas não há <code>.nvmrc</code> na pasta (listei os arquivos ocultos).",
+      "<code>nestjs-temporal-core@3.4.0</code> declara peer dependency de <code>@nestjs/common</code> e <code>@nestjs/core</code> em <code>^9 || ^10 || ^11</code>, e o projeto usa <code>^12.0.3</code>: peer fora da faixa (o pnpm deve avisar; não instalei para ver se funciona).",
+      "O README diz que qualquer cartão diferente do aprovado e do recusado responde <code>422 UNKNOWN_CARD</code>; o Billing usa regex (<code>/^0+$/</code> recusa e <code>/^1+$/</code> aprova), então qualquer sequência só de uns (por exemplo <code>11</code>) é autorizada e só de zeros é recusada.",
+      "O Inventory só distingue pelo SKU: <code>sku-1</code> sempre recusa, <code>sku-5</code> sempre reserva, e a quantidade é só validada (inteiro positivo); não existe estoque real.",
+      "O <code>process-manager</code> tem script <code>dev</code> que roda <code>build</code> e depois <code>node dist/main.js</code>: não há modo watch. O pacote <code>http-client</code> exporta <code>dist/index.js</code> (precisa de build), enquanto <code>contracts</code> e <code>mock-http</code> exportam <code>src/*.ts</code>.",
+      "O final do <code>CONTEXT.md</code> tem uma linha solta <code>_Avoid_: Sleep, timeout</code> sem termo associado.",
+      "Erros de digitação no README («Inventoty», «nota fical»)."
      ]
     }
    ]

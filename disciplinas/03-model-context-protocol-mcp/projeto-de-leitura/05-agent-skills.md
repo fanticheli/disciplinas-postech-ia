@@ -52,6 +52,8 @@ Quem decide qual manual abrir é o próprio sistema, olhando as etiquetas. O MCP
 - Escrever skill enorme num único arquivo, recriando o problema do prompt gigante.
 - Esperar que skills substituam servidores MCP: uma ensina o processo, o outro dá acesso.
 
+> 💡 **Dica:** a live de 24/02 aprofunda isso com um caso prático (migrar os testes do MySQL2 para TypeScript com duas skills e um agent) e casos reais de skills: veja o [tópico da live](./16-live-mcp-and-skills-practical-case.md).
+
 ---
 
 ## 🧩 Cola rápida

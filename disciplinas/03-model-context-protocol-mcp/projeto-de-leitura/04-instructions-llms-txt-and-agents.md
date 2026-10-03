@@ -54,6 +54,8 @@ E, em vez de um estagiário que faz tudo, você monta uma equipe: um que escreve
 - Confundir arquivo de instrução do projeto (interno) com `llms.txt` (exposto a agentes externos).
 - Não definir quando a tarefa está concluída: o agent para cedo ou nunca.
 
+> 💡 **Dica:** a live de 24/02 aprofunda o uso de `llms.txt`, Gitingest e Jina Reader para dar contexto ao agente: veja o [tópico da live](./16-live-mcp-and-skills-practical-case.md).
+
 ---
 
 ## 🧩 Cola rápida

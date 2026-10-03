@@ -98,4 +98,4 @@ Workspace Nx 22.6.3 com `frontend` (Angular 21.2, Vitest), `api` (NestJS 11, Jes
 
 ---
 
-⬅️ [06 · Corrigindo a interface com IA: contraste, responsividade e revisão humana](./06-corrigindo-a-interface-com-ia.md)  ·  [08 · Spec-Driven Development com OpenSpec](./08-spec-driven-development-com-openspec.md) ➡️
+⬅️ [16 · Live Safer: skills de agente, MCP e Lagune no fluxo de uma landing page](./16-live-safer-skills-mcp-e-lagune.md)  ·  [08 · Spec-Driven Development com OpenSpec](./08-spec-driven-development-com-openspec.md) ➡️

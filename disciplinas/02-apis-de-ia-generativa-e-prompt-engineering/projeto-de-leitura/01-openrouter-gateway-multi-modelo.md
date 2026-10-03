@@ -36,6 +36,7 @@ O gateway do curso é esse aplicativo: a pergunta chega, o OpenRouter escolhe en
 - Montar um gateway interno que centraliza chave, custo e política de modelos para vários produtos.
 - Escolher critério por cenário: preço no protótipo, latência no chat, throughput em geração longa.
 - Justificar custo com os dados de uso por chave e por modelo exportados do painel.
+- A live de 24/09 usa o OpenRouter como backend de um agente LangGraph via `ChatOpenAI` com `base_url` do OpenRouter e modelo em variável de ambiente: [Live NetFibra](./12-live-netfibra-langgraph-graphrag-hitl.md).
 
 ### Vantagens e limites
 **Vantagens**

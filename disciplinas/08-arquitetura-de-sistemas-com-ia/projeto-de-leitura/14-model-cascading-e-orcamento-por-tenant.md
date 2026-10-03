@@ -114,4 +114,4 @@ O protótipo final da disciplina: `trialforge-model-tiering-prototype.js` (e o e
 
 ---
 
-⬅️ [13 · Observabilidade de IA em escala e implantação híbrida: Kubernetes, Serverless e Edge](./13-observabilidade-e-implantacao-hibrida.md)
+⬅️ [13 · Observabilidade de IA em escala e implantação híbrida: Kubernetes, Serverless e Edge](./13-observabilidade-e-implantacao-hibrida.md)  ·  [15 · Live Temporal: Process Manager, paralelismo e retry com workflows duráveis](./15-live-temporal-process-manager.md) ➡️

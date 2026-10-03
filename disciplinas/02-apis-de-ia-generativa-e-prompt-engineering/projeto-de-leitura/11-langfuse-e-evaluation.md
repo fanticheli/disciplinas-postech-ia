@@ -80,4 +80,4 @@ O repositório do módulo não traz projeto de Langfuse nem de evaluation. O `07
 
 ---
 
-⬅️ [10 · Modelos multimodais: documentos, áudio e real-time](./10-modelos-multimodais.md)  ·  [README](./README.md)
+⬅️ [10 · Modelos multimodais: documentos, áudio e real-time](./10-modelos-multimodais.md)  ·  [12 · Live NetFibra: suporte com LangGraph, GraphRAG em memória e human-in-the-loop](./12-live-netfibra-langgraph-graphrag-hitl.md) ➡️
