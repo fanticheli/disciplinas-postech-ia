@@ -12,6 +12,15 @@ Cada assunto é explicado em camadas: **o que é · como funciona · como se apl
 | # | Disciplina | Autoria | Status |
 |---|------------|---------|--------|
 | 01 | Fundamentos de IA e LLMs para Programadores | Erick Wendel | ✅ Completa |
+| 02 | APIs de IA Generativa e Prompt Engineering | Erick Wendel | ✅ Completa |
+| 03 | Model Context Protocol (MCP) | Erick Wendel | ✅ Completa |
+| 04 | Criação de Agentes Autônomos | Thiago Bussola | ✅ Completa |
+| 05 | Ferramentas de IA para UX e UI | Álvaro Camillo Neto | ✅ Completa |
+| 06 | Ferramentas de IA para DevOps | Camilla Martins | ✅ Completa |
+| 07 | Ferramentas de IA para Gestão de Projetos | José Ahirton Batista Lopes Filho | ✅ Completa |
+| 08 | Arquitetura de Sistemas com IA | José Ahirton Batista Lopes Filho | ✅ Completa |
+| 09 | Processamento de Dados e Fine-Tuning de Modelos | José Ahirton Batista Lopes Filho | ✅ Completa |
+| 10 | Segurança e Governança em IA | Jéssica da Silva Costa | ✅ Completa |
 
 ---
 
@@ -20,6 +29,7 @@ Cada assunto é explicado em camadas: **o que é · como funciona · como se apl
 ```
 .
 ├── index.html                        # Site de estudo (servido pelo GitHub Pages)
+├── data/dNN.js                       # Conteúdo do site, um arquivo por disciplina
 └── disciplinas/
     └── 01-fundamentos-de-ia-e-llm/
         ├── material/                 # PDFs oficiais da disciplina
@@ -27,10 +37,13 @@ Cada assunto é explicado em camadas: **o que é · como funciona · como se apl
         │   ├── referencias-e-links-por-modulo.pdf
         │   ├── indicacoes-de-leitura.pdf
         │   └── contracapa.pdf
-        └── projeto-de-leitura/       # Resumos em Markdown (fonte do site)
-            ├── README.md             # Trilha de leitura e cobertura por módulo
+        └── projeto-de-leitura/       # Material central: teoria da apostila + código do repo
+            ├── README.md             # Trilha de leitura, cobertura por aula e mapa código → tópico
             └── 00 … 11 *.md          # Um arquivo por assunto
 ```
+
+Cada tópico junta a **teoria da apostila** com o **estudo do código** do [repositório oficial](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada)
+(seção 💻 *No código do repo*: fluxo, como rodar, template vs z e armadilhas). Todas as disciplinas (01 a 10) seguem a mesma estrutura.
 
 ## 🎯 Como estudar
 
@@ -52,8 +65,8 @@ open index.html          # macOS
 
 ## ➕ Adicionando novas disciplinas
 
-O site é *data-driven*: no `index.html`, adicione um objeto ao array `TOPICS`
-(e um bloco em `BLOCOS`, se for outra disciplina). Todo o layout é reaproveitado.
+O site é *data-driven*: cada disciplina é um arquivo `data/dNN.js` com `STUDY.push({disc, materiais, blocos, topics})`,
+carregado por uma tag `<script>` no `index.html`. Todo o layout é reaproveitado.
 
 ---
 

@@ -1,6 +1,6 @@
 # 08 · Ferramentas de IA para Dev — Cursor, Windsurf e Agentes
 
-> **Módulo 7 da disciplina** · Leitura: ~10 min · Pré-requisito: doc [07](./07-prompt-engineering.md)
+> **Módulo 7 da disciplina (Caps. 1 e 2)** · Leitura: ~11 min · Pré-requisito: doc [07](./07-prompt-engineering.md)
 
 ## 🎯 Em uma frase
 Os editores de código viraram **cockpits de IA** (VS Code, Cursor, Windsurf), e dentro deles surgiram os **agentes de IA** — sistemas que usam uma LLM como *motor de decisão* acoplado a ferramentas e ciclos de execução, para não só *conversar*, mas *fazer* e *validar* tarefas.
@@ -24,14 +24,14 @@ O **VS Code** virou o padrão da indústria — o "Chrome dos editores" — pelo
 
 | Editor | Origem | Números |
 |--------|--------|---------|
-| **Cursor** | Empresa Hemisphere (2022), *AI-first* desde o início | US$ 2,3 bi captados; valuation ~US$ 29,3 bi |
+| **Cursor** | Segundo a apostila, empresa "Hemisphere" (2022), *AI-first* desde o início | US$ 2,3 bi captados numa rodada; valuation ~US$ 29,3 bi |
 | **Windsurf** | Equipe Codium (do plugin Codeium) | US$ 150 mi captados; valuation US$ 1,2 bi; OpenAI chegou a considerar comprar por US$ 3 bi |
 
-Por que investimentos tão grandes? Porque atacam o **custo mais alto da indústria de software: o tempo de desenvolvimento.**
+Por que investimentos tão grandes? Porque atacam o **custo mais alto da indústria de software: o tempo de desenvolvimento.** (Números como estão na apostila; as matérias de Crunchbase, TechCrunch e Reuters estão nas referências.) No dia a dia, VS Code e Windsurf quase não diferem em atalhos, extensões e aparência: muda a profundidade da integração com IA.
 
 ### Agentes nativos no VS Code
 O chat com IA inclui modos nativos:
-- **ASK** — perguntas rápidas e explicação de código.
+- **ASK** (a apostila grafa "ASCII") — perguntas rápidas e explicação de código.
 - **EDIT** — modificações controladas com base em guias.
 - **PLAN** — criação de um plano de implementação **antes** da execução.
 - **AGENT** — após o plano aprovado, executa as tarefas com autonomia, iterando conforme o contexto e as ferramentas.
@@ -76,6 +76,12 @@ Há também **agentes customizáveis**: personas com tarefas repetitivas, modelo
 - **Contrato** (formato da API, shape da resposta)
 - **Plano de testes** (como validar)
 
+**Fluxo profissional com agentes:** definir a spec → criar agentes com papéis definidos → executar cada etapa com validação → integrar os resultados a testes automatizados. Agentes também não vivem só em editores: podem estar em back-ends, pipelines de CI, bots de suporte e observabilidade.
+
+> **Exemplo de spec (ilustrativo, não é da apostila):** Contexto: API Node 22 com Postgres. Requisito: `POST /orders` idempotente. Não-requisito: não mexer no módulo de auth. Critério de aceite: repetir a mesma chave devolve 201 com o mesmo id. Contrato: corpo e resposta em JSON com schema. Testes: unitário da regra e e2e do endpoint.
+
+> ⚠️ **Risco real:** a lista de referências inclui a reportagem da Fortune sobre uma ferramenta de código com IA (Replit) que apagou um banco de dados: agente com acesso amplo e sem escopo é risco.
+
 > 🔑 O segredo de agentes que funcionam de verdade continua sendo **engenharia de prompt** (doc [07](./07-prompt-engineering.md)). Agentes não são "LLMs com plugins" — são sistemas completos com controle de execução, planejamento e validação.
 
 ---
@@ -105,3 +111,6 @@ Há também **agentes customizáveis**: personas com tarefas repetitivas, modelo
 - Custom agents no VS Code — https://code.visualstudio.com/docs/copilot/customization/custom-agents
 - Spec-driven development (Spec Kit, Microsoft) — https://developer.microsoft.com/blog/spec-driven-development-spec-kit
 - Git worktrees (paralelizar agentes) — https://www.marcohaber.dev/blog/git-worktrees
+- Financiamento do Cursor (Crunchbase) — https://news.crunchbase.com/venture/cursor-financing-ai-coding-automation/
+- OpenAI e Windsurf (Reuters) — https://www.reuters.com/business/openai-agrees-buy-windsurf-about-3-billion-bloomberg-news-reports-2025-05-06/
+- Replit apagou um banco de produção (Fortune) — https://fortune.com/2025/07/23/ai-coding-tool-replit-wiped-database-called-it-a-catastrophic-failure/

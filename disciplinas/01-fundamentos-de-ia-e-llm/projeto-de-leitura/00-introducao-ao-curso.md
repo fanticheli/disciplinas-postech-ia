@@ -1,6 +1,6 @@
 # 00 · Introdução ao curso — a proposta e como estudar
 
-> **Módulo 1 da disciplina** · Leitura: ~5 min · Pré-requisito: nenhum
+> **Módulo 1 da disciplina (Caps. 1 e 2)** · Leitura: ~6 min · Pré-requisito: nenhum
 
 ## 🎯 Em uma frase
 Esta pós **não forma cientistas de dados** — forma **desenvolvedores** que usam IA no dia a dia, com foco total em prática, usando **JavaScript** para rodar IA direto no navegador e em projetos locais.
@@ -25,12 +25,14 @@ E tem uma regra de ouro que a vovó conhece bem: **não adianta só assistir**. 
 - **Público-alvo:** desenvolvedores, não cientistas de dados. Foco em **aplicação**, não em derivar a matemática por trás dos modelos.
 - **Objetivo:** entender conceitos, conhecer boas práticas, explorar ferramentas acessíveis (gratuitas ou pagas) e **aplicar IA diretamente no navegador ou em projetos locais**.
 - **Entregável:** mais de **12 projetos práticos** com potencial de uso real em empresas, produtos e portfólio.
+- **O que o professor promete:** sair do discurso mágico sobre IA e entender o que se faz, como funciona e como aplicar no dia a dia. Temas: JavaScript, Web AI, LLMs, RAG, embeddings, vector databases e agentes; ferramentas: Teachable Machine, Ollama, OpenRouter e o VS Code adaptado para produtividade com IA.
+- **O que o curso não é:** formação de cientista de dados. Conteúdos de IA costumam mergulhar em matemática, estatística e infraestrutura complexa; aqui o objetivo é usar IA no desenvolvimento.
 
 ### Por que JavaScript (e não Python)?
 Embora IA seja tradicionalmente associada ao Python, o curso aposta em JS por uma vantagem única:
 
 - **É a linguagem nativa dos navegadores.** Qualquer dev, venha de onde vier, cedo ou tarde encosta em JavaScript.
-- **Roda IA no cliente:** com a evolução da "Web 4.0", dá para executar modelos, processar áudio/vídeo e criar interfaces inteligentes **sem custo adicional de servidor** e com boa performance.
+- **Roda IA no cliente:** com a evolução da "Web 4.0" (no uso da apostila: sites adaptados para que IAs busquem respostas direto na fonte, e navegadores com APIs nativas para executar modelos), dá para processar áudio/vídeo e criar interfaces inteligentes **sem custo adicional de servidor** e com boa performance.
 - **Autonomia:** você deixa de ser apenas alguém que "integra APIs de terceiros" e passa a rodar IA com controle e economia de recursos.
 - **Ponte com Python:** a biblioteca-base do curso, o **TensorFlow.js**, também permite **portar modelos treinados em Python** para execução no navegador ou no Node.js.
 
@@ -56,6 +58,11 @@ A jornada começa diferenciando conceitos que costumam se confundir — **Machin
 2. **Leia o complementar:** artigos e docs indicados não são enfeite — leia e teste.
 3. **Desenvolva um projeto pessoal** ao longo do curso e compartilhe o progresso (gera networking e portfólio).
 4. **Participe da comunidade** (Discord da turma): o aprendizado real acontece fora do tempo de aula, quando você encara um problema de verdade.
+
+---
+
+### Nota sobre a apostila
+A apostila é um texto derivado das aulas e traz grafias trocadas. Neste material usamos os nomes corretos: "Oriama", "Yama" e "Olyama" são o **Ollama**; "Reg" (e "Retrieval Mentor Generation") é **RAG**; "BetterOff" é o **Better Auth**; "ASCII" é o modo **ASK** do VS Code; "QuenCoder" provavelmente é o Qwen Coder. Quando o código do repositório diverge da apostila (variável de ambiente, métrica, uso de Docker), o tópico aponta a divergência.
 
 ---
 

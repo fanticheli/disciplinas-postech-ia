@@ -1,6 +1,6 @@
 # 05 · Como funcionam LLMs — transformers, embeddings, attention
 
-> **Módulo 5 (Cap. 2) da disciplina** · Leitura: ~12 min · Pré-requisito: doc [01](./01-ml-dl-ia-redes-neurais.md) · ⭐ **Doc central**
+> **Módulo 5 (Cap. 2) da disciplina** · Leitura: ~13 min · Pré-requisito: doc [01](./01-ml-dl-ia-redes-neurais.md) · ⭐ **Doc central**
 
 ## 🎯 Em uma frase
 Um **LLM** (Large Language Model) é um autocompletar gigante: ele quebra o texto em **tokens**, transforma cada token em um **vetor de significado** (embedding), usa o mecanismo de **attention** para entender o contexto inteiro, e gera a resposta **um token por vez**, sempre escolhendo o próximo mais provável.
@@ -39,6 +39,8 @@ Como as relações semânticas viram **direções no espaço vetorial**, dá par
 - `Rei − Homem + Mulher = Rainha`
 - `Paris − França + Itália = Roma`
 
+> ⚠️ Trate a aritmética de vetores como ilustração didática clássica de embeddings, não como propriedade garantida de qualquer modelo.
+
 ### 3. Transformers e o mecanismo de Attention
 Com os tokens virados em embeddings, a arquitetura **Transformer** os processa — uma das maiores revoluções da IA moderna. Seu coração é o **Self-Attention**: ao interpretar ou gerar cada token, o modelo **considera todas as palavras do contexto**.
 
@@ -74,6 +76,8 @@ A IA **não gera o texto todo de uma vez**. Ela gera **token por token**, recalc
 
 Quanto maior o texto, maior o custo computacional.
 
+> 🧭 **Complemento (fora da apostila):** a temperature atua antes da escolha, reescalando as pontuações do modelo; com valor 0 ele tende a pegar sempre o token mais provável. Top-K e Top-P costumam poder ser combinados nas APIs. E o limite de contexto conta prompt e resposta juntos: o que passar disso fica de fora.
+
 ### Alucinações e limitações
 O modelo **não sabe o que é verdade ou mentira** — apenas gera o token mais provável dado o contexto. Quando falta informação ou o prompt é ambíguo, ele pode gerar **afirmações falsas que soam convincentes**. Para reduzir alucinações:
 - Fornecer **contexto completo**.
@@ -103,7 +107,8 @@ O modelo **não sabe o que é verdade ou mentira** — apenas gera o token mais 
 ## 💻 No curso
 - Uso do **tokenizer da OpenAI** para ver na prática quantos tokens uma frase consome.
 - Demonstração de **temperature** e **top-K** alterando o comportamento das respostas.
-- Contexto de custo real: o quanto operar modelos como o ChatGPT custa em escala (centenas de milhares de dólares por dia) — reforçando por que **otimizar prompts e tokens** é engenharia, não detalhe.
+- As referências da aula incluem matérias sobre o custo de operar o ChatGPT em escala (uma de 2023 fala em cerca de US$ 700 mil por dia; é estimativa de terceiros, não verificada aqui) — reforçando por que **otimizar prompts e tokens** é engenharia, não detalhe.
+- A apostila fecha o capítulo dizendo que entender tokenização, embeddings, attention e sampling ajuda a reduzir custos otimizando prompts, ajustar parâmetros e criar experiências robustas com APIs de IA.
 
 ---
 

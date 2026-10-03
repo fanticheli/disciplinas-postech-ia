@@ -12,7 +12,7 @@
     --warn:#b7791f; --warn-soft:#fdf3e2; --vovo:#c026a3; --vovo-soft:#fbeaf6;
     --shadow:0 1px 2px rgba(20,25,40,.06),0 8px 24px rgba(20,25,40,.06);
     --radius:14px;
-    --b0:#64748b; --b1:#4f46e5; --b2:#0d9488; --b3:#7c3aed; --b4:#d97706; --b5:#e11d48;
+    --b0:#64748b; --b1:#4f46e5; --b2:#0d9488; --b3:#7c3aed; --b4:#d97706; --b5:#e11d48; --b6:#0284c7; --b7:#16a34a;
   }
   :root[data-theme="dark"]{
     --bg:#0e1016; --panel:#171a22; --ink:#e8eaee; --muted:#9aa2b1; --line:#262a35;
@@ -20,7 +20,7 @@
     --good:#3ecf8e; --good-soft:#13251d; --bad:#f87171; --bad-soft:#2a1717;
     --warn:#eab355; --warn-soft:#2a2314; --vovo:#f0a6dc; --vovo-soft:#2a1626;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
-    --b0:#94a3b8; --b1:#818cf8; --b2:#2dd4bf; --b3:#a78bfa; --b4:#fbbf24; --b5:#fb7185;
+    --b0:#94a3b8; --b1:#818cf8; --b2:#2dd4bf; --b3:#a78bfa; --b4:#fbbf24; --b5:#fb7185; --b6:#38bdf8; --b7:#4ade80;
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){
@@ -29,7 +29,7 @@
       --good:#3ecf8e; --good-soft:#13251d; --bad:#f87171; --bad-soft:#2a1717;
       --warn:#eab355; --warn-soft:#2a2314; --vovo:#f0a6dc; --vovo-soft:#2a1626;
       --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
-      --b0:#94a3b8; --b1:#818cf8; --b2:#2dd4bf; --b3:#a78bfa; --b4:#fbbf24; --b5:#fb7185;
+      --b0:#94a3b8; --b1:#818cf8; --b2:#2dd4bf; --b3:#a78bfa; --b4:#fbbf24; --b5:#fb7185; --b6:#38bdf8; --b7:#4ade80;
     }
   }
   *{box-sizing:border-box}
@@ -184,7 +184,13 @@
   .cola .row{border-bottom:1px solid var(--line);padding:7px 0;font-size:14px}
   .cola .row dt{font-weight:700;color:var(--ink)}
   .cola .row dd{margin:2px 0 0;color:var(--muted);font-size:13.5px}
-  code{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:.5px 5px;font-size:.86em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .disc-label{cursor:pointer;font-weight:700;font-size:13px;padding:10px 12px;margin:4px 0;border-radius:10px;border:1px solid var(--line);background:var(--panel)}
+  .disc-label:hover{border-color:var(--accent)}
+  .code-proj{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:10px 14px;margin:10px 0}
+  .code-proj summary{cursor:pointer;font-weight:600;padding:4px 0}
+  .code-proj h4{margin:14px 0 6px;font-size:14px}
+  .code-proj .traps,.code-proj .tip{margin-top:12px}
+  code{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:.5px 5px;font-size:.86em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere}
 
   details.links{margin-top:24px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:2px 16px}
   details.links summary{cursor:pointer;font-size:14px;font-weight:600;padding:12px 0;list-style:none}
@@ -232,7 +238,7 @@
     </div>
     <div class="search"><input id="search" placeholder="Buscar tópico ou termo…" autocomplete="off"></div>
     <div class="progress-wrap">
-      <span id="progTxt">0 de 12 lidos</span>
+      <span id="progTxt"></span>
       <div class="bar"><i id="progBar"></i></div>
     </div>
     <nav id="nav"></nav>
@@ -247,362 +253,188 @@
   </main>
 </div>
 
+<script>window.STUDY=[];</script>
+<script src="data/d01.js"></script>
+<script src="data/d02.js"></script>
+<script src="data/d03.js"></script>
+<script src="data/d04.js"></script>
+<script src="data/d05.js"></script>
+<script src="data/d06.js"></script>
+<script src="data/d07.js"></script>
+<script src="data/d08.js"></script>
+<script src="data/d09.js"></script>
+<script src="data/d10.js"></script>
 <script>
-/* ===================== DADOS ===================== */
-const BLOCOS = [
-  {id:0,label:"Antes de começar",cor:"--b0"},
-  {id:1,label:"A base — o que é IA de verdade",cor:"--b1"},
-  {id:2,label:"Visão computacional e IA que aprende sozinha",cor:"--b2"},
-  {id:3,label:"O coração dos LLMs",cor:"--b3"},
-  {id:4,label:"Trabalhando com LLMs no dia a dia",cor:"--b4"},
-  {id:5,label:"Rodando e alimentando modelos",cor:"--b5"},
-];
+const COLORS = ["--b1","--b2","--b3","--b4","--b5","--b0"];
+const DISCIPLINES = STUDY.slice().sort((a,b)=>a.disc.num.localeCompare(b.disc.num));
+const BLOCKS = [];
+const TOPICS = [];
+DISCIPLINES.forEach(d=>{
+  d.blocos.forEach((b,i)=>BLOCKS.push({...b, num:i, disc:d.disc.num, color:COLORS[i%COLORS.length]}));
+  d.topics.forEach(t=>TOPICS.push({...t, disc:d.disc.num}));
+});
 
-const TOPICS = [
-{
-  id:"00", bloco:0, mod:"Módulo 1", emoji:"🚀", read:"5 min",
-  title:"Introdução ao curso — a proposta e como estudar",
-  short:"Uma pós que forma devs que aplicam IA, não cientistas de dados.",
-  oneliner:"Esta pós <b>não forma cientistas de dados</b> — forma <b>desenvolvedores</b> que usam IA no dia a dia, com foco total em prática, usando <b>JavaScript</b> para rodar IA direto no navegador e em projetos locais.",
-  vovo:[
-    "Imagine uma escola de culinária. Um curso ensina a <b>química dos alimentos</b> (a fórmula da fermentação); o outro ensina a <b>cozinhar de verdade</b> — pôr a mão na massa e servir o prato. Este curso é o segundo tipo: não afunda você em matemática pesada, ensina a <b>usar as ferramentas</b> pra resolver problemas reais.",
-    "E tem a regra de ouro que a vovó conhece: <b>não adianta só assistir</b>. Aprender a cozinhar vendo vídeo não enche barriga de ninguém — tem que ir pro fogão, errar o ponto, repetir."
-  ],
-  oque:["Curso focado na <b>aplicação</b> de IA por desenvolvedores — entender conceitos e boas práticas, não derivar a matemática.","Entregável: <b>+12 projetos práticos</b> com potencial de uso real em empresas, produto e portfólio.","Base técnica: <b>TensorFlow.js</b> e JavaScript/Node — aplicar IA sem trocar de stack."],
-  como:["<b>Por que JS e não Python?</b> É a linguagem nativa do navegador — todo dev cedo ou tarde encosta nela.","Roda IA <b>no cliente</b>: modelos, áudio e vídeo sem custo extra de servidor e com boa performance.","Dá <b>autonomia</b>: você deixa de só integrar APIs de terceiros e passa a rodar IA com controle.","<b>Ponte com Python</b>: o TensorFlow.js também porta modelos treinados em Python pro navegador/Node."],
-  aplica:["Pegue cada exemplo e adapte a outro contexto (processou imagem? tente áudio ou vídeo).","Desenvolva um <b>projeto pessoal</b> como fio condutor — vira portfólio e networking.","Leia o material complementar e participe da comunidade (o aprendizado real vem do problema real)."],
-  pros:["Aprende fazendo, com projetos reais","Roda local/offline, sem custo de servidor","Gera portfólio aplicável ao mercado"],
-  contras:["Exige disciplina de praticar, não só assistir","Não aprofunda a matemática por trás dos modelos"],
-  traps:["Consumir o curso de forma passiva (só assistir e não codar)","Pular a prática e o material complementar","Achar que vídeo assistido = conhecimento fixado"],
-  cola:[["Foco do curso","Aplicar IA como dev, não fazer ciência de dados"],["TensorFlow.js","Roda ML no navegador e no Node; porta modelos do Python"],["Web 4.0","Geração da web com IA nativa ao navegador (roda local)"],["Aprendizado ativo","Praticar, adaptar e compartilhar — não apenas assistir"]],
-  links:[["Repositório oficial da disciplina","https://github.com/unipds-engenharia-de-ia-aplicada"],["Pac-Man com transfer learning (demo)","https://storage.googleapis.com/tfjs-examples/webcam-transfer-learning/dist/index.html"],["ML vs Deep Learning (visão geral)","https://www.datacamp.com/tutorial/machine-deep-learning"]]
-},
-{
-  id:"01", bloco:1, mod:"Módulo 2", emoji:"🧩", read:"9 min",
-  title:"Machine Learning, Deep Learning e IA",
-  short:"IA ⊃ ML ⊃ DL: a base que costuma se confundir.",
-  oneliner:"<b>IA</b> é o guarda-chuva de qualquer sistema que resolve tarefas “inteligentes”; <b>Machine Learning</b> é o pedaço que aprende com exemplos em vez de regras escritas à mão; e <b>Deep Learning</b> é o ML turbinado com <b>redes neurais</b> de muitas camadas.",
-  vovo:[
-    "Quer ensinar alguém a reconhecer uma laranja. <b>Jeito antigo (regras):</b> “se for redonda E laranja E do tamanho de um punho…” — mas uma tangerina quebra a regra, uma laranja verde quebra a regra. Você nunca termina de escrever exceções.",
-    "<b>Machine Learning:</b> em vez de regras, mostra <b>mil fotos</b> de laranjas e mil de outras frutas. A criança descobre o padrão sozinha e acerta em frutas que nunca viu. <b>Deep Learning</b> é a mesma ideia com um “cérebro” de várias camadas: uma vê bordas, outra formas, outra textura, a última decide.",
-    "O “neurônio artificial” é só uma <b>mini calculadora</b>: recebe números, faz uma continha e passa adiante. Junte milhares e vira uma rede que aprende. Apesar do nome, <b>não é um cérebro</b> — é matemática com nome bonito."
-  ],
-  oque:["<b>IA:</b> qualquer algoritmo que executa tarefas que “exigiriam inteligência”.","<b>ML:</b> subárea que troca regras manuais por <b>padrões aprendidos de dados</b> — ganha em flexibilidade, escala e adaptabilidade.","<b>DL:</b> ML com <b>redes neurais profundas</b>; cada camada empilhada aprende representações mais abstratas (resolve bem visão, voz, movimento)."],
-  como:["Rede = <b>entrada</b> (dados virados número) → <b>camadas ocultas</b> (cada neurônio combina entradas, aplica <b>pesos</b> + função de ativação tipo ReLU) → <b>saída</b> (probabilidade por categoria, ex. Softmax).","<b>Treinar</b> = mostrar exemplos rotulados, medir o erro (<b>loss</b>) e ajustar os pesos, repetindo por várias <b>epochs</b>.","Todo dado vira <b>tensor</b>: normalização escala valores pra 0–1 <code>(valor-min)/(max-min)</code>; <b>one-hot</b> transforma categorias em vetores binários.","<b>Mais dados + mais diversidade = melhor generalização</b> (o sensor LEM do Google treinou com +60 milhões de horas)."],
-  aplica:["Classificar imagens, gestos e voz por exemplos em vez de regras (ex. gesto no smartwatch).","<b>Teachable Machine</b>: treinar um classificador pela webcam sem escrever código.","<b>Transfer learning</b>: reaproveitar um modelo pronto e refinar com poucos dados (ex. Pac-Man controlado pelo rosto)."],
-  pros:["Generaliza para dados nunca vistos","Resolve o que regras manuais não dão conta","Flexível, escalável e adaptável"],
-  contras:["Precisa de muitos dados variados e representativos","Comporta-se como “caixa-preta”","Treino tem custo computacional real"],
-  traps:["Treinar com poucos dados ou dados enviesados","Esquecer a normalização — uma feature domina pela escala","Tratar categoria como número (sem one-hot), criando ordem que não existe","Achar que o modelo “decorou” — o valor está em <b>generalizar</b>"],
-  cola:[["Neurônio artificial","Mini calculadora: combina entradas, aplica peso + ativação"],["Peso","Quanto cada conexão influencia — é o que é “aprendido”"],["Tensor","Estrutura numérica (vetor/matriz) que o modelo processa"],["Normalização","Escalar números para 0–1"],["One-hot encoding","Transformar categorias em vetores binários"],["Epoch","Uma passada completa por todos os dados de treino"],["Loss","O quão longe a previsão está da resposta certa"],["Generalização","Acertar em dados nunca vistos"],["Transfer learning","Reaproveitar um modelo treinado e refiná-lo"]],
-  links:[["Anatomia de uma rede neural","https://www.notablecap.com/blog/the-anatomy-of-a-neural-network"],["CNN Explainer (interativo)","https://poloclub.github.io/cnn-explainer/"],["Teachable Machine","https://teachablemachine.withgoogle.com/"],["Kaggle","https://kaggle.com/"]]
-},
-{
-  id:"02", bloco:1, mod:"Módulo 3", emoji:"🛒", read:"10 min",
-  title:"Sistemas de Recomendação na prática",
-  short:"Estimar a probabilidade de cada cliente comprar cada produto.",
-  oneliner:"Um sistema de recomendação é uma rede neural que aprende, a partir do histórico, a <b>estimar a probabilidade</b> de cada cliente comprar cada produto — e ordena o catálogo do “mais provável” ao “menos provável”, inclusive para clientes <b>novos</b>, sem histórico.",
-  vovo:[
-    "Pensa no feirante que você frequenta há anos: ele já sabe que você leva tomate, manjericão e uma fruta da estação — recomendação pelo <b>seu histórico</b>. Chega um cliente <b>novo</b> que ele nunca viu: ele repara “esse tem o jeito dos que levam café e pão na chapa” e sugere isso. Na falta do histórico, usa o comportamento de <b>gente parecida</b>.",
-    "É isso que o sistema faz, com matemática: para cada par <i>(cliente, produto)</i> dá uma nota de 0 a 1 — a chance de comprar — e ordena do maior pro menor. E tudo roda <b>dentro do navegador</b>."
-  ],
-  oque:["Objetivo: <b>ranquear produtos pela probabilidade de compra</b> de cada usuário.","Para clientes sem histórico (<b>cold start</b>), usa o comportamento de perfis semelhantes (a idade puxa o resto).","Roda 100% no navegador — treino e predição no cliente."],
-  como:["<b>Codificar produto</b> num vetor normalizado, com <b>peso por atributo</b>: categoria (maior) &gt; cor &gt; preço &gt; idade. Categorias/cores viram one-hot com multiplicador.","<b>Codificar usuário</b> = média dos vetores dos produtos que ele comprou (um “perfil de compra” resumido).","<b>Treino:</b> pares (usuário, produto) rotulados 1 (comprou) ou 0. Rede densa <b>128 → 64 → 32 → 1</b> com saída <b>Sigmoid</b>; otimizador Adam, loss binaryCrossentropy.","<b>Web Worker</b> treina em segundo plano (não trava a UI); <b>tfvis</b> plota loss e acurácia em tempo real.","<b>Predição:</b> concatena o vetor do usuário com o de cada produto, prevê e <b>ordena</b>."],
-  aplica:["E-commerce, filmes, artigos, cursos — mesmo motor, troca-se o domínio.","Em produção, a comparação “todos-com-todos” não escala: use um <b>banco vetorial</b> (Pinecone, ChromaDB, pgvector) que devolve só os <b>top-N</b> mais próximos."],
-  pros:["Personaliza sem escrever regras","Funciona para clientes novos (perfis similares)","Aprendizado observável em tempo real (tfvis)"],
-  contras:["Comparar todos-com-todos é inviável em escala","Qualidade depende muito da codificação e dos pesos","Cold start é uma aproximação (só idade)"],
-  traps:["Rodar o treino na thread principal — trava a interface (use Web Worker)","Comparar todos os usuários com todos os produtos em escala (use banco vetorial)","Pesos de atributo mal calibrados distorcem o ranking","Ignorar normalização e fallback quando faltam dados"],
-  cola:[["Web Worker","Thread secundária: treina sem travar a interface"],["tfvis","Plota loss/acurácia em tempo real"],["Peso do atributo","Multiplicador de importância (categoria/cor/preço/idade)"],["Sigmoid","Ativação que devolve probabilidade 0–1"],["binaryCrossentropy","Loss para problemas de sim/não"],["Cold start","Recomendar para usuário novo, sem histórico"],["Banco vetorial","Indexa vetores e retorna os top-N mais próximos"]],
-  links:[["Recommenders (Microsoft)","https://github.com/recommenders-team/recommenders"],["Guia de recomendação (Databricks)","https://www.databricks.com/blog/guide-to-building-online-recommendation-system"],["Spotify + Reinforcement Learning","https://blog.tensorflow.org/2023/10/simulated-spotify-listening-experiences-reinforcement-learning-tensorflow-tf-agents.html"]]
-},
-{
-  id:"03", bloco:2, mod:"Módulo 4", emoji:"🎯", read:"9 min",
-  title:"Visão computacional na Web — vencendo jogos com YOLO",
-  short:"Integrar um modelo pronto de detecção em vez de treinar do zero.",
-  oneliner:"Nem sempre é preciso treinar um modelo: aqui a IA <b>integra um modelo pronto de detecção de objetos (YOLO)</b> para enxergar a tela de um jogo, identificar os alvos e disparar sozinha — tudo no navegador.",
-  vovo:[
-    "Em vez de criar um cão de caça filhote e passar meses adestrando, você <b>contrata um cão já treinado</b> e só ensina onde mirar. Esse “cão treinado” é o <b>YOLO</b>: olha uma foto e aponta num piscar de olhos <i>onde</i> está cada coisa.",
-    "A IA tira uma “foto” da tela várias vezes por segundo, pergunta “onde está o pato?”, pega as coordenadas e clica ali. Detalhe engraçado: o YOLO nunca aprendeu “pato de videogame”, então chama o pato de <b>“pipa” (kite)</b>. Não é perfeito, mas acha o alvo no lugar certo."
-  ],
-  oque:["Muda o foco: em vez de <b>treinar</b>, o objetivo é <b>integrar</b> modelos prontos, Web APIs e bibliotecas de JS.","<b>YOLO (You Only Look Once):</b> detecção de objetos — retorna o que e onde está cada item, com 80+ categorias.","Treinado em PyTorch, <b>convertido para TensorFlow.js</b> e executado no browser."],
-  como:["<b>Capturar</b> a tela do canvas com <code>createImageBitmap</code>.","Enviar a imagem a um <b>Web Worker</b> (a thread principal nunca roda o modelo direto).","<b>Pré-processar</b> dentro de <code>tf.tidy</code>: bitmap → tensor, resize para 640×640, normalizar (/255), adicionar dimensão de batch.","<b>Inferir</b> com <code>executeAsync</code> → retorna boxes, scores e classes.","<b>Filtrar</b> por confiança (threshold 40%) e classe, calcular o <b>centro da caixa</b>, mover a mira e simular o clique.","<b>Warm-up</b>: uma predição inicial “boba” pré-carrega o modelo e acelera as próximas."],
-  aplica:["Automação de jogos; monitoramento; robótica; navegação autônoma.","Trocando o alvo/label: detectar <b>prateleiras vazias</b> em supermercado, contar objetos, vigiar cenas."],
-  pros:["Entrega rápida — sem meses de treino","Reaproveita inteligência pronta e robusta","Roda no navegador, sem servidor"],
-  contras:["Os labels podem não bater com seu domínio (o “kite”)","Depende da qualidade do modelo pronto","Cada frame tem custo de inferência"],
-  traps:["Rodar o modelo na thread principal (trava a UI)","Esquecer o <code>tf.tidy</code> → vazamento de memória de tensores","Pular o warm-up e sofrer com a primeira inferência lenta","Threshold mal ajustado → falsos positivos/negativos"],
-  cola:[["YOLO","Modelo de detecção de objetos (You Only Look Once)"],["Detecção de objetos","Achar o que e onde está cada item na imagem"],["Bounding box","Caixa (x1,y1,x2,y2) que delimita o objeto"],["classThreshold","Corte mínimo de confiança (aqui, 40%)"],["tf.tidy","Libera automaticamente a memória dos tensores temporários"],["Warm-up","Predição inicial para pré-carregar o modelo"],["executeAsync","Roda a inferência do grafo do modelo"]],
-  links:[["YOLOv5 (Ultralytics)","https://github.com/ultralytics/yolov5"],["YOLOv7 no navegador com TF.js","https://medium.com/data-science/training-a-custom-yolov7-in-pytorch-and-running-it-directly-in-the-browser-with-tensorflow-js-96a5ecd7a530"],["Detecção de SKUs no browser (Hugo Zanini)","https://blog.tensorflow.org/2022/05/real-time-sku-detection-in-browser.html"]]
-},
-{
-  id:"04", bloco:2, mod:"Módulo 5 · Cap.1", emoji:"🧬", read:"8 min",
-  title:"Algoritmos Genéticos e Aprendizado por Reforço",
-  short:"Dois jeitos de a IA achar solução sozinha, sem resposta pronta.",
-  oneliner:"São dois jeitos de a IA <b>descobrir soluções sozinha</b> quando ninguém sabe a resposta: <b>algoritmos genéticos</b> imitam a evolução (evoluem uma população de tentativas) e <b>aprendizado por reforço</b> imita o adestramento (um agente aprende por tentativa, erro e recompensa).",
-  vovo:[
-    "Lembra de cruzar roseiras pra tentar uma flor mais bonita? Pega as duas plantas mais fortes, cruza, e da nova geração escolhe de novo as melhores. Depois de gerações, sai uma rosa que você nunca conseguiria desenhar na mão. <b>Isso é um algoritmo genético</b> — a IA cria centenas de tentativas, deixa competir, mistura as melhores (crossover) e joga uma pitada de novidade (mutação).",
-    "E o <b>aprendizado por reforço</b> é adestrar o cachorro com petisco: senta certo, ganha petisco; faz bagunça, não ganha nada. No jogo da cobrinha, a IA ganha ponto comendo a fruta e perde batendo na parede — e fica boa só por recompensa e castigo."
-  ],
-  oque:["<b>Genéticos:</b> trabalham com uma <b>população de soluções candidatas</b> que evolui — não aprendem em sequência.","<b>Reforço (RL):</b> um <b>agente</b> toma decisões sequenciais para <b>maximizar uma recompensa acumulada</b>, por tentativa e erro.","Diferença central: genético = evoluir vários candidatos ao mesmo tempo; reforço = treinar um único agente, passo a passo."],
-  como:["<b>Ciclo genético:</b> avaliar (fitness) → selecionar os melhores → cruzar (crossover) → mutar → nova geração; repetir.","A <b>taxa de mutação</b> é o parâmetro crítico: alta = caos (exploração demais); baixa = estagnação; equilibrada = explora sem perder o que já funciona.","<b>RL:</b> cada movimento gera uma pontuação; o agente é recompensado por acertos e penalizado por erros, e ajusta o comportamento a partir disso.","O resultado do genético costuma ser <b>criativo e inesperado</b> — formas que nenhum humano projetaria, mas que funcionam (prioriza desempenho, não estética)."],
-  aplica:["Muito além de jogos: engenharia, logística, design de circuitos, otimização de processos.","Demos: carros que evoluem geração a geração, IA que estaciona sozinha (até com drift), dino do Chrome, SnakeAI."],
-  pros:["Acham soluções criativas que humano não projetaria","Não precisam de dados rotulados","O agente aprende a estratégia sozinho"],
-  contras:["Custam muitas iterações e tempo","Muito sensíveis ao ajuste de parâmetros","Recompensa/fitness mal definida leva a comportamento errado"],
-  traps:["Taxa de mutação mal calibrada (caos ou estagnação)","Função de recompensa/fitness mal desenhada","Confundir “reconhecer” (YOLO, doc 03) com “aprender estratégia” — no Duck Hunt <b>não havia aprendizado real</b>"],
-  cola:[["População","Conjunto de soluções candidatas avaliadas em paralelo"],["Fitness","Nota que mede quão boa é uma solução"],["Crossover","Cruzar características dos melhores indivíduos"],["Mutação","Alteração aleatória para introduzir novidade"],["Geração","Uma rodada completa de avaliação + reprodução"],["Agente (RL)","Entidade que toma decisões buscando recompensa"],["Recompensa","Sinal de acerto/erro que guia o aprendizado"]],
-  links:[["Genetic Cars (simulador)","https://rednuht.org/genetic_cars_2/"],["Neuroevolution com TensorFlow.js","https://medium.com/codesphere-cloud/teaching-cars-to-drive-with-neuroevolution-tensorflow-and-500-lines-of-javascript-57888956322e"],["Cart-pole (RL no navegador)","https://storage.googleapis.com/tfjs-examples/cart-pole/dist/index.html"],["SnakeAI","https://github.com/jonatan5524/SnakeAI"]]
-},
-{
-  id:"05", bloco:3, mod:"Módulo 5 · Cap.2", emoji:"⭐", read:"12 min",
-  title:"Como funcionam LLMs — transformers, embeddings, attention",
-  short:"O doc central: o que faz o ChatGPT funcionar por dentro.",
-  oneliner:"Um <b>LLM</b> é um autocompletar gigante: quebra o texto em <b>tokens</b>, transforma cada um em um <b>vetor de significado</b> (embedding), usa <b>attention</b> para entender o contexto inteiro, e gera a resposta <b>um token por vez</b>, sempre escolhendo o próximo mais provável.",
-  vovo:[
-    "Sabe o <b>autocompletar do celular</b> que sugere a próxima palavra? Um LLM é isso no extremo: em vez de uma palavrinha, escreve textos inteiros, sempre adivinhando “qual a próxima palavra mais provável”.",
-    "Como ele “entende” as palavras? Transforma cada pedaço de texto num <b>ponto num mapa gigante</b> onde ideias parecidas ficam pertinho — dá até pra fazer conta: <i>Rei − Homem + Mulher = Rainha</i>. E pra não se perder numa frase longa, toda vez ele <b>relê a frase inteira</b> (isso é o <b>attention</b>).",
-    "Aviso da vovó: <b>o LLM não sabe o que é verdade.</b> Ele escolhe a palavra mais provável. Se faltar informação, chuta com confiança — e às vezes inventa (a <b>alucinação</b>). Quanto melhor a pergunta e mais contexto, melhor a resposta."
-  ],
-  oque:["<b>GPT</b> = Generative (gera texto) + Pre-trained (treinado antes com muito texto) + Transformer (a arquitetura que torna tudo possível).","O funcionamento tem <b>5 componentes</b>: tokenização, embeddings, transformer/attention, probabilidades/decoding e geração passo a passo."],
-  como:["<b>1. Tokenização:</b> o texto é quebrado em <b>tokens</b> (≠ palavras — podem ser pedaços). “4.000 tokens” não são 4.000 palavras — e isso afeta custo direto.","<b>2. Embeddings:</b> cada token vira um <b>vetor de significado</b>; relações viram direções no espaço (Rei − Homem + Mulher = Rainha).","<b>3. Transformer + Self-Attention:</b> ao interpretar cada token, considera <b>todo o contexto</b>; processa em paralelo e usa <b>positional encoding</b> pra preservar a ordem das palavras.","<b>4. Probabilidades:</b> gera uma lista de prováveis próximos tokens. <b>Temperature</b> (aleatoriedade), <b>Top-K</b> e <b>Top-P</b> controlam a escolha.","<b>5. Sampling:</b> gera <b>token por token</b>, recalculando o contexto a cada palavra — quanto maior o texto, maior o custo."],
-  aplica:["Qualquer geração de texto — ajuste temperature/top-K conforme precise de determinismo ou criatividade.","Conte tokens para estimar <b>custo</b> (operar ChatGPT em escala custa centenas de milhares de dólares/dia).","Dê <b>contexto completo</b> e permita “não sei” para reduzir alucinação → leva direto a Prompt Engineering e RAG."],
-  pros:["Entende contexto e relações de longa distância","Extremamente versátil","Processa tokens em paralelo (rápido)"],
-  contras:["Não sabe o que é verdade — pode alucinar","Custo cresce com o tamanho do texto","Tem limite de tokens e é não-determinístico"],
-  traps:["Assumir que 4.000 tokens = 4.000 palavras","Pressionar o modelo por certeza absoluta","Não dar contexto e culpar o modelo pelo erro","Não permitir resposta “não sei”","Ignorar a temperature numa tarefa que pede determinismo"],
-  cola:[["Token","Menor unidade de texto processada (≠ palavra)"],["Embedding","Vetor numérico que representa o significado"],["Transformer","Arquitetura que processa embeddings em paralelo"],["Self-Attention","Considerar todo o contexto ao interpretar cada token"],["Positional encoding","Informação de ordem das palavras"],["Temperature","Controla aleatoriedade/criatividade"],["Top-K / Top-P","Estratégias de escolha do próximo token"],["Alucinação","Afirmação falsa e convincente por falta de contexto"]],
-  links:[["Tokenizer da OpenAI","https://platform.openai.com/tokenizer"],["BertViz (visualizar attention)","https://github.com/jessevig/bertviz"],["Guia de prompting (Gemini)","https://ai.google.dev/gemini-api/docs/prompting-strategies"]]
-},
-{
-  id:"06", bloco:3, mod:"Módulo 5 · Cap.3-4", emoji:"🌐", read:"9 min",
-  title:"IA no navegador — Web AI e multimodalidade",
-  short:"Rodar modelos localmente, offline, entendendo texto, imagem e áudio.",
-  oneliner:"<b>Web AI</b> é rodar modelos de IA <b>direto no navegador</b>, na máquina do usuário, sem enviar nada para servidores — e, com a <b>multimodalidade</b>, esses modelos entendem não só texto, mas também <b>imagem e áudio</b>, tudo offline.",
-  vovo:[
-    "Hoje usar IA é como <b>mandar uma carta pro escritório central</b> (a nuvem) e esperar a resposta voltar. Web AI é ter um <b>funcionário esperto morando dentro da sua casa</b>: resolve tudo ali, sem mandar seus assuntos pra fora — mais <b>privacidade</b> e sem depender da internet.",
-    "Tem um preço: esse funcionário é “grande” (o modelo pesa alguns GB) e demora pra “se mudar” (o download). Mas depois trabalha de graça e rápido. E <b>multimodal</b> é quando ele não só <b>lê</b> bilhetes, mas também <b>enxerga</b> fotos e <b>escuta</b> áudios."
-  ],
-  oque:["<b>Web AI / “Web 4.0”:</b> IA nativa ao navegador, execução <b>local</b> (ex. Gemma, DeepSeek).","<b>Multimodalidade:</b> lidar com e <b>relacionar</b> tipos diferentes de dado — texto, imagem e áudio."],
-  como:["Modelos locais são pesados: Gemma ~2.5 GB, DeepSeek ~1.3 GB — baixados ao carregar a página.","O Google embarca o <b>Gemini Nano</b> no Chrome via APIs experimentais (tradução, resumo, prompt).","<b>Rodar LLM no browser:</b> habilitar flags → prompt inicial → configurar temperature e topK → <code>languageModel.create()</code> → resposta em <b>streaming</b>, token por token.","<b>Multimodal:</b> o arquivo vira <b>blob</b> (binário), o modelo interpreta imagem/áudio/texto e responde conforme o prompt."],
-  aplica:["Acessibilidade: descrever imagens, transcrever áudio.","Processar documento offline (ex. extrair nome/endereço/telefone de um cartão CNPJ).","Assistentes visuais e auditivos, úteis em mobile. <b>Truque:</b> PT → EN → processa → PT via tradução embutida (recursos multimodais rendem mais em inglês)."],
-  pros:["Privacidade: dados não saem da máquina","Sem custo de servidor e funciona offline","Performance aceitável mesmo em apps complexos"],
-  contras:["Modelos pesados (vários GB)","Download compromete a UX, sobretudo em mobile","Suporte ainda limitado (foco no Chrome) e recursos experimentais"],
-  traps:["Ignorar o custo do download em conexões móveis","Assumir suporte universal de navegador","Usar recursos multimodais só em PT quando funcionam melhor em EN"],
-  cola:[["Web AI / Web 4.0","IA rodando nativamente no navegador"],["Gemini Nano","Modelo leve do Google embarcável no Chrome"],["languageModel.create()","API do navegador para invocar a LLM local"],["Streaming","Resposta chegando token por token"],["Multimodalidade","Entender e relacionar texto, imagem e áudio"],["Blob","Formato binário em que o arquivo é processado"]],
-  links:[["Chrome Built-in AI (docs)","https://developer.chrome.com/docs/ai/built-in"],["Web AI Demos","https://chrome.dev/web-ai-demos/"],["DeepSeek R1 via WebGPU","https://huggingface.co/spaces/webml-community/deepseek-r1-webgpu"]]
-},
-{
-  id:"07", bloco:4, mod:"Módulo 6", emoji:"✍️", read:"10 min",
-  title:"Prompt Engineering — e os padrões JSON e TOON",
-  short:"Instruir a IA com clareza pra ela parar de adivinhar.",
-  oneliner:"<b>Prompt Engineering</b> é escrever instruções tão claras e estruturadas que a IA para de “adivinhar” o que você quer — reduzindo alucinações e retrabalho. E como LLMs gostam de dados estruturados, os formatos <b>JSON</b> e <b>TOON</b> deixam esses prompts ainda mais precisos e baratos.",
-  vovo:[
-    "Você contratou um funcionário novo, esforçado, mas que <b>leva tudo ao pé da letra</b> e, na dúvida, <b>inventa</b>. Se você manda “faz um bolo”, ele faz de qualquer sabor e tamanho. O resultado sai errado e você repete tudo.",
-    "Prompt Engineering é <b>dar a instrução completa de uma vez</b>: “bolo de fubá, pra 8 pessoas, sem açúcar, e se faltar ingrediente, me avise em vez de improvisar”. E <b>JSON/TOON</b> são como um <b>formulário com campos separados</b> em vez de um bilhete corrido — fica impossível confundir o que é o quê."
-  ],
-  oque:["A arte de instruir a LLM com <b>clareza e estrutura</b> para reduzir alucinação.","Um framework de <b>10 blocos</b> (inspirado em estudo da Anthropic) guia o modelo.","Dois formatos estruturados: <b>JSON Prompt</b> e <b>TOON</b>."],
-  como:["<b>Os 10 blocos:</b> contexto/papel · tom de voz · fonte da verdade · contrato operacional · exemplos · histórico · pedido claro · incentivo ao raciocínio · formato da resposta · restrições e validação.","<b>JSON Prompt:</b> estrutura em campos (meta/context/task/constraints/output), validável com <b>Zod, Ajv, Yup</b> — reduz ambiguidade e torna a saída previsível.","<b>TOON</b> (Token Oriented Object Notation): versão compacta que remove aspas e símbolos pra <b>economizar tokens</b> (367 → 339 num exemplo).","<b>Mas:</b> um JSON bem modelado — sobretudo para dados <b>tabulares</b> — pode ser tão eficiente quanto o TOON, mantendo validação e ferramentas."],
-  aplica:["Transformar prompts vagos em instruções precisas (sempre inclua o <b>papel</b> da IA).","Validar saídas de LLM com <b>schemas</b> (Zod) para reprocessar automaticamente.","Comparar consumo de tokens JSON vs TOON no playground antes de escolher."],
-  pros:["Menos alucinação e menos retrabalho","Saídas previsíveis e integráveis (validação por schema)","Padroniza prompts para times e pipelines"],
-  contras:["Prompt estruturado dá mais trabalho de montar","JSON puro gasta mais tokens pela sintaxe","TOON exige parsing customizado"],
-  traps:["Pedido vago sem papel nem contexto (“crie um plano de carreira pra mim”)","Não permitir “não sei” nem orientar a pedir dados faltantes","Não dar exemplos nem definir o formato de saída","Forçar TOON antes de dominar um bom JSON estruturado"],
-  cola:[["Papel (role)","Persona atribuída à IA no prompt"],["Fonte da verdade","Dados de referência que ancoram a resposta"],["Contrato operacional","Regras de comportamento (“não sei” é permitido)"],["JSON Prompt","Prompt estruturado em campos (meta/context/task/…)"],["TOON","Notação compacta que economiza tokens"],["Zod / Ajv / Yup","Bibliotecas de validação de schema"]],
-  tip:"<b>Recomendação do curso:</b> comece com <b>JSON bem estruturado + validação</b> — resolve a maior parte dos problemas de integração. Deixe o TOON para cenários onde economia de tokens é essencial.",
-  links:[["Prompt Engineering (OpenAI)","https://platform.openai.com/docs/guides/prompt-engineering"],["Effective context engineering (Anthropic)","https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"],["TOON (formato)","https://github.com/toon-format/toon"]]
-},
-{
-  id:"08", bloco:4, mod:"Módulo 7", emoji:"🤖", read:"10 min",
-  title:"Ferramentas de IA para Dev — Cursor, Windsurf e Agentes",
-  short:"Editores viraram cockpits de IA e ganharam agentes que executam.",
-  oneliner:"Os editores viraram <b>cockpits de IA</b> (VS Code, Cursor, Windsurf), e dentro deles surgiram os <b>agentes</b> — sistemas que usam uma LLM como <b>motor de decisão</b> acoplado a ferramentas e ciclos de execução, para não só <i>conversar</i>, mas <i>fazer</i> e <i>validar</i> tarefas.",
-  vovo:[
-    "O editor de código era uma <b>máquina de escrever</b>; hoje é um ambiente com <b>assistente embutido</b>. A diferença entre uma IA que só conversa e um <b>agente</b>? Um <b>consultor</b> te dá conselho (“troque a torneira assim”), mas quem faz é você. Um <b>faz-tudo (agente)</b> pega as ferramentas, troca a torneira, abre a água pra testar, vê que ainda pinga, aperta mais e só então te chama.",
-    "O agente <b>age, observa o resultado e corrige</b> antes de entregar — daí a sensação de “acertou de primeira”. E numa obra grande você contrata <b>especialistas</b>: um planeja, um executa, um fiscaliza, um testa."
-  ],
-  oque:["<b>Cursor</b> e <b>Windsurf</b> são <b>forks do VS Code</b> com camadas de IA (o VS Code virou o “Chrome dos editores”).","Modos nativos: <b>ASK</b> (perguntar), <b>EDIT</b> (editar), <b>PLAN</b> (planejar antes) e <b>AGENT</b> (executar com autonomia).","<b>Agente de IA</b> = LLM como motor de decisão + ferramentas + ciclo de execução/observação. Uma LLM sozinha não roda testes nem valida a si mesma."],
-  como:["<b>Ciclo do agente:</b> entender objetivo → planejar → escolher ferramenta → agir → observar → corrigir → entregar com evidências.","<b>Escolhe a ferramenta certa</b>: leitor de arquivo, teste automatizado, linter, Swagger, cliente SQL.","<b>Papéis especializados:</b> Planner, Implementer, Reviewer, QA, Docs, Ops — com controle fino de permissões.","<b>Spec Driven Development:</b> defina contexto, requisitos, <b>não-requisitos</b>, critérios de aceite, contrato e plano de testes antes de executar."],
-  aplica:["Escrever, revisar e testar código dentro do editor com autonomia controlada.","Criar agentes customizados com <b>escopo restrito</b> de ferramentas para tarefas repetitivas.","Dividir um trabalho grande entre papéis (planner/implementer/reviewer/QA)."],
-  pros:["Executa e valida — não só imagina","O ciclo evita loops infinitos e desperdício de tokens","Dá controle, revisão, testes e auditoria"],
-  contras:["Falha quando a tarefa está mal definida (preenche buracos com chute)","Precisa de uma boa spec e de engenharia de prompt","Autonomia sem controle vira risco"],
-  traps:["Confiar em plataforma “prompt-to-app mágica” sem revisão — o caso do curso precisou ser reescrito no VS Code por falhas de segurança","Tarefa mal especificada (sem critérios de aceite nem contrato)","Dar acesso amplo a ferramentas sem escopo","Achar que agente é só “LLM com plugins”"],
-  cola:[["Fork do VS Code","Editor derivado do VS Code (Cursor, Windsurf)"],["ASK/EDIT/PLAN/AGENT","Modos de interação com IA no editor"],["Agente de IA","LLM como motor de decisão + ferramentas + ciclo"],["Ciclo do agente","Entender → planejar → agir → observar → corrigir → entregar"],["Papéis","Planner, Implementer, Reviewer, QA, Docs, Ops"],["Spec Driven Development","Definir a tarefa com precisão antes de executar"]],
-  links:[["Latent Space sobre o Cursor","https://www.latent.space/p/cursor"],["Custom agents no VS Code","https://code.visualstudio.com/docs/copilot/customization/custom-agents"],["Spec-driven development (Spec Kit)","https://developer.microsoft.com/blog/spec-driven-development-spec-kit"]]
-},
-{
-  id:"09", bloco:4, mod:"Módulo 8", emoji:"🔌", read:"11 min",
-  title:"MCPs e automação para devs",
-  short:"O “USB das ferramentas” que dá mãos ao agente.",
-  oneliner:"<b>MCP (Model Context Protocol)</b> é um padrão aberto — o “<b>USB das ferramentas</b>” da era das LLMs — que conecta a IA a APIs, arquivos, bancos e serviços de forma plug-and-play, deixando o agente <b>agir no mundo real</b> em vez de só responder.",
-  vovo:[
-    "Sabe como qualquer pendrive ou impressora encaixa na <b>mesma entrada USB</b>? O MCP é isso pra IA: uma <b>tomada padrão</b> onde você “pluga” ferramentas — GitHub, navegador, monitoramento, e-mail — e a IA passa a usá-las na hora.",
-    "Sem MCP, a IA é uma pessoa inteligente <b>presa numa sala só falando</b>: dá ótimos conselhos, mas não aperta botão. Com MCP, ela ganha <b>mãos</b>. E como sabe qual usar? Cada ferramenta tem uma <b>plaquinha</b> (nome + descrição), e a IA escolhe a que melhor combina com o pedido."
-  ],
-  oque:["Protocolo <b>aberto</b>, anunciado pela Anthropic em nov/2024, para integrar IA a fontes externas.","<b>3 componentes:</b> Tools (ações executáveis), Resources (dados de contexto) e Prompts (templates).","Você pluga servidores MCP num cliente compatível (VS Code) e a IA os usa <b>automaticamente</b>, sem código."],
-  como:["<b>Não há if-else:</b> a LLM escolhe a tool pela <b>similaridade</b> entre o prompt e a <b>descrição</b> da tool. Nomes claros (ex. <code>readFile</code>) e descrições objetivas são priorizados.","Ela prefere <b>ações não-destrutivas</b> (ler, listar) e tools com <b>schemas bem definidos</b>.","Cada tool tem um <b>JSON Schema</b>; se o modelo não gerar um JSON válido, a execução falha e ele tenta de novo — o que traz previsibilidade.","Plugado via <code>mcp.json</code>. Modelos avançados <b>encadeiam chamadas</b>: usam uma tool, analisam o resultado e chamam outra."],
-  aplica:["<b>GitHub</b> (listar/revisar PRs); <b>Playwright</b> (gerar testes e preencher formulários); <b>Resend</b> (e-mail).","<b>Context7</b>: injeta documentação <b>atualizada</b> no contexto → menos código quebrado e menos alucinação.","<b>Grafana</b>: investigar telemetria (Prometheus/Loki/Tempo) e achar a <b>causa raiz</b> de um erro 500 — sem acessar o código-fonte."],
-  pros:["Dá “mãos” ao agente — ele age de verdade","Plug-and-play, sem escrever integração","Previsível via JSON Schema; investigações de horas viram minutos"],
-  contras:["Tools com nomes/descrições ruins são ignoradas","Ações destrutivas exigem cuidado extra","Depende de servidores MCP disponíveis e confiáveis"],
-  traps:["Nomes e descrições de tool vagas — a LLM não seleciona bem","Expor ações destrutivas (deletar/escrever) sem proteção","Confiar na doc desatualizada do modelo em vez de um MCP tipo Context7"],
-  cola:[["MCP","Protocolo aberto que conecta LLMs a ferramentas/dados"],["Tool","Ação executável exposta pelo servidor MCP"],["Resource","Dado de contexto (arquivo, log, schema)"],["JSON Schema","Contrato dos parâmetros de uma tool"],["mcp.json","Arquivo que pluga servidores MCP no editor"],["Context7","MCP que injeta documentação atualizada"],["Grafana MCP","MCP para investigar telemetria (Prometheus/Loki/Tempo)"]],
-  links:[["Model Context Protocol (site)","https://modelcontextprotocol.io/"],["Anúncio do MCP (Anthropic)","https://www.anthropic.com/news/model-context-protocol"],["Playwright MCP","https://github.com/microsoft/playwright-mcp"],["Context7","https://github.com/upstash/context7"]]
-},
-{
-  id:"10", bloco:5, mod:"Módulo 9", emoji:"⚖️", read:"10 min",
-  title:"Modelos open-source vs. proprietários — Ollama e OpenRouter",
-  short:"Baixar e rodar na sua máquina vs. acessar via API.",
-  oneliner:"Modelos <b>abertos</b> você baixa e roda na sua máquina (controle e privacidade, por sua conta e risco); modelos <b>fechados</b> você acessa via API (qualidade de ponta e zero manutenção, mas dependência). O <b>Ollama</b> roda os abertos localmente e o <b>OpenRouter</b> orquestra todos por trás de uma única API.",
-  vovo:[
-    "É a diferença entre <b>cozinhar em casa</b> e <b>comer no restaurante</b>. Cozinhar em casa (aberto): controle total, ninguém vê sua receita — mas você compra o fogão, paga o gás, lava a louça e conserta quando quebra. Restaurante (fechado): só pede e come o melhor prato — mas paga a conta, come o que está no cardápio e depende de o restaurante abrir.",
-    "E o <b>OpenRouter</b>? É um <b>garçom universal</b> que fala com qualquer cozinha do mundo. Em vez de dez contas em dez restaurantes, você fala com um garçom só — ele leva o pedido à cozinha certa e traz uma conta só."
-  ],
-  oque:["“Aberto” quase sempre = <b>open weights</b>: você baixa e roda, mas <b>não</b> tem o pipeline de treino nem a base de dados.","<b>Ollama</b>: roda modelos abertos localmente (LLaMA 3, Gemma, GPT-OSS) com comandos simples.","<b>OpenRouter</b>: API unificada, compatível com o padrão OpenAI, que orquestra vários provedores."],
-  como:["<b>Ollama:</b> <code>ollama pull</code> (baixar) e <code>ollama serve</code> (rodar); API HTTP compatível com a OpenAI. <b>Não é para produção</b> (um prompt por vez) → use <b>vLLM</b>.","<b>3 conceitos:</b> <b>parâmetros</b> (os pesos, ex. 20B) · <b>contexto</b> (tokens por vez, 32k–1M) · <b>quantização</b> (menos precisão dos pesos = menos RAM; ex. rodar 20B em 16 GB).","<b>OpenRouter:</b> fallback automático, roteamento por custo/desempenho, billing consolidado, modelos gratuitos e <b>BYOK</b> (usar sua própria chave)."],
-  aplica:["Uso pessoal, testes, protótipo ou dados sensíveis → <b>aberto</b>, local.","Empresa que exige escala, conformidade e SLA → <b>fechado</b>, via API.","Vários modelos sem vendor lock-in → <b>OpenRouter</b> orquestrando."],
-  pros:["Aberto: custo baixo com GPU própria, privacidade, customização, sem lock-in","Fechado: melhor qualidade, fácil (uma API key), escala, SLA e conformidade"],
-  contras:["Aberto: infra custosa, manutenção, licença (LLaMA) e “sem censura” pode ser perigoso","Fechado: dependência do fornecedor, custo por token, menos controle dos dados"],
-  traps:["Usar Ollama em produção (um prompt por vez) — use vLLM","Subir API key para o Git — mantenha as chaves fora do versionamento","Ignorar restrições de licença dos modelos abertos","Escolher pela “moda” e não pelo contexto técnico, financeiro e legal"],
-  cola:[["Open weights","Baixar/rodar o modelo, mas sem acesso ao treino/dados"],["Ollama","Roda modelos abertos localmente (pull/serve)"],["Parâmetros","Pesos do modelo (ex. 20B = 20 bilhões)"],["Contexto","Tokens processados por vez (32k, 128k, 1M)"],["Quantização","Reduzir precisão dos pesos p/ caber em menos RAM"],["vLLM","Alternativa ao Ollama para produção/alta concorrência"],["OpenRouter","API unificada que orquestra múltiplos modelos"],["BYOK","Usar sua própria API key no orquestrador"]],
-  links:[["Ollama (catálogo)","https://ollama.com/search"],["GPT-OSS (OpenAI)","https://openai.com/index/introducing-gpt-oss/"],["vLLM (produção)","https://docs.vllm.ai/en/latest/"],["OpenRouter","https://openrouter.ai/"]]
-},
-{
-  id:"11", bloco:5, mod:"Módulo 10", emoji:"🏁", read:"11 min",
-  title:"RAG, embeddings e busca semântica",
-  short:"Doc de fechamento: dar à LLM o contexto certo na hora certa.",
-  oneliner:"<b>RAG (Retrieval-Augmented Generation)</b> dá à LLM um passo de <b>busca de informação relevante antes de responder</b> — em vez de confiar só na memória do treino, ela consulta uma base externa (via <b>embeddings</b> e <b>busca semântica</b>) e responde fundamentada em dados reais, atualizados e privados.",
-  vovo:[
-    "Imagine um aluno inteligente numa prova. Só <b>de cabeça</b>, ele mistura as coisas ou inventa quando não lembra (a alucinação). Agora imagine que, <b>antes de escrever cada resposta</b>, ele pode consultar a <b>cola certa</b> na página exata. As respostas ficam muito mais confiáveis. <b>RAG é isso.</b>",
-    "E como ele acha o trecho certo tão rápido? Com os <b>embeddings</b>: pense numa <b>biblioteca organizada por assunto</b> (não por ordem alfabética) — livros parecidos ficam na mesma prateleira. É diferente do <b>Ctrl+F</b>, que procura a palavra idêntica; a busca semântica entende que “ajustar os pesos da rede” e “backpropagation” falam da mesma coisa."
-  ],
-  oque:["RAG adiciona um <b>passo de recuperação externa</b> antes da geração — o contexto é injetado dinamicamente.","<b>Duas memórias:</b> paramétrica (conhecimento nos <b>pesos</b>, do treino) e não-paramétrica (base externa pesquisável, com <b>índice vetorial</b>).","Formalizado num paper de 2020. Resolve o problema de o transformer alucinar quando falta a informação certa no contexto."],
-  como:["<b>Fase 1 — Indexação</b> (uma vez): coletar fontes → dividir em <b>chunks</b> coerentes → gerar um <b>embedding</b> de cada → guardar num <b>banco vetorial</b>.","<b>Fase 2 — Consulta</b> (cada pergunta): a pergunta vira embedding → busca os mais <b>similares</b> → injeta os trechos no prompt → resposta fundamentada.","<b>RAG × MCP × Fine-tuning:</b> RAG busca contexto antes (não muda pesos); MCP é <b>canal</b> de acesso, não recuperação; Fine-tuning <b>ajusta os pesos</b> (permanente, caro).","Ferramentas: <b>Neo4j</b> como vector database (chunks = nós, embeddings = propriedades, com metadados); <b>Transformer.js</b> gera embeddings localmente em Node puro; LangChain integra tudo."],
-  aplica:["Responder com base em runbooks, incidentes, código e docs privados/atualizados (ex. “por que /checkout dá erro 500?”).","Bases de conhecimento internas e suporte técnico fundamentado em evidência.","Metadados (aula, seção, minuto do vídeo) dão consultas mais estáveis e rastreáveis."],
-  pros:["Respostas atualizadas, privadas e de domínio sem retreinar","Reduz alucinação (contexto certo na hora certa)","Metadados dão rastreabilidade; conhecimento é flexível (descartado ao fim)"],
-  contras:["Qualidade depende de bons chunks e boa indexação","Adiciona etapa de recuperação e infra (banco vetorial)","Não altera os pesos — não é memória permanente como o fine-tuning"],
-  traps:["Chunks mal cortados, sem sentido completo","Base mal estruturada — “o modelo só é bom quando alimentado com dados relevantes e bem estruturados”","Confundir RAG com fine-tuning","Achar que MCP é o método de recuperação (é canal, não recuperação)"],
-  cola:[["RAG","Buscar contexto relevante antes de gerar a resposta"],["Memória paramétrica","Conhecimento nos pesos (do treino)"],["Memória não-paramétrica","Base externa pesquisável (índice vetorial)"],["Chunk","Pedaço coerente de texto"],["Embedding","Vetor numérico que representa o significado"],["Banco vetorial","Armazena embeddings p/ busca por similaridade"],["Busca semântica","Buscar por significado, não por palavra exata"],["Fine-tuning","Ajustar os pesos do modelo (permanente, caro)"]],
-  tip:"<b>A grande lição da disciplina:</b> a espinha dorsal de tudo é <b>representar dados como números, deixar o modelo aprender padrões e dar a ele o contexto certo na hora certa.</b>",
-  links:[["Paper original de RAG (2020)","https://arxiv.org/pdf/2005.11401"],["Neo4j","https://neo4j.com/"],["LangChain (JS)","https://docs.langchain.com/oss/javascript/langchain/overview"]]
-}
-];
-
-/* Projetos/práticas oficiais por tópico (nomes dos exemplos conforme a lista de referências da disciplina) */
-const PROJ = {
-  "00":"Ferramentas apresentadas já na largada: <b>Teachable Machine</b>, <b>OpenRouter</b>, <b>Ollama</b> e o VS Code adaptado. Ambiente: VS Code + Node.js, com muitos exemplos rodando 100% no navegador.",
-  "01":"<b>Teachable Machine</b> (webcam: garrafa/controle/relógio e depois ~8 mil fotos de raças de cachorro do Kaggle) · <b>Pac-Man controlado pelo rosto</b> (transfer learning) · <b>exemplo00</b>: primeira rede neural em Node + TF.js classificando alunos em Premium/Medium/Basic (camada oculta 80 ReLU + saída 3 Softmax, Adam, Categorical Cross Entropy, 100 epochs).",
-  "02":"<b>exemplo-01-ecommerce-recomendations-z</b>: sistema de recomendação de e-commerce 100% no navegador, com tfvis e treino em Web Worker, prevendo compras de um cliente novo (Zezinho da Silva) a partir de dados fictícios. Fluxo PT01→PT07: contexto → codificar produtos → codificar usuários → treino → recomendação.",
-  "03":"<b>exemplo-02-vencendo-qualquer-jogo</b>: fork do Duck Hunt em JS (base do Matt Surabian, com Pixi.js) com mira visual e placar. Template já traz o jogo + o modelo YOLO baixado, pra focar só na detecção. Desafio: aplicar o pipeline em outro jogo.",
-  "04":"Simuladores no navegador em TF.js: <b>genetic_cars_2</b> (carros evoluindo), <b>cart-pole</b> e <b>mountain car</b> (RL), jogo da velha e <b>SnakeAI</b> (RL clássico). Exploração livre de parâmetros (taxa de mutação, gravidade, terreno).",
-  "05":"<b>Tokenizer da OpenAI</b> para ver na prática quantos tokens uma frase consome; demos de <b>temperature</b> e <b>top-K</b> mudando o comportamento das respostas; discussão do custo real de operar LLMs em escala.",
-  "06":"<b>exemplo-03-webai01</b> e <b>exemplo-04-webai02-temperature-and-topK</b>: rodar uma LLM no navegador com HTML+JS (Rei − homem + mulher = Rainha, localmente) · <b>exemplo-05-webai03-multimodal</b>: processar imagens, transcrever documentos e descrever cenas, tudo offline no Chrome.",
-  "07":"Estrutura de <b>10 blocos</b> aplicada para transformar prompts vagos em instruções precisas; comparação real de tokens <b>JSON vs TOON</b> no playground; uso de <b>Zod</b> para tornar saídas de LLM previsíveis e reprocessáveis.",
-  "08":"Comparação prática entre <b>VS Code, Cursor e Windsurf</b>; uso dos modos ASK/EDIT/PLAN/AGENT e de agentes customizados com escopo restrito; caso real de um app <i>prompt-to-app</i> reescrito no VS Code com boas práticas de segurança e teste.",
-  "09":"<b>erickwendel-contributions-mcp</b>: servidor MCP pessoal do professor (API de palestras/posts, publicado no npm) · <b>exemplo-06-playwright-testes</b> · <b>exemplo-07-playwright-navegacao</b> · <b>exemplo-08-context7</b> (docs atualizadas) · <b>exemplo-09-grafana-mcp</b> (telemetria) · Resend MCP para e-mail.",
-  "10":"<b>exemplo-10-ollama</b>: baixar/rodar modelos localmente, testar via curl e a API HTTP compatível com OpenAI, integrar como provedor no editor (Jan AI) · <b>exemplo-11-openrouter</b>: usar o Gemma 27B gratuito, filtrar modelos por custo, configurar OPENROUTER_KEY e testar fallback/roteamento.",
-  "11":"<b>exemplo-12-embeddings-neo4j</b>: gerar/armazenar embeddings no Neo4j e buscar por similaridade · <b>exemplo-13-embeddings-neo4j-rag</b>: o primeiro RAG completo — PDF → chunks → embeddings (Transformer.js) → Neo4j → consulta semântica, integrando com LangChain."
-};
-
-const MATERIAIS = {
-  repo:"https://github.com/unipds-engenharia-de-ia-aplicada",
-  itens:[
-    ["Repositório oficial de código da disciplina","https://github.com/unipds-engenharia-de-ia-aplicada"],
-    ["Biblioteca central: TensorFlow.js — roda ML no navegador e no Node",""],
-    ["Practical Machine Learning in JavaScript (C. Gerard, Apress 2020)",""],
-    ["OpenAI — Prompt Engineering (guia oficial)","https://platform.openai.com/docs/guides/prompt-engineering"],
-    ["Hugging Face — LLM Course","https://huggingface.co/learn"]
-  ]
-};
-
-/* ===================== RENDER ===================== */
 const $ = s => document.querySelector(s);
 const content = $("#content");
 const nav = $("#nav");
 const LS_READ = "eia_read_v1", LS_THEME = "eia_theme_v1";
+const LEGACY_IDS = ["00","01","02","03","04","05","06","07","08","09","10","11"];
 
-let read = new Set(JSON.parse(localStorage.getItem(LS_READ) || "[]"));
+let read = new Set(JSON.parse(localStorage.getItem(LS_READ) || "[]").map(id=>LEGACY_IDS.includes(id)?"D1-"+id:id));
 function saveRead(){ localStorage.setItem(LS_READ, JSON.stringify([...read])); }
-function corBloco(b){ return getComputedStyle(document.documentElement).getPropertyValue(BLOCOS.find(x=>x.id===b).cor); }
+saveRead();
+
+let currentDisc = null;
+function discOf(num){ return DISCIPLINES.find(d=>d.disc.num===num); }
+function blockOf(t){ return BLOCKS.find(b=>b.id===t.bloco && b.disc===t.disc); }
+function topicsOf(num){ return TOPICS.filter(t=>t.disc===num); }
+function readCount(list){ return list.filter(t=>read.has(t.id)).length; }
 
 function renderNav(filter=""){
   const f = filter.trim().toLowerCase();
   nav.innerHTML = "";
-  BLOCOS.forEach(bl=>{
-    const items = TOPICS.filter(t=>t.bloco===bl.id).filter(t=>{
-      if(!f) return true;
-      return (t.title+" "+t.short+" "+t.cola.map(c=>c[0]+" "+c[1]).join(" ")).toLowerCase().includes(f);
-    });
-    if(!items.length) return;
-    const lab = document.createElement("div");
-    lab.className="bloco-label";
-    lab.innerHTML = `<span class="dot" style="background:var(${bl.cor})"></span> Bloco ${bl.id} · ${bl.label}`;
-    nav.appendChild(lab);
-    items.forEach(t=>{
-      const el = document.createElement("div");
-      el.className = "nav-item"+(read.has(t.id)?" read":"")+(location.hash==="#"+t.id?" active":"");
-      el.innerHTML = `<span class="num">${t.id}</span><span class="tt">${t.title}</span><span class="rd"></span>`;
-      el.onclick = ()=>{ location.hash=t.id; closeSide(); };
-      nav.appendChild(el);
+  const scope = f ? DISCIPLINES : DISCIPLINES.filter(d=>!currentDisc || d.disc.num===currentDisc);
+  scope.forEach(d=>{
+    if(!currentDisc || f){
+      const head = document.createElement("div");
+      head.className = "disc-label";
+      head.textContent = `${d.disc.num} · ${d.disc.titulo}`;
+      head.onclick = ()=>{ location.hash = "d/"+d.disc.num; closeSide(); };
+      nav.appendChild(head);
+      if(!f) return;
+    }
+    BLOCKS.filter(b=>b.disc===d.disc.num).forEach(bl=>{
+      const items = TOPICS.filter(t=>t.disc===bl.disc && t.bloco===bl.id).filter(t=>{
+        if(!f) return true;
+        return (t.title+" "+t.short+" "+t.cola.map(c=>c[0]+" "+c[1]).join(" ")).toLowerCase().includes(f);
+      });
+      if(!items.length) return;
+      const lab = document.createElement("div");
+      lab.className = "bloco-label";
+      lab.innerHTML = `<span class="dot" style="background:var(${bl.color})"></span> D${bl.disc} · Bloco ${bl.num} · ${bl.label}`;
+      nav.appendChild(lab);
+      items.forEach(t=>{
+        const el = document.createElement("div");
+        el.className = "nav-item"+(read.has(t.id)?" read":"")+(location.hash==="#"+t.id?" active":"");
+        el.innerHTML = `<span class="num">${t.id.split("-")[1]}</span><span class="tt">${t.title}</span><span class="rd"></span>`;
+        el.onclick = ()=>{ location.hash = t.id; closeSide(); };
+        nav.appendChild(el);
+      });
     });
   });
+  if(currentDisc && !f){
+    const back = document.createElement("div");
+    back.className = "disc-label";
+    back.textContent = "← Todas as disciplinas";
+    back.onclick = ()=>{ location.hash = ""; closeSide(); };
+    nav.prepend(back);
+  }
   if(!nav.children.length) nav.innerHTML = `<div class="empty">Nada encontrado.</div>`;
   updateProgress();
 }
 
 function updateProgress(){
-  const total = TOPICS.length, n = read.size;
-  $("#progTxt").textContent = `${n} de ${total} lidos`;
-  $("#progBar").style.width = (n/total*100)+"%";
+  const list = currentDisc ? topicsOf(currentDisc) : TOPICS;
+  const n = readCount(list), total = list.length;
+  $("#progTxt").textContent = `${n} de ${total} lidos${currentDisc?` · D${currentDisc}`:""}`;
+  $("#progBar").style.width = (total ? n/total*100 : 0)+"%";
 }
 
 function li(arr, cls="clean"){ return `<ul class="${cls}">${arr.map(x=>`<li>${x}</li>`).join("")}</ul>`; }
 
 function renderHome(){
+  currentDisc = null;
   window.scrollTo(0,0);
   let html = `<div class="hero">
     <div class="eyebrow">Pós · Engenharia de IA Aplicada</div>
     <h2>Central de Estudos</h2>
-    <p class="lead">Um guia rápido de cada assunto da disciplina — o que é, como funciona, onde se aplica, prós e contras, armadilhas e uma analogia pra vovó entender. Feito para revisar, não para se afogar em teoria.</p>
-    <div class="disc-tag"><b>Disciplina 01</b> Fundamentos de IA e LLMs · <span style="color:var(--muted)">Erick Wendel · 12 tópicos</span></div>
-  </div>`;
-
-  BLOCOS.forEach(bl=>{
-    const items = TOPICS.filter(t=>t.bloco===bl.id);
-    if(!items.length) return;
-    html += `<div class="bloco-section">
-      <div class="bloco-head"><span class="dot" style="background:var(${bl.cor})"></span>
-        <h3>Bloco ${bl.id}</h3><small>${bl.label}</small></div>
-      <div class="cards">`;
-    items.forEach(t=>{
-      html += `<div class="card" style="--cardc:var(${bl.cor})" onclick="location.hash='${t.id}'">
-        <div class="emoji">${t.emoji}</div>
-        <h4>${t.title}</h4>
-        <p>${t.short}</p>
-        <div class="meta"><span>#${t.id}</span> · <span>${t.read}</span>${read.has(t.id)?' · <span class="read-badge">✓ lido</span>':''}</div>
-      </div>`;
-    });
-    html += `</div></div>`;
+    <p class="lead">Teoria das aulas e código do repositório oficial, juntos, disciplina por disciplina. Cada tópico traz o que é, como funciona, onde se aplica, prós e contras, armadilhas, o código explicado e uma analogia pra vovó entender.</p>
+  </div><div class="cards">`;
+  DISCIPLINES.forEach((d,i)=>{
+    const list = topicsOf(d.disc.num), n = readCount(list);
+    html += `<div class="card" style="--cardc:var(${COLORS[i%COLORS.length]})" onclick="location.hash='d/${d.disc.num}'">
+      <div class="emoji">${d.disc.emoji||"📘"}</div>
+      <h4>${d.disc.num} · ${d.disc.titulo}</h4>
+      <p>${d.disc.autor} · ${d.blocos.length} blocos · ${list.length} tópicos</p>
+      <div class="meta"><span>${n} de ${list.length} lidos</span>${n===list.length&&n?' · <span class="read-badge">✓ concluída</span>':''}</div>
+    </div>`;
   });
-
-  html += `<div class="materials"><h3>🧰 Materiais oficiais da disciplina</h3><ul>`;
-  MATERIAIS.itens.forEach(([label,url])=>{
-    html += `<li>${url?`<a href="${url}" target="_blank" rel="noopener">${label}</a>`:label}</li>`;
-  });
-  html += `</ul></div>`;
-
-  html += `<div class="materials" style="border-left:4px solid var(--warn)"><h3>🪟 Gotcha do Windows (avisado na disciplina)</h3>
-    <p style="margin:0;font-size:14px;color:var(--muted)">A instalação do <code>@tensorflow/tfjs-node</code> costuma falhar no Windows.
-    Se der erro nos projetos em Node, rode via <b>WSL2</b> ou use a variante <code>@tensorflow/tfjs</code> (CPU/WebGL) em vez da <code>-node</code>.</p></div>`;
-
+  html += `</div>`;
   content.innerHTML = html;
   renderNav($("#search").value);
 }
 
-function renderTopic(id){
+function renderDisc(num){
+  const d = discOf(num);
+  if(!d){ renderHome(); return; }
+  currentDisc = num;
   window.scrollTo(0,0);
+  let html = `<div class="crumb"><a onclick="goHome()">Central</a> › <span>Disciplina ${num}</span></div>
+  <div class="hero">
+    <div class="eyebrow">Disciplina ${num}</div>
+    <h2>${d.disc.titulo}</h2>
+    ${d.disc.resumo?`<p class="lead">${d.disc.resumo}</p>`:""}
+    <div class="disc-tag"><b>${d.disc.autor}</b> ${d.topics.length} tópicos · ${readCount(topicsOf(num))} lidos</div>
+  </div>`;
+  BLOCKS.filter(b=>b.disc===num).forEach(bl=>{
+    const items = TOPICS.filter(t=>t.disc===num && t.bloco===bl.id);
+    if(!items.length) return;
+    html += `<div class="bloco-section">
+      <div class="bloco-head"><span class="dot" style="background:var(${bl.color})"></span>
+        <h3>Bloco ${bl.num}</h3><small>${bl.label}</small></div>
+      <div class="cards">`;
+    items.forEach(t=>{
+      html += `<div class="card" style="--cardc:var(${bl.color})" onclick="location.hash='${t.id}'">
+        <div class="emoji">${t.emoji}</div>
+        <h4>${t.title}</h4>
+        <p>${t.short}</p>
+        <div class="meta"><span>#${t.id}</span> · <span>${t.read}</span>${t.codigo&&t.codigo.length?' · <span>💻 código</span>':''}${read.has(t.id)?' · <span class="read-badge">✓ lido</span>':''}</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  if(d.materiais && d.materiais.length){
+    html += `<div class="materials"><h3>🧰 Materiais oficiais da disciplina</h3><ul>`;
+    d.materiais.forEach(([label,url])=>{
+      html += `<li>${url?`<a href="${url}" target="_blank" rel="noopener">${label}</a>`:label}</li>`;
+    });
+    html += `</ul></div>`;
+  }
+  if(d.aviso){
+    html += `<div class="materials" style="border-left:4px solid var(--warn)"><h3>${d.aviso.titulo}</h3>
+      <p style="margin:0;font-size:14px;color:var(--muted)">${d.aviso.texto}</p></div>`;
+  }
+  content.innerHTML = html;
+  renderNav($("#search").value);
+}
+
+function renderCode(list){
+  if(!list||!list.length) return "";
+  return `<section class="blk"><h3><span class="ic">💻</span> No código do repo</h3>${list.map(c=>`
+    <details class="code-proj"${list.length===1?" open":""}>
+      <summary><code>${c.proj}</code></summary>
+      <p>${c.resumo}</p>
+      <h4>⚙️ Fluxo</h4>${li(c.fluxo,"steps")}
+      <h4>▶️ Rodar e praticar</h4>${li(c.rodar)}
+      ${c.templateVsZ?`<div class="tip">${c.templateVsZ}</div>`:""}
+      ${c.armadilhas&&c.armadilhas.length?`<div class="traps"><h4>🚫 Armadilhas no código</h4><ul>${c.armadilhas.map(x=>`<li>${x}</li>`).join("")}</ul></div>`:""}
+      ${c.link?`<p><a href="${c.link}" target="_blank" rel="noopener">Abrir no GitHub ↗</a></p>`:""}
+    </details>`).join("")}</section>`;
+}
+
+function renderTopic(id){
   const t = TOPICS.find(x=>x.id===id);
   if(!t){ renderHome(); return; }
-  const bl = BLOCOS.find(b=>b.id===t.bloco);
-  const idx = TOPICS.indexOf(t);
-  const prev = TOPICS[idx-1], next = TOPICS[idx+1];
+  currentDisc = t.disc;
+  window.scrollTo(0,0);
+  const bl = blockOf(t);
+  const list = topicsOf(t.disc);
+  const idx = list.indexOf(t);
+  const prev = list[idx-1], next = list[idx+1];
   const isRead = read.has(t.id);
 
-  let html = `<div style="--cardc:var(${bl.cor})">
-    <div class="crumb"><a onclick="goHome()">Central</a> › <span>Disciplina 01</span> › <span>Bloco ${bl.id}</span></div>
+  let html = `<div style="--cardc:var(${bl.color})">
+    <div class="crumb"><a onclick="goHome()">Central</a> › <a onclick="location.hash='d/${t.disc}'">Disciplina ${t.disc}</a> › <span>Bloco ${bl.num}</span></div>
     <div class="t-head">
       <div class="t-emoji">${t.emoji}</div>
       <div><h2>${t.title}</h2>
@@ -630,7 +462,8 @@ function renderTopic(id){
     <section class="blk"><div class="traps"><h3><span class="ic">🚫</span> Más práticas e armadilhas</h3><ul>${t.traps.map(x=>`<li>${x}</li>`).join("")}</ul></div></section>
     ${t.tip?`<section class="blk"><div class="tip">${t.tip}</div></section>`:""}
 
-    ${PROJ[t.id]?`<section class="blk"><h3><span class="ic">🛠️</span> No curso — mão na massa</h3><div class="tip" style="border-style:solid;border-color:var(--line)">${PROJ[t.id]}</div></section>`:""}
+    ${t.curso?`<section class="blk"><h3><span class="ic">🛠️</span> No curso — mão na massa</h3><div class="tip" style="border-style:solid;border-color:var(--line)">${t.curso}</div></section>`:""}
+    ${renderCode(t.codigo)}
 
     <section class="blk"><h3><span class="ic">🧩</span> Cola rápida</h3>
       <dl class="cola">${t.cola.map(([k,v])=>`<div class="row"><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>
@@ -661,19 +494,19 @@ function toggleRead(id){
 
 function goHome(){ if(location.hash){ location.hash=""; } else { renderHome(); } }
 function route(){
-  const id = location.hash.replace("#","");
-  if(id) renderTopic(id); else renderHome();
+  const h = decodeURIComponent(location.hash.replace("#",""));
+  if(!h) return renderHome();
+  if(h.startsWith("d/")) return renderDisc(h.slice(2));
+  if(LEGACY_IDS.includes(h)){ location.replace("#D1-"+h); return; }
+  renderTopic(h);
 }
 
-/* mobile sidebar */
 function closeSide(){ $("#side").classList.remove("open"); $("#scrim").classList.remove("show"); }
 $("#menuBtn").onclick = ()=>{ $("#side").classList.toggle("open"); $("#scrim").classList.toggle("show"); };
 $("#scrim").onclick = closeSide;
 
-/* search */
 $("#search").addEventListener("input", e=>renderNav(e.target.value));
 
-/* theme */
 function applyTheme(t){
   if(t) document.documentElement.setAttribute("data-theme", t);
   else document.documentElement.removeAttribute("data-theme");

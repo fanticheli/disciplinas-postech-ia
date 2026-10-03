@@ -1,6 +1,6 @@
 # 07 · Prompt Engineering — e os padrões JSON e TOON
 
-> **Módulo 6 da disciplina** · Leitura: ~10 min · Pré-requisito: doc [05](./05-como-funcionam-llms.md)
+> **Módulo 6 da disciplina (Caps. 1 e 2)** · Leitura: ~11 min · Pré-requisito: doc [05](./05-como-funcionam-llms.md)
 
 ## 🎯 Em uma frase
 **Prompt Engineering** é a arte de escrever instruções tão claras e estruturadas que a IA para de "adivinhar" o que você quer — reduzindo alucinações e retrabalho. E como LLMs gostam de dados estruturados, os formatos **JSON** e **TOON** deixam esses prompts ainda mais precisos e baratos.
@@ -76,7 +76,21 @@ Versão **compacta** para economizar tokens: remove aspas, chaves e símbolos, d
 | JSON | 367 |
 | TOON | 339 |
 
-Com listas maiores, o ganho cresce (diferenças de +140 tokens por prompt). **Porém:** um JSON **bem modelado** — especialmente para dados **tabulares** (array de colunas e linhas) — pode ser tão ou mais eficiente que o TOON, mantendo toda a vantagem do ecossistema (validação, parsing, logging).
+Com listas maiores, o ganho cresce (a apostila cita diferenças de mais de 140 tokens por prompt). **Porém:** um JSON **bem modelado** — especialmente para dados **tabulares** (array de colunas e linhas) — pode ser tão ou mais eficiente que o TOON, mantendo toda a vantagem do ecossistema (validação, parsing, logging). No exemplo da aula, o JSON tabular gastou **26 tokens** contra **35** do TOON equivalente.
+
+**Exemplo ilustrativo de JSON Prompt (não é da apostila):**
+
+```json
+{
+  "meta": { "role": "consultor de carreira", "lang": "pt-BR" },
+  "context": { "profile": "backend, 5 anos de banco de dados" },
+  "task": "plano de 3 anos",
+  "constraints": ["se faltar dado, pergunte"],
+  "output": { "format": "json", "fields": ["fase", "meta", "risco"] }
+}
+```
+
+**Custos do TOON:** exige aprender um formato novo, não é suportado por ferramentas comuns e pode complicar a integração.
 
 #### Quando usar cada um
 | JSON Prompt | TOON |
@@ -84,6 +98,8 @@ Com listas maiores, o ganho cresce (diferenças de +140 tokens por prompt). **Po
 | Integrar com APIs | Prioridade é máxima economia de tokens |
 | Validar saída com schemas | Estrutura simples e bem controlada |
 | Manter compatibilidade com ferramentas | Pipelines onde parsing customizado é aceitável |
+
+> 🔎 **Onde isso aparece no código do repo:** `exemplo-08/prompt.md` (seções de contexto, tom, dados, tarefa, passo a passo e formato de saída, doc [09](./09-mcp-e-automacao.md)), `exemplo-13/prompts/template.txt` (role, task, tone, language, format e instruções, doc [11](./11-rag-embeddings-busca-semantica.md)) e `exemplo-06/prompts/generate_test.prompt.md`.
 
 > **Recomendação do curso:** **comece com JSON** bem estruturado + esquemas de validação. Isso já resolve a maior parte dos problemas de integração com LLMs. TOON fica para cenários específicos onde economia de tokens é essencial.
 
@@ -116,3 +132,6 @@ Com listas maiores, o ganho cresce (diferenças de +140 tokens por prompt). **Po
 - Claude 4 best practices — https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-4-best-practices
 - TOON (formato) — https://github.com/toon-format/toon
 - TOON vs JSON para LLMs — https://medium.com/data-science-in-your-pocket/toon-bye-bye-json-for-llms-91e4fe521b14
+- Tokenizer da OpenAI — https://platform.openai.com/tokenizer
+- Prompting e debugging (Lovable) — https://docs.lovable.dev/prompting/prompting-debugging
+- Playground do TOON — https://toontools.vercel.app/playground

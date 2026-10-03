@@ -1,6 +1,6 @@
 # 04 · Algoritmos Genéticos e Aprendizado por Reforço
 
-> **Módulo 5 (Cap. 1) da disciplina** · Leitura: ~8 min · Pré-requisito: doc [01](./01-ml-dl-ia-redes-neurais.md)
+> **Módulo 5 (Cap. 1) da disciplina** · Leitura: ~9 min · Pré-requisito: doc [01](./01-ml-dl-ia-redes-neurais.md)
 
 ## 🎯 Em uma frase
 São dois jeitos de a IA **descobrir soluções sozinha** quando ninguém sabe a resposta certa: **algoritmos genéticos** imitam a evolução natural (evoluem uma população inteira de tentativas), e **aprendizado por reforço** imita o adestramento (um agente aprende por tentativa, erro e recompensa).
@@ -29,6 +29,8 @@ Inspirados na evolução biológica. Em vez de aprender sequencialmente, trabalh
 
 Repete-se por várias gerações. O resultado costuma ser **criativo e inesperado** — carros com formas estranhas que nenhum humano projetaria, mas que funcionam muito bem, porque a evolução prioriza **desempenho, não estética**.
 
+**O exemplo da apostila:** você é um inventor tentando criar a melhor roda para um carro. Gera vários carros com formas e tamanhos diferentes e os coloca numa pista; os que andam mais longe, mais rápido e com mais estabilidade são os melhores. Mistura as características deles, gera a nova geração e repete, com pequenas mutações a cada rodada. Em simuladores no navegador dá para acompanhar os resultados melhorando geração a geração, sem nenhuma instrução direta de como fazer. Parâmetros como taxa de mutação, gravidade e formato do terreno podem ser ajustados.
+
 **A taxa de mutação é o parâmetro crítico:**
 
 | Taxa de mutação | Efeito |
@@ -40,6 +42,8 @@ Repete-se por várias gerações. O resultado costuma ser **criativo e inesperad
 ### Aprendizado por Reforço (RL)
 Um **agente** toma **decisões sequenciais** para **maximizar uma recompensa acumulada** ao longo do tempo. Aprende por tentativa e erro: recompensado por acertos, penalizado por erros. Cada movimento gera uma pontuação, e ele ajusta o comportamento a partir dela.
 
+> 🧭 **Complemento (fora da apostila):** em RL o dilema clássico é *explorar* ações novas versus *aproveitar* o que já dá recompensa. Nos genéticos, a mutação cumpre papel parecido: sem ela a população estagna.
+
 > 💡 Contraste importante com o módulo anterior: na IA que jogava Duck Hunt (doc [03](./03-visao-computacional-yolo.md)), **não havia aprendizado de verdade** — só reconhecimento de objetos. No RL, o agente **realmente aprende** a estratégia de vencer.
 
 ### A diferença central entre os dois
@@ -50,7 +54,7 @@ Um **agente** toma **decisões sequenciais** para **maximizar uma recompensa acu
 | Foco | Evoluir candidatos simultaneamente | Maximizar recompensa acumulada |
 
 ### Aplicações no mundo real
-Vão muito além de jogos: engenharia, logística, design de circuitos, otimização de processos. A apostila cita IAs que aprenderam a **estacionar sozinhas** (inclusive fazendo baliza com *drift*) e a jogar o **dino do Chrome**, pulando obstáculos sem nenhuma instrução direta.
+Vão muito além de jogos: engenharia, logística, design de circuitos, otimização de processos. A apostila cita IAs que aprenderam a **estacionar sozinhas** (inclusive fazendo baliza com *drift*) e a jogar o **dino do Chrome**, pulando obstáculos sem nenhuma instrução direta (caso apresentado numa conferência no Brasil, com algoritmo genético).
 
 ---
 
@@ -82,3 +86,6 @@ Vão muito além de jogos: engenharia, logística, design de circuitos, otimiza�
 - Cart-pole (RL no navegador) — https://storage.googleapis.com/tfjs-examples/cart-pole/dist/index.html
 - SnakeAI — https://github.com/jonatan5524/SnakeAI
 - RL no navegador (introdução) — https://medium.com/@pierrerouhard/reinforcement-learning-in-the-browser-an-introduction-to-tensorflow-js-9a02b143c099
+- Cart-pole (código, tfjs-examples) — https://github.com/tensorflow/tfjs-examples/tree/master/cart-pole
+- Mountain car com TF.js — https://github.com/prouhard/tfjs-mountaincar
+- Jogo da velha adaptativo com RL (freeCodeCamp) — https://www.freecodecamp.org/news/how-to-build-an-adaptive-tic-tac-toe-ai-with-reinforcement-learning-in-javascript/
