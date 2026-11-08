@@ -27,13 +27,23 @@ Cada assunto é explicado em camadas: **o que é · como funciona · como se apl
 
 ## 💻 Repositórios de código
 
-| Disciplinas | Repositório |
-|-------------|-------------|
-| 01 a 10 | [engenharia-de-software-com-ia-aplicada](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada): uma pasta por módulo (`modulo01-...` a `modulo10-...`), mais `lives/` |
-| 11 (Capstone) | [capstone-project-ai-researcher](https://github.com/unipds-engenharia-de-ia-aplicada/capstone-project-ai-researcher): o projeto completo |
-| 11 (Capstone) | [ai-researcher-seed](https://github.com/unipds-engenharia-de-ia-aplicada/ai-researcher-seed): o ponto de partida do aluno |
+O código das aulas **não está neste repositório**: os guias apontam direto para o GitHub, e **não é preciso clonar nada** para estudar. Abra o link da disciplina (ou os links "No código do repo" dentro de cada tópico).
 
-Cada tópico dos guias traz, na seção 💻 *No código do repo*, os arquivos e comandos do repositório correspondente.
+| Disciplina | Código no GitHub |
+|------------|------------------|
+| 01 · Fundamentos de IA e LLMs | [modulo01-fundamentos-de-ia-e-llms-para-programadores](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo01-fundamentos-de-ia-e-llms-para-programadores) |
+| 02 · APIs de IA generativa e prompt engineering | [modulo02-integracao-apis-llms](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo02-integracao-apis-llms) |
+| 03 · MCP | [modulo03-mcp-na-pratica](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo03-mcp-na-pratica) |
+| 04 · Agentes autônomos | [modulo04-criacao-de-agentes-autonomos-novo](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo04-criacao-de-agentes-autonomos-novo) |
+| 05 · IA para UX e UI | [modulo05-ferramentas-de-IA-para-UI-UX](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo05-ferramentas-de-IA-para-UI-UX) |
+| 06 · IA para DevOps | [modulo06-aiops-engenharia-agentica](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo06-aiops-engenharia-agentica) |
+| 07 · IA para gestão de projetos | [modulo07-ferramentas-de-ia-para-gestao-de-projetos](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo07-ferramentas-de-ia-para-gestao-de-projetos) |
+| 08 · Arquitetura de sistemas com IA | [modulo08-arquitetura-de-sistemas-com-ia](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo08-arquitetura-de-sistemas-com-ia) |
+| 09 · Processamento de dados e fine-tuning | [modulo09-processamento-de-dados-e-fine-tuning-de-modelos](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo09-processamento-de-dados-e-fine-tuning-de-modelos) |
+| 10 · Segurança e governança em IA | [modulo10-seguranca-governanca-ia](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/modulo10-seguranca-governanca-ia) |
+| 11 · Projeto integrador (Capstone) | [capstone-project-ai-researcher](https://github.com/unipds-engenharia-de-ia-aplicada/capstone-project-ai-researcher) (projeto completo) e [ai-researcher-seed](https://github.com/unipds-engenharia-de-ia-aplicada/ai-researcher-seed) (ponto de partida do aluno) |
+
+Repositório oficial das disciplinas 01 a 10: [engenharia-de-software-com-ia-aplicada](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada), que também traz as [lives](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/lives) e as [skills](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada/tree/main/skills).
 
 ---
 
