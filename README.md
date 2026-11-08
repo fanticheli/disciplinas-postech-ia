@@ -52,7 +52,11 @@ Repositório oficial das disciplinas 01 a 10: [engenharia-de-software-com-ia-apl
 ```
 .
 ├── index.html                        # Site de estudo (servido pelo GitHub Pages)
-├── data/dNN.js                       # Conteúdo do site, um arquivo por disciplina
+├── app.js                            # Lógica do site (rotas, busca, leitura)
+├── data/dNN.js · pNN.js              # Teoria e práticas, um arquivo por disciplina (carregados sob demanda)
+├── data/eNN.js · roadmap.js          # Provas, análises e trilha (gerados dos .md)
+├── data/manifest.js                  # Índice leve da home, navegação e progresso (gerado)
+├── scripts/                          # Geradores: build-docs.py e build-manifest.py
 └── disciplinas/
     └── 01-fundamentos-de-ia-e-llm/
         ├── material/                 # PDFs oficiais da disciplina
@@ -81,7 +85,7 @@ Cada tópico junta a **teoria da apostila** com o **estudo do código** do [repo
 
 ## 🛠️ Rodando localmente
 
-O site é um único HTML autocontido, sem dependências ou build:
+O site é estático, sem dependências nem build para abrir:
 
 ```bash
 # basta abrir o arquivo
@@ -93,8 +97,18 @@ open index.html          # macOS
 
 ## ➕ Adicionando novas disciplinas
 
-O site é *data-driven*: cada disciplina é um arquivo `data/dNN.js` com `STUDY.push({disc, materiais, blocos, topics})`,
-carregado por uma tag `<script>` no `index.html`. Todo o layout é reaproveitado.
+O site é *data-driven*. Para incluir uma disciplina nova:
+
+1. Crie `data/dNN.js` (`STUDY.push({disc, materiais, blocos, topics})`) e `data/pNN.js` (`PRACTICE.push({disc, intro, items})`).
+2. Crie, em `disciplinas/NN-*/`, o guia (`projeto-de-leitura/`), a análise `projeto-de-leitura/study-priorities.md` e a prova `exam-answers.md`.
+3. Regenere os dados derivados, na raiz do repositório:
+
+```bash
+python3 -I scripts/build-docs.py
+python3 -I scripts/build-manifest.py
+```
+
+Os dois scripts descobrem as disciplinas pelos arquivos `data/dNN.js`, então não há lista para editar. Todo o layout é reaproveitado.
 
 ---
 

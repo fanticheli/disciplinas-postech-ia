@@ -32,19 +32,17 @@ const read = loadReadSet();
 function saveRead() { storage.set(LS_READ, JSON.stringify([...read])); }
 saveRead();
 
-const DISCIPLINES = STUDY.slice().sort((a, b) => a.disc.num.localeCompare(b.disc.num));
+const DISCIPLINES = window.MANIFEST.disciplines.slice().sort((a, b) => a.disc.num.localeCompare(b.disc.num));
 const BLOCKS = [];
 const TOPICS = [];
-DISCIPLINES.forEach(d => {
-  d.blocos.forEach((b, i) => BLOCKS.push({ ...b, num: i, disc: d.disc.num }));
-  d.topics.forEach(t => TOPICS.push({ ...t, disc: d.disc.num }));
-});
-
 const PRACTICE_ITEMS = [];
 const PRACTICE_INTRO = {};
-(window.PRACTICE || []).slice().sort((a, b) => a.disc.localeCompare(b.disc)).forEach(p => {
-  PRACTICE_INTRO[p.disc] = p.intro || "";
-  p.items.forEach(i => PRACTICE_ITEMS.push({ ...i, disc: p.disc }));
+DISCIPLINES.forEach(d => {
+  const num = d.disc.num;
+  d.blocos.forEach((b, i) => BLOCKS.push({ ...b, num: i, disc: num }));
+  d.topics.forEach(t => TOPICS.push({ ...t, disc: num }));
+  PRACTICE_INTRO[num] = d.practice.intro || "";
+  d.practice.items.forEach(i => PRACTICE_ITEMS.push({ ...i, disc: num }));
 });
 
 const DOC_META = {
@@ -90,6 +88,28 @@ function loadScript(src) {
     }));
   }
   return scriptLoads.get(src);
+}
+function studyOf(num) { return STUDY.find(s => s.disc.num === num); }
+function practiceDataOf(num) { return PRACTICE.find(p => p.disc === num); }
+function ensureTopic(topic) {
+  const find = () => { const study = studyOf(topic.disc); return study && study.topics.find(t => t.id === topic.id); };
+  const existing = find();
+  if (existing) return Promise.resolve(existing);
+  return loadScript(`data/d${topic.disc}.js`).then(() => {
+    const full = find();
+    if (!full) throw new Error(`topic ${topic.id} not found in data/d${topic.disc}.js`);
+    return full;
+  });
+}
+function ensurePracticeItem(item) {
+  const find = () => { const data = practiceDataOf(item.disc); return data && data.items.find(i => i.id === item.id); };
+  const existing = find();
+  if (existing) return Promise.resolve(existing);
+  return loadScript(`data/p${item.disc}.js`).then(() => {
+    const full = find();
+    if (!full) throw new Error(`practice ${item.id} not found in data/p${item.disc}.js`);
+    return full;
+  });
 }
 function ensureDoc(kind, disc) {
   const existing = docOf(kind, disc);
@@ -254,7 +274,7 @@ function topicRow(t) {
   return `<li><a class="row-link" href="#${t.id}">
     <span class="row-num" aria-hidden="true">${t.id.split("-")[1]}</span>
     <span class="row-main"><span class="row-title">${t.title}</span><span class="row-desc">${t.short}</span>
-      <span class="row-meta"><span>${icon("clock")}${t.read}</span>${t.codigo && t.codigo.length ? `<span>${icon("code")}código</span>` : ""}${practices ? `<span>${icon("wrench")}${practices} ${practices === 1 ? "prática" : "práticas"}</span>` : ""}</span></span>
+      <span class="row-meta"><span>${icon("clock")}${t.read}</span>${t.hasCode ? `<span>${icon("code")}código</span>` : ""}${practices ? `<span>${icon("wrench")}${practices} ${practices === 1 ? "prática" : "práticas"}</span>` : ""}</span></span>
     <span class="row-status${isRead ? " is-read" : ""}">${icon(isRead ? "check-circle" : "circle")}<span class="sr-only">${isRead ? "Lido" : "Não lido"}</span></span>
   </a></li>`;
 }
@@ -309,7 +329,7 @@ function practiceRow(i) {
   return `<li><a class="row-link" href="#${i.id}">
     <span class="row-num" aria-hidden="true">${i.id.split("-")[1]}</span>
     <span class="row-main"><span class="row-title">${i.title}</span><span class="row-desc">${i.cenario}</span>
-      <span class="row-meta"><span>#${i.id}</span>${i.code && i.code.src ? `<span>${icon("code")}${escapeHtml(i.code.lang || "código")}</span>` : ""}${topics ? `<span>${icon("book")}${topics} ${topics === 1 ? "tópico" : "tópicos"}</span>` : ""}</span></span>
+      <span class="row-meta"><span>#${i.id}</span>${i.codeLang !== null ? `<span>${icon("code")}${escapeHtml(i.codeLang || "código")}</span>` : ""}${topics ? `<span>${icon("book")}${topics} ${topics === 1 ? "tópico" : "tópicos"}</span>` : ""}</span></span>
     ${icon("chevron-right", "row-chevron")}
   </a></li>`;
 }
@@ -375,6 +395,22 @@ function pager(prev, next, label) {
   return `<nav class="pager" aria-label="${label}">${prev ? link(prev, "prev") : ""}${next ? link(next, "next") : ""}</nav>`;
 }
 
+const LOADING_BODY = `<div class="skeleton" role="status" aria-label="Carregando conteúdo"><i></i><i></i><i></i><i></i><i></i></div>`;
+
+function loadArticleBody(load, build) {
+  const token = state.routeToken;
+  load().then(full => {
+    if (token !== state.routeToken) return;
+    content.querySelector("#articleBody").innerHTML = build(full);
+    finishRender({ article: true });
+  }).catch(() => {
+    if (token !== state.routeToken) return;
+    content.querySelector("#articleBody").innerHTML = `<div class="state-message" role="alert"><h2>Não foi possível carregar este conteúdo</h2>
+      <p>Verifique a conexão e tente de novo.</p><button type="button" class="btn" data-action="retry-route">Tentar de novo</button></div>`;
+    finishRender({ article: false });
+  });
+}
+
 function renderPracticeItem(id) {
   const i = PRACTICE_ITEMS.find(x => x.id === id);
   if (!i) return renderHome();
@@ -386,19 +422,21 @@ function renderPracticeItem(id) {
   const idx = list.indexOf(i);
   const prev = list[idx - 1];
   const next = list[idx + 1];
-  const topicLinks = (i.topics || []).map(tid => {
-    const t = TOPICS.find(x => x.id === tid);
-    return t ? `<a href="#${tid}">${t.title}</a>` : "";
-  }).filter(Boolean);
-  const body = `
-    <div class="callout callout--summary"><p class="callout-label">${icon("target")}Cenário</p><div>${i.cenario}</div></div>
-    ${topicSection("steps", "Passo a passo", steps(i.passos))}
-    ${i.code && i.code.src ? topicSection("code", "Código", `<pre class="code" data-lang="${escapeHtml(i.code.lang || "")}"><code>${escapeHtml(i.code.src)}</code></pre>`) : ""}
-    <div class="callout callout--ok"><p class="callout-label">${icon("check-circle")}Resultado</p><div>${i.resultado}</div></div>
-    ${topicSection("ban", "Quando não usar", bullets(i.quandoNao))}
-    <section class="callout callout--warn" aria-labelledby="trapTitle"><h2 class="callout-title" id="trapTitle">${icon("alert")}Armadilha comum</h2><p>${i.armadilha}</p></section>
+  const buildBody = full => {
+    const topicLinks = (i.topics || []).map(tid => {
+      const t = TOPICS.find(x => x.id === tid);
+      return t ? `<a href="#${tid}">${t.title}</a>` : "";
+    }).filter(Boolean);
+    return `
+    <div class="callout callout--summary"><p class="callout-label">${icon("target")}Cenário</p><div>${full.cenario}</div></div>
+    ${topicSection("steps", "Passo a passo", steps(full.passos))}
+    ${full.code && full.code.src ? topicSection("code", "Código", `<pre class="code" data-lang="${escapeHtml(full.code.lang || "")}"><code>${escapeHtml(full.code.src)}</code></pre>`) : ""}
+    <div class="callout callout--ok"><p class="callout-label">${icon("check-circle")}Resultado</p><div>${full.resultado}</div></div>
+    ${topicSection("ban", "Quando não usar", bullets(full.quandoNao))}
+    <section class="callout callout--warn" aria-labelledby="trapTitle"><h2 class="callout-title" id="trapTitle">${icon("alert")}Armadilha comum</h2><p>${full.armadilha}</p></section>
     ${topicLinks.length ? topicSection("book", "Teoria relacionada", bullets(topicLinks)) : ""}
-    ${i.repo && i.repo.link ? `<p><a href="${i.repo.link}" target="_blank" rel="noopener">${i.repo.label || "Abrir no repositório do curso"} ↗</a></p>` : ""}`;
+    ${full.repo && full.repo.link ? `<p><a href="${full.repo.link}" target="_blank" rel="noopener">${full.repo.label || "Abrir no repositório do curso"} ↗</a></p>` : ""}`;
+  };
   const foot = pager(
     prev && { href: "#" + prev.id, label: "Anterior", title: prev.title },
     next && { href: "#" + next.id, label: "Próxima", title: next.title },
@@ -408,11 +446,12 @@ function renderPracticeItem(id) {
     <header class="page-head">
       <p class="eyebrow">Na prática · Disciplina ${i.disc}</p>
       <h1 class="page-title">${i.title}</h1>
-      <div class="page-meta"><span class="chip chip--accent">${icon("wrench")}Na prática</span><span class="chip">#${i.id}</span>${i.code && i.code.lang ? `<span class="chip">${icon("code")}${escapeHtml(i.code.lang)}</span>` : ""}${tocButton()}</div>
+      <div class="page-meta"><span class="chip chip--accent">${icon("wrench")}Na prática</span><span class="chip">#${i.id}</span>${i.codeLang ? `<span class="chip">${icon("code")}${escapeHtml(i.codeLang)}</span>` : ""}${tocButton()}</div>
     </header>
-    ${articleLayout(body, foot)}
+    ${articleLayout(LOADING_BODY, foot)}
   </article>`;
   finishRender({ article: true });
+  loadArticleBody(() => ensurePracticeItem(i), buildBody);
 }
 
 function readToggleButton(id, variant) {
@@ -451,22 +490,22 @@ function renderTopic(id) {
   const next = list[idx + 1];
   const isRead = read.has(t.id);
   const practices = practiceForTopic(t.id);
-  const body = `
-    <div class="callout callout--summary"><p class="callout-label">${icon("sparkle")}Em uma frase</p><div class="callout-body">${t.oneliner}</div></div>
-    <section class="callout callout--vovo" aria-labelledby="grandmaTitle"><h2 class="callout-title" id="grandmaTitle">${icon("heart")}A analogia da vovó</h2>${t.vovo.map(p => `<p>${p}</p>`).join("")}</section>
-    ${topicSection("bulb", "O que é", bullets(t.oque))}
-    ${topicSection("steps", "Como funciona", steps(t.como))}
-    ${topicSection("target", "Como se aplica", bullets(t.aplica))}
+  const buildBody = full => `
+    <div class="callout callout--summary"><p class="callout-label">${icon("sparkle")}Em uma frase</p><div class="callout-body">${full.oneliner}</div></div>
+    <section class="callout callout--vovo" aria-labelledby="grandmaTitle"><h2 class="callout-title" id="grandmaTitle">${icon("heart")}A analogia da vovó</h2>${full.vovo.map(p => `<p>${p}</p>`).join("")}</section>
+    ${topicSection("bulb", "O que é", bullets(full.oque))}
+    ${topicSection("steps", "Como funciona", steps(full.como))}
+    ${topicSection("target", "Como se aplica", bullets(full.aplica))}
     ${topicSection("scale", "Prós e contras", `<div class="pros-cons">
-      <div class="is-pro"><h3>${icon("plus")}Prós</h3>${bullets(t.pros)}</div>
-      <div class="is-con"><h3>${icon("minus")}Contras</h3>${bullets(t.contras)}</div></div>`)}
-    <section class="callout callout--warn" aria-labelledby="trapsTitle"><h2 class="callout-title" id="trapsTitle">${icon("alert")}Más práticas e armadilhas</h2>${bullets(t.traps)}</section>
-    ${t.tip ? `<div class="callout callout--tip" role="note"><p class="callout-label">${icon("info")}Nota</p><div>${t.tip}</div></div>` : ""}
-    ${t.curso ? topicSection("wrench", "No curso: mão na massa", `<p>${t.curso}</p>`) : ""}
-    ${renderCode(t.codigo)}
+      <div class="is-pro"><h3>${icon("plus")}Prós</h3>${bullets(full.pros)}</div>
+      <div class="is-con"><h3>${icon("minus")}Contras</h3>${bullets(full.contras)}</div></div>`)}
+    <section class="callout callout--warn" aria-labelledby="trapsTitle"><h2 class="callout-title" id="trapsTitle">${icon("alert")}Más práticas e armadilhas</h2>${bullets(full.traps)}</section>
+    ${full.tip ? `<div class="callout callout--tip" role="note"><p class="callout-label">${icon("info")}Nota</p><div>${full.tip}</div></div>` : ""}
+    ${full.curso ? topicSection("wrench", "No curso: mão na massa", `<p>${full.curso}</p>`) : ""}
+    ${renderCode(full.codigo)}
     ${practices.length ? topicSection("wrench", "Na prática", bullets(practices.map(p => `<a href="#${p.id}">${p.title}</a>`))) : ""}
-    ${topicSection("list", "Cola rápida", `<dl class="cheatsheet">${t.cola.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>`)}
-    ${t.links && t.links.length ? `<details class="disclosure"><summary>${icon("link")}Para ir além${icon("chevron-down", "disclosure-chevron")}</summary><div class="disclosure-body"><ul>${t.links.map(([l, u]) => `<li><a href="${u}" target="_blank" rel="noopener">${l}</a></li>`).join("")}</ul></div></details>` : ""}`;
+    ${topicSection("list", "Cola rápida", `<dl class="cheatsheet">${full.cola.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>`)}
+    ${full.links && full.links.length ? `<details class="disclosure"><summary>${icon("link")}Para ir além${icon("chevron-down", "disclosure-chevron")}</summary><div class="disclosure-body"><ul>${full.links.map(([l, u]) => `<li><a href="${u}" target="_blank" rel="noopener">${l}</a></li>`).join("")}</ul></div></details>` : ""}`;
   const foot = `
     <div class="read-panel${isRead ? " is-read" : ""}">
       <div><p class="read-panel-title">${isRead ? "Tópico concluído" : "Terminou a leitura?"}</p><p class="read-panel-text">Seu progresso fica salvo neste navegador.</p></div>
@@ -483,9 +522,10 @@ function renderTopic(id) {
         <div><p class="eyebrow">Disciplina ${t.disc} · Bloco ${bl.num} · ${bl.label}</p><h1 class="page-title">${t.title}</h1></div></div>
       <div class="page-meta"><span class="chip chip--accent">${t.mod}</span><span class="chip">${icon("clock")}${t.read}</span><span class="chip">#${t.id}</span>${readToggleButton(t.id, "small")}${tocButton()}</div>
     </header>
-    ${articleLayout(body, foot)}
+    ${articleLayout(LOADING_BODY, foot)}
   </article>`;
   finishRender({ article: true });
+  loadArticleBody(() => ensureTopic(t), buildBody);
 }
 
 function docFooter(kind, num) {
@@ -912,7 +952,7 @@ function buildSearchIndex() {
     const bl = blockOf(t);
     addEntry(list, {
       group: "Tópicos", icon: "book", title: plainText(t.title), sub: `${shortDisc(t.disc)} · Bloco ${bl ? bl.num : ""} · #${t.id}`,
-      hash: t.id, id: t.id, extra: `${stripTags(t.short)} ${t.cola.map(c => stripTags(c[0] + " " + c[1])).join(" ")}`
+      hash: t.id, id: t.id, extra: `${stripTags(t.short)} ${t.terms.map(stripTags).join(" ")}`
     });
   });
   PRACTICE_ITEMS.forEach(i => addEntry(list, {
