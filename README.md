@@ -21,6 +21,7 @@ Cada assunto é explicado em camadas: **o que é · como funciona · como se apl
 | 08 | Arquitetura de Sistemas com IA | José Ahirton Batista Lopes Filho | ✅ Completa |
 | 09 | Processamento de Dados e Fine-Tuning de Modelos | José Ahirton Batista Lopes Filho | ✅ Completa |
 | 10 | Segurança e Governança em IA | Jéssica da Silva Costa | ✅ Completa |
+| 11 | Projeto Integrador (Capstone Project) | Álvaro Camillo Neto | ✅ Completa |
 
 ---
 
@@ -43,7 +44,7 @@ Cada assunto é explicado em camadas: **o que é · como funciona · como se apl
 ```
 
 Cada tópico junta a **teoria da apostila** com o **estudo do código** do [repositório oficial](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada)
-(seção 💻 *No código do repo*: fluxo, como rodar, template vs z e armadilhas). Todas as disciplinas (01 a 10) seguem a mesma estrutura.
+(seção 💻 *No código do repo*: fluxo, como rodar, template vs z e armadilhas). Todas as disciplinas (01 a 11) seguem a mesma estrutura.
 
 ## 🎯 Como estudar
 

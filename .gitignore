@@ -9,3 +9,6 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Metadados de download do Windows/WSL
+*:Zone.Identifier
