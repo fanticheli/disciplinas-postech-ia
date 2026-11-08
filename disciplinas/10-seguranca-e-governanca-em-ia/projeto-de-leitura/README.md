@@ -2,6 +2,8 @@
 
 > Resumo organizado da **Disciplina 10** da pós de Engenharia de IA Aplicada (autoria: **Jéssica da Silva Costa**).
 > Cada assunto é explicado em **duas camadas**: 👵 *para a vovó* (analogias do mundo real) e 🔧 *tecnicamente* (nível sênior). Esta é uma disciplina majoritariamente teórica: o repositório do curso tem só dois PDFs e um notebook, absorvidos nos tópicos 05, 09 e 10; nos demais, a seção final é **💻 No curso**.
+>
+> 🎯 Quanto cada tópico vale para o seu dia a dia: [O que vale estudar](./study-priorities.md). 📝 Questões de prova explicadas: [Prova comentada](../exam-answers.md).
 
 ---
 

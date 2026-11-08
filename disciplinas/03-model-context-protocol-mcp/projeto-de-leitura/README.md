@@ -2,6 +2,8 @@
 
 > Resumo organizado da **Disciplina 03** da pós de Engenharia de IA Aplicada (autoria: **Erick Wendel Gomes da Silva**).
 > Cada assunto é explicado em **duas camadas**: 👵 *para a vovó* (analogias do mundo real) e 🔧 *tecnicamente* (nível sênior), e fecha com o que foi feito **no código dos projetos do repositório** (incluindo bugs e inconsistências que encontrei).
+>
+> 🎯 Quanto cada tópico vale para o seu dia a dia: [O que vale estudar](./study-priorities.md). 📝 Questões de prova explicadas: [Prova comentada](../exam-answers.md).
 
 ---
 

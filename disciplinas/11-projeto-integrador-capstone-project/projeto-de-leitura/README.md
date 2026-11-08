@@ -2,6 +2,8 @@
 
 > Resumo organizado da **Disciplina 11** da pós de Engenharia de IA Aplicada (autoria: **Álvaro Camillo Neto**).
 > Cada assunto tem duas camadas: 👵 *para a vovó* (analogia do mundo real) e 🔧 *tecnicamente* (nível sênior), e fecha com o que está **no código do repositório** do projeto.
+>
+> 🎯 Quanto cada tópico vale para o seu dia a dia: [O que vale estudar](./study-priorities.md). 📝 Questões de prova explicadas: [Prova comentada](../exam-answers.md).
 
 ---
 

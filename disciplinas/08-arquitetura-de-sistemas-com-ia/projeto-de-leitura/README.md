@@ -2,6 +2,8 @@
 
 > Resumo organizado da **Disciplina 08** da pós de Engenharia de IA Aplicada (autoria: **José Ahirton Batista Lopes Filho**, o Prof. Ahirton Lopes).
 > Cada assunto é explicado em **duas camadas**: 👵 *para a vovó* (analogias do mundo real) e 🔧 *tecnicamente* (nível sênior), e fecha com o que há **no código do repositório do curso** (canvases, protótipos em JavaScript e Python, trilhas de auditoria e atividades).
+>
+> 🎯 Quanto cada tópico vale para o seu dia a dia: [O que vale estudar](./study-priorities.md). 📝 Questões de prova explicadas: [Prova comentada](../exam-answers.md).
 
 ---
 

@@ -58,6 +58,11 @@ Cada tópico dos guias traz, na seção 💻 *No código do repo*, os arquivos e
 Cada tópico junta a **teoria da apostila** com o **estudo do código** do [repositório oficial](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada)
 (seção 💻 *No código do repo*: fluxo, como rodar, template vs z e armadilhas). Todas as disciplinas (01 a 11) seguem a mesma estrutura.
 
+## 🧭 Por onde começar
+
+- [Trilha: o que vale estudar](disciplinas/study-roadmap.md): resumo das 11 disciplinas, o que implementar agora, o que aprofundar e o que pode ficar no superficial.
+- Em cada disciplina: `projeto-de-leitura/study-priorities.md` (o que vale o seu tempo) e `exam-answers.md` (prova comentada, com onde estudar cada assunto).
+
 ## 🎯 Como estudar
 
 - **Rápido, no navegador:** abra o [site](https://fanticheli.github.io/disciplinas-postech-ia/). Tem busca, tema claro/escuro, "marcar como lido" e navegação por blocos.
