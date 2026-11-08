@@ -195,6 +195,23 @@
   .code-proj .traps,.code-proj .tip{margin-top:12px}
   code{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:.5px 5px;font-size:.86em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere}
 
+  .doc{font-size:15.5px;line-height:1.65;overflow-wrap:anywhere}
+  .doc h2{font-size:21px;margin:34px 0 10px;letter-spacing:-.01em;line-height:1.25}
+  .doc h3{font-size:17px;margin:26px 0 8px;line-height:1.3}
+  .doc h4{font-size:15px;margin:20px 0 6px}
+  .doc p{margin:10px 0}
+  .doc ul,.doc ol{padding-left:22px;margin:8px 0}
+  .doc li{margin:4px 0}
+  .doc hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+  .doc blockquote{margin:16px 0;padding:10px 16px;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;color:var(--ink)}
+  .doc blockquote p{margin:6px 0}
+  .doc .table-wrap{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:10px;max-width:100%}
+  .doc table{border-collapse:collapse;width:100%;font-size:14px}
+  .doc th,.doc td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  .doc th{background:var(--bg);font-weight:700;white-space:nowrap}
+  .doc tr:last-child td{border-bottom:none}
+  .doc-back{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);font-size:14px}
+
   details.links{margin-top:24px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:2px 16px}
   details.links summary{cursor:pointer;font-size:14px;font-weight:600;padding:12px 0;list-style:none}
   details.links summary::-webkit-details-marker{display:none}
@@ -256,7 +273,7 @@
   </main>
 </div>
 
-<script>window.STUDY=[];window.PRACTICE=[];</script>
+<script>window.STUDY=[];window.PRACTICE=[];window.DOCS=[];</script>
 <script src="data/d01.js"></script>
 <script src="data/d02.js"></script>
 <script src="data/d03.js"></script>
@@ -279,6 +296,18 @@
 <script src="data/p09.js"></script>
 <script src="data/p10.js"></script>
 <script src="data/p11.js"></script>
+<script src="data/e01.js"></script>
+<script src="data/e02.js"></script>
+<script src="data/e03.js"></script>
+<script src="data/e04.js"></script>
+<script src="data/e05.js"></script>
+<script src="data/e06.js"></script>
+<script src="data/e07.js"></script>
+<script src="data/e08.js"></script>
+<script src="data/e09.js"></script>
+<script src="data/e10.js"></script>
+<script src="data/e11.js"></script>
+<script src="data/roadmap.js"></script>
 <script>
 const COLORS = ["--b1","--b2","--b3","--b4","--b5","--b0"];
 const DISCIPLINES = STUDY.slice().sort((a,b)=>a.disc.num.localeCompare(b.disc.num));
@@ -295,6 +324,9 @@ const PRACTICE_INTRO = {};
   PRACTICE_INTRO[p.disc] = p.intro || "";
   p.items.forEach(i=>PRACTICE_ITEMS.push({...i, disc:p.disc}));
 });
+const DOC_LABELS = {priorities:"🎯 O que vale estudar", exam:"📝 Prova comentada"};
+const DOC_HASH = {priorities:"vale", exam:"prova"};
+function docOf(kind, disc){ return (window.DOCS||[]).find(d=>d.kind===kind && d.disc===disc); }
 function practiceOf(num){ return PRACTICE_ITEMS.filter(i=>i.disc===num); }
 function practiceForTopic(id){ return PRACTICE_ITEMS.filter(i=>(i.topics||[]).includes(id)); }
 function escapeHtml(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
@@ -377,6 +409,16 @@ function renderNav(filter=""){
         nav.appendChild(el);
       });
     });
+    if(currentDisc && !f){
+      ["priorities","exam"].filter(k=>docOf(k,d.disc.num)).forEach(k=>{
+        const el = document.createElement("div");
+        const h = DOC_HASH[k]+"/"+d.disc.num;
+        el.className = "nav-item"+(location.hash==="#"+h?" active":"");
+        el.innerHTML = `<span class="tt">${DOC_LABELS[k]}</span>`;
+        el.onclick = ()=>{ location.hash = h; closeSide(); };
+        nav.appendChild(el);
+      });
+    }
   });
   if(currentDisc && !f){
     const back = document.createElement("div");
@@ -416,6 +458,10 @@ function renderHome(){
     </div>`;
   });
   html += `</div>`;
+  if(docOf("roadmap","")){
+    html += `<div class="materials practice-cta" style="border-left-color:var(--b3)" onclick="location.hash='trilha'"><h3>🧭 Trilha: o que vale estudar</h3>
+      <p style="margin:0;font-size:14px;color:var(--muted)">O que implementar primeiro, o que ler por alto e o que pular, cruzando as 11 disciplinas.</p></div>`;
+  }
   if(PRACTICE_ITEMS.length){
     html += `<div class="materials practice-cta" onclick="location.hash='pratica'"><h3>🛠️ Na prática</h3>
       <p style="margin:0;font-size:14px;color:var(--muted)">${PRACTICE_ITEMS.length} técnicas aplicadas: cenário real, passo a passo, código curto e quando não usar.</p></div>`;
@@ -502,6 +548,13 @@ function renderDisc(num){
     <div class="disc-tag"><b>${d.disc.autor}</b> ${d.topics.length} tópicos · ${readCount(topicsOf(num))} lidos</div>
     ${practiceOf(num).length?`<div class="disc-tag" style="margin-top:8px;cursor:pointer" onclick="location.hash='pratica/${num}'"><b>🛠️ Na prática</b> ${practiceOf(num).length} técnicas aplicadas →</div>`:""}
   </div>`;
+  const docCards = ["priorities","exam"].filter(k=>docOf(k,num)).map(k=>{
+    const [emoji, ...label] = DOC_LABELS[k].split(" ");
+    const blurb = k==="priorities" ? "O que implementar, o que ler por alto e o que pular nesta disciplina." : "Questões resolvidas passo a passo, com o erro de cada alternativa.";
+    return `<div class="card" style="--cardc:var(--b3)" onclick="location.hash='${DOC_HASH[k]}/${num}'">
+      <div class="emoji">${emoji}</div><h4>${label.join(" ")}</h4><p>${blurb}</p></div>`;
+  });
+  if(docCards.length) html += `<div class="bloco-section"><div class="cards">${docCards.join("")}</div></div>`;
   BLOCKS.filter(b=>b.disc===num).forEach(bl=>{
     const items = TOPICS.filter(t=>t.disc===num && t.bloco===bl.id);
     if(!items.length) return;
@@ -531,6 +584,22 @@ function renderDisc(num){
       <p style="margin:0;font-size:14px;color:var(--muted)">${d.aviso.texto}</p></div>`;
   }
   content.innerHTML = html;
+  renderNav($("#search").value);
+}
+
+function renderDoc(kind, num){
+  const doc = docOf(kind, num);
+  if(!doc || (num && !discOf(num))){ renderHome(); return; }
+  currentDisc = num || null;
+  window.scrollTo(0,0);
+  const crumb = num
+    ? `<a onclick="goHome()">Central</a> › <a onclick="location.hash='d/${num}'">Disciplina ${num}</a> › <span>${DOC_LABELS[kind].replace(/^\S+\s/,"")}</span>`
+    : `<a onclick="goHome()">Central</a> › <span>Trilha</span>`;
+  const back = num ? `<a href="#d/${num}">← Voltar para a Disciplina ${num}</a>` : `<a href="#">← Voltar para a Central</a>`;
+  content.innerHTML = `<div style="--cardc:var(--b3)"><div class="crumb">${crumb}</div>
+    <div class="t-head"><div><h2>${doc.title}</h2></div></div>
+    <div class="doc">${doc.html}</div>
+    <div class="doc-back">${back}</div></div>`;
   renderNav($("#search").value);
 }
 
@@ -628,6 +697,9 @@ function route(){
   if(h.startsWith("pratica/")) return renderPracticeIndex(h.slice(8));
   if(/^P\d+-\d+$/.test(h)) return renderPracticeItem(h);
   if(h.startsWith("d/")) return renderDisc(h.slice(2));
+  if(h==="trilha") return renderDoc("roadmap","");
+  if(h.startsWith("vale/")) return renderDoc("priorities",h.slice(5));
+  if(h.startsWith("prova/")) return renderDoc("exam",h.slice(6));
   if(LEGACY_IDS.includes(h)){ location.replace("#D1-"+h); return; }
   renderTopic(h);
 }
