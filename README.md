@@ -25,6 +25,18 @@ Cada assunto é explicado em camadas: **o que é · como funciona · como se apl
 
 ---
 
+## 💻 Repositórios de código
+
+| Disciplinas | Repositório |
+|-------------|-------------|
+| 01 a 10 | [engenharia-de-software-com-ia-aplicada](https://github.com/unipds-engenharia-de-ia-aplicada/engenharia-de-software-com-ia-aplicada): uma pasta por módulo (`modulo01-...` a `modulo10-...`), mais `lives/` |
+| 11 (Capstone) | [capstone-project-ai-researcher](https://github.com/unipds-engenharia-de-ia-aplicada/capstone-project-ai-researcher): o projeto completo |
+| 11 (Capstone) | [ai-researcher-seed](https://github.com/unipds-engenharia-de-ia-aplicada/ai-researcher-seed): o ponto de partida do aluno |
+
+Cada tópico dos guias traz, na seção 💻 *No código do repo*, os arquivos e comandos do repositório correspondente.
+
+---
+
 ## 🗂️ Estrutura do repositório
 
 ```

@@ -122,7 +122,7 @@ PRACTICE.push({
   },
   {
    "id": "P11-05",
-   "title": "Parágrafo indexável por template com teste de snapshot",
+   "title": "Parágrafo indexável por template com teste de igualdade exata da string gerada",
    "topics": [
     "D11-03"
    ],
@@ -138,7 +138,7 @@ PRACTICE.push({
     "lang": "ts",
     "src": "interface Indicator {\n  companyName: string;\n  period: string;\n  revenue: number;\n  netIncome: number;\n}\n\nconst oneDecimal = new Intl.NumberFormat('pt-BR', {\n  minimumFractionDigits: 1,\n  maximumFractionDigits: 1,\n});\n\nfunction formatMoney(value: number): string {\n  return value >= 1_000_000_000\n    ? `R$ ${oneDecimal.format(value / 1_000_000_000)} bilhões`\n    : `R$ ${oneDecimal.format(value / 1_000_000)} milhões`;\n}\n\nexport function buildParagraph(indicator: Indicator, previousRevenue?: number): string {\n  const comparison =\n    previousRevenue === undefined\n      ? ''\n      : `, variação de ${oneDecimal.format(((indicator.revenue - previousRevenue) / Math.abs(previousRevenue)) * 100)}%`;\n  const margin = (indicator.netIncome / indicator.revenue) * 100;\n  return `No ${indicator.period}, a ${indicator.companyName} reportou receita líquida de ${formatMoney(indicator.revenue)}${comparison}. O lucro líquido foi de ${formatMoney(indicator.netIncome)}, com margem líquida de ${oneDecimal.format(margin)}%.`;\n}"
    },
-   "resultado": "Diff vazio entre duas execuções (meta: 0 linhas diferentes) e custo de LLM da etapa igual a zero; o teste de snapshot quebra se alguém mudar o formato.",
+   "resultado": "Diff vazio entre duas execuções (meta: 0 linhas diferentes) e custo de LLM da etapa igual a zero; o teste de igualdade exata quebra se alguém mudar o formato.",
    "quandoNao": [
     "Texto narrativo ou qualitativo (notícias, teses): o template não cobre, e a LLM é a ferramenta certa.",
     "Corpus com poucos documentos e rótulos variáveis, em que manter o template custa mais que revisar à mão."

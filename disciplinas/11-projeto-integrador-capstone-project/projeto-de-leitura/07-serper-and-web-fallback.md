@@ -96,7 +96,7 @@ Li todo o módulo de busca, o nó, os helpers de chunk, extração e conversão 
 2. `search/serper.ts`: `makeSerperProvider`, POST com `X-API-KEY`, `AbortSignal.timeout(10_000)`, erro se `!response.ok`, mapeia `organic` (link vira url).
 3. `search/google-custom-search.ts`: GET com `key`, `cx`, `q`; mapeia `items`.
 4. `search/index.ts`: `criarSearchProvider()`; `DEMO=true` devolve fixture; senão `SEARCH_PROVIDER ?? 'serper'`, exige `SERPER_API_KEY` (ou `GOOGLE_CUSTOM_SEARCH_API_KEY` + `GOOGLE_CUSTOM_SEARCH_CX`) e embrulha em `comResiliencia`.
-5. `search/resilient-search-provider.ts`: retry com backoff (3 tentativas, base 200 ms, dobra) e circuit breaker (3 falhas consecutivas abrem por 30 s); `CircuitoAbertoError`.
+5. `search/resilient-search-provider.ts`: retry com backoff (3 tentativas, base 200 ms, dobra) e circuit breaker (3 falhas consecutivas abrem por 30 s; cada falha contada é uma chamada de `search()` que já esgotou as 3 tentativas do retry, ou seja, 9 chamadas reais ao provedor); `CircuitoAbertoError`.
 6. `nodes/web-search.ts`: `RESULTADOS_POR_QUERY = 3`, `TTL_PADRAO_DIAS = 7`; queries por aspecto; try/catch por busca e por página; um embedding por chunk via `embedQuery`; devolve `{}` (o efeito é a escrita no banco).
 7. `web-search/chunk.ts`: `RecursiveCharacterTextSplitter` com `chunkSize 1000`, `chunkOverlap 100`; `extract.ts`: `html-to-text` e `buscarPagina` com timeout de 10 s; `to-row.ts`: `expiresAt = fetchedAt + ttlDias * 24h`.
 8. `db/retrieve-similar.ts`: `buscarNaWeb` filtra `gt(expiresAt, new Date())`; `combinarResultados` junta corpus e web e ordena por distância.

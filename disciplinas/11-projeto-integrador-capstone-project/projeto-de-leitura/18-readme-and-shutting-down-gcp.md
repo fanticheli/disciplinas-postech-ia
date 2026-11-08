@@ -66,7 +66,7 @@ Encerrar o projeto é desligar o disjuntor geral da obra quando ela acaba: o que
 - Esperar que encerrar o projeto apague tudo na hora: ele fica 30 dias arquivado.
 - Achado: `make destroy` do repo não encerra o projeto GCP nem o Firebase Hosting, só remove recursos; o encerramento do projeto continua manual.
 
-> 💡 Peça o README ao agente com a instrução de renderizar os diagramas com o CLI do Mermaid: é o único jeito de garantir que não há erro de parser antes do push.
+> 💡 Peça o README ao agente com a instrução de renderizar os diagramas com o CLI do Mermaid: é uma forma de conferir que não há erro de parser antes do push (a aula também confere no GitHub).
 
 ---
 
@@ -106,7 +106,7 @@ Li o README completo. Não renderizei os diagramas.
 - Abrir o README no GitHub para ver os diagramas renderizados
 
 **Armadilhas e achados no código**
-- Achado: o nó principal está como `agentGraph` no diagrama de arquitetura, como a aula manda; no diagrama do grafo os nós são `retrieve`, `grade`, `answer`, `webSearch` (não há nó chamado `graph`).
+- Achado: a aula manda nomear `agentGraph` o nó principal do diagrama do grafo; no repo ele está no diagrama de arquitetura, e no diagrama do grafo os nós são `retrieve`, `grade`, `answer`, `webSearch` (não há nó chamado `graph`).
 - Achado: o CLAUDE.md afirma que os diagramas foram validados com `@mermaid-js/mermaid-cli` (a aula, na demo, retirou essa frase do prompt); não reproduzi a validação.
 - Achado: o README traz URLs reais de demo e API de produção (`ai-researcher-capstone.web.app`) que deixam de funcionar quando o projeto é encerrado (CLAUDE.md registra que `pnpm destroy` foi executado de verdade no H.5 e o ambiente reconstruído).
 
@@ -127,7 +127,7 @@ A aula encerra pelo Console do GCP; o repo oferece o equivalente por CLI (`make 
 - Alternativa da aula: Console do GCP, IAM e administrador, Configurações, Encerrar
 
 **Armadilhas e achados no código**
-- Achado: aula e repo divergem de mecanismo: console encerra o projeto inteiro (30 dias de arquivo, restaurável); o script apaga recursos um a um sem janela de restauração para o que ele deleta.
+- Achado: aula e repo divergem de mecanismo: console encerra o projeto inteiro (30 dias de arquivo, restaurável); o script apaga recursos um a um, sem janela de restauração para a maioria deles; a exceção é o pool de identidade do WIF, que tem soft-delete de 30 dias.
 - Achado: o CLAUDE.md registra que o Workload Identity Pool tem soft-delete de 30 dias (undelete possível) e que a service account recriada perde roles e binding; a aula não trata disso.
 - Achado: o script não remove o projeto, então nada impede que algum recurso que ele não conhece continue cobrando; para zerar a conta, encerre o projeto.
 - Achado: a estimativa do repo para o Cloud SQL é de aproximadamente US$ 10-15 por mês (comentário em destroy.ts, citando o plano); número do repo, não da aula.

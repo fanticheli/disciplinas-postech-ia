@@ -3,7 +3,7 @@
 > **Unidade 2 · Aula 13** · Leitura: ~12 min · Bloco: Unidade 2 · Orquestração cognitiva e APIs
 
 ## 🎯 Em uma frase
-O nó **answer** responde só com o contexto recuperado, avisa quando ele é incompleto e **sempre anexa as fontes**. O guardrail tem duas defesas: instrução no system prompt (não garantida) e um **filtro determinístico por regex** que troca qualquer resposta recomendatória por um aviso fixo. O grafo sai por `POST /api/chat` em **SSE**, um evento por nó, com `Cache-Control: no-cache, no-transform` e `Connection: keep-alive`.
+O nó **answer** responde só com o contexto recuperado, avisa quando ele é incompleto e anexa as fontes quando há documentos. O guardrail tem duas defesas: instrução no system prompt (não garantida) e um **filtro determinístico por regex** que troca respostas que casam com 6 padrões por um aviso fixo. O grafo sai por `POST /api/chat` em **SSE**, um evento por nó, com `Content-Type: text/event-stream`, `Cache-Control: no-cache, no-transform` e `Connection: keep-alive`.
 
 ---
 
@@ -20,23 +20,23 @@ O SSE é como o atendente ir narrando por interfone cada etapa ('buscando', 'ava
 ### O que é
 - Regra regulatória: o sistema **não pode recomendar ações** (CVM). Só o system prompt não basta: o modelo pode ignorar a instrução e o usuário pode disfarçar o pedido (ex.: 'como se fosse uma história de ninar').
 - O **nó answer** recebe `question`, `documents` e `sufficient` (estado final) e monta o prompt em `prompts/answer.ts`. Fórmula do prompt: papel, regras, resultado.
-- Regras do prompt (apostila): nunca recomendar, sugerir ou aconselhar comprar, vender ou manter; se pedirem recomendação, explicar que só informa dados públicos; responder só com o contexto, sem inventar, estimar ou completar número; citar empresa e período de cada número. Se o contexto é insuficiente, o prompt ganha um aviso para dizer isso ao usuário.
+- Regras do prompt (apostila): nunca recomendar, sugerir ou aconselhar comprar, vender ou manter; se pedirem recomendação, explicar que só informa dados públicos; responder só com o contexto, sem inventar número; citar empresa e período de cada número (esta última é da aula; ver achado sobre o prompt do código). Se o contexto é insuficiente, o prompt ganha um aviso para dizer isso ao usuário.
 - **Filtro determinístico** em `answer/format-resposta.ts`: depois da resposta da LLM, se houver linguagem recomendatória, a resposta inteira é substituída por um aviso fixo, **mantendo as citações**. Erro de digitação do usuário não atrapalha: o filtro olha o retorno da LLM.
-- **Bloco de fontes** sempre no final, um item por documento, deduplicado por `sourceUrl`: ticker + período + data-base para documentos da CVM; título para os da web.
+- **Bloco de fontes** no final (só aparece se houver documentos), um item por documento, deduplicado por `sourceUrl`: ticker + período + data-base para documentos da CVM; título para os da web.
 - Comparativo: o prompt atua antes e não é garantido; a regex atua depois, é determinística, mas avalia a string, não o sentido. Há guardrails mais elaborados (outro RAG por similaridade, testes de segurança da LLM).
 - Máximo de iterações pode ser 3, 4 ou 5 (ajuste fino); o que não pode faltar é o limite. Contexto incompleto chega ao answer quando o guard corta.
 - **SSE**: como um WebSocket unidirecional (cliente só recebe). A rota `POST /api/chat` (Fastify) valida `{ question }` com o schema de `@hero/contracts`, itera `graph.stream()` e emite **um evento por nó concluído, não por token**.
-- Headers escritos à mão: `Cache-Control: no-cache, no-transform` (sem isso o Cloud Run bufferiza e entrega tudo de uma vez) e `Connection: keep-alive`. Erro no meio do stream: evento SSE de erro e encerra a conexão, sem derrubar o processo.
+- Headers escritos à mão (três): `Content-Type: text/event-stream`, `Cache-Control: no-cache, no-transform` (sem isso o Cloud Run bufferiza e entrega tudo de uma vez) e `Connection: keep-alive`. Erro no meio do stream: evento SSE de erro e encerra a conexão, sem derrubar o processo.
 - Eventos tipados em `chat-event.ts`: retrieve = documentos resumidos; grade = sufficient, missingAspects, iterations; answer = texto final; webSearch = só o nome. Alimentam o painel de raciocínio do frontend. **GraphLike** (só `stream`) é a interface mínima que a rota recebe, para testar com grafo fake.
 
 ### Como funciona
 - 1) Prompt do answer: `packages/agent/src/nodes/answer.ts` + `prompts/answer.ts` + `answer/format-resposta.ts`; insere o nó no `graph.ts`.
 - 2) O nó chama `llm.invoke(answerPrompt(...))` e passa o texto por `montarResposta(texto, documents, sufficient)`.
-- 3) `montarResposta`: regex recomendatória → aviso fixo; se `!sufficient` acrescenta aviso de contexto incompleto; anexa 'Fontes:' deduplicadas.
+- 3) `montarResposta`: regex recomendatória → aviso fixo; se `!sufficient` acrescenta aviso de contexto incompleto; anexa 'Fontes:' deduplicadas (só se houver documentos).
 - 4) Testes com LLM fake: resposta normal com citação; resposta filtrada quando o LLM diz 'Eu recomendo comprar PETR4 agora'; e um teste de que o próprio prompt manda nunca recomendar.
 - 5) Prompt da rota: `apps/api/src/routes/chat.ts` com `GraphLike` injetado, `writeHead(200, headers SSE)`, `for await` sobre `graph.stream()`, tradução por `paraEventoSse` e evento de erro no catch.
 - 6) Testar a rota com um grafo fake (sem LLM e sem Postgres) e verificar os eventos na ordem dos nós.
-- 7) No Cloud Run, conferir os dois headers; sem o de cache a resposta deixa de ser SSE.
+- 7) No Cloud Run, conferir os três headers; sem o de cache a resposta deixa de ser SSE.
 
 ### Onde aplicar
 - Qualquer domínio regulado (finanças, saúde, jurídico) em que uma frase específica nunca pode sair.
@@ -47,8 +47,8 @@ O SSE é como o atendente ir narrando por interfone cada etapa ('buscando', 'ava
 ### Vantagens e limites
 **Vantagens**
 - Regex é determinística, rápida, gratuita e coberta por teste unitário.
-- Duas camadas: o prompt reduz a taxa de violação e o filtro garante o caso restante.
-- Citação sempre anexada pelo código, não pelo modelo: não depende de a LLM lembrar.
+- Duas camadas: o prompt reduz a taxa de violação e o filtro garante só os padrões listados.
+- Citação anexada pelo código, não pelo modelo: não depende de a LLM lembrar.
 - SSE por nó dá visibilidade do raciocínio e funciona com POST.
 
 **Limites**
@@ -74,7 +74,7 @@ O SSE é como o atendente ir narrando por interfone cada etapa ('buscando', 'ava
 |-------|---------|
 | Guardrail | Barreira que impede uma saída proibida; aqui, recomendar investimento. |
 | Filtro determinístico | Regex aplicada ao texto da LLM depois da resposta. |
-| Citação obrigatória | Bloco de fontes sempre anexado pelo código. |
+| Citação obrigatória | Bloco de fontes anexado pelo código quando há documentos. |
 | Data-base | periodEnd do trimestre citado, junto de ticker e período. |
 | SSE | Server-Sent Events: fluxo unidirecional servidor para cliente. |
 | no-transform | Parte do Cache-Control que evita o buffer no Cloud Run. |
@@ -89,7 +89,7 @@ O SSE é como o atendente ir narrando por interfone cada etapa ('buscando', 'ava
 
 **Projeto:** [packages/agent (src/nodes/answer.ts, src/prompts/answer.ts, src/answer/format-resposta.ts) e apps/api (src/routes/chat.ts, chat-event.ts)](https://github.com/unipds-engenharia-de-ia-aplicada/capstone-project-ai-researcher/tree/main/apps/api/src/routes)
 
-Li os três arquivos do answer e da API, os casos de teste e executei só as seis regex do filtro num script Node avulso, fora do repo, contra 9 frases. Não rodei a suíte do repo.
+Li os três arquivos do answer e da API, os casos de teste e conferi à mão 9 frases contra as 6 regex do filtro. Não executei nada nem rodei a suíte do repo.
 
 **Fluxo**
 1. `packages/agent/src/nodes/answer.ts`: `makeAnswerNode(llm)` com `AnswerLlmClient { invoke(prompt): Promise<{ content: string }> }`; devolve `{ answerText }`.
@@ -104,12 +104,13 @@ Li os três arquivos do answer e da API, os casos de teste e executei só as sei
 - `pnpm dev` (API :3000 e web :4200) e `curl -N -X POST localhost:3000/api/chat -H 'content-type: application/json' -d '{"question":"Qual a receita da Vale no 3T25?"}'` (precisa de Postgres semeado e Vertex AI, ou `DEMO=true`; não executei)
 
 **Armadilhas e achados no código**
-- Achado (testado com as regex copiadas num script Node): 'Eu recomendo comprar PETR4 agora', 'Vale a pena comprar' e 'Eu recomendaria' são bloqueadas; 'Eu sugeriria vender', 'Eu aconselharia manter' e 'Você deveria vender essa ação' **passam**. A aula cita 'sugeriria' e 'aconselharia' entre as palavras procuradas; o código só cobre `sugir(o|imos|a)` e `aconselh(o|amos|a)`.
+- Achado (conferido à mão contra as 6 regex, não executado): 'Eu recomendo comprar PETR4 agora', 'Vale a pena comprar' e 'Eu recomendaria' são bloqueadas; 'Eu sugeriria vender', 'Eu aconselharia manter' e 'Você deveria vender essa ação' **passam**. A aula cita 'sugeriria' e 'aconselharia' entre as palavras procuradas; o código só cobre `sugir(o|imos|a)` e `aconselh(o|amos|a)`.
 - Achado: a aula diz que a regex procura 'vender' e 'manter'; o código evita palavra solta de propósito (comentário: 'receita de vendas' é legítimo) e usa construções como `vale a pena (comprar|vender|manter)` e `(compre|venda|mantenha) (essa|esta|a) (ação|posição|papel)`.
 - Achado: `\brecomend(a)\b` também casa 'a empresa recomenda dividendos' (falso positivo que troca a resposta inteira pelo aviso).
 - Achado: a rota chama `verificarOrcamento()` (orçamento diário de tokens, 429 problem+json) antes do `writeHead`; a aula não menciona e é a razão de a checagem ficar antes de o stream abrir.
 - Achado: o erro SSE envia mensagem fixa `'Erro ao processar a pergunta.'` e loga o erro real no servidor; a rota não repassa o detalhe ao cliente.
 - Achado: o filtro substitui o texto mas `montarResposta` ainda anexa o aviso de incompleto e as fontes, então a resposta bloqueada continua listando as fontes (como a aula diz: 'mantendo as citações').
+- Achado: as regras do `prompts/answer.ts` são 'Cite os números exatos do contexto' e 'Não invente número, fato ou data' (ordem: papel, contexto, pergunta, regras); a citação de empresa e período vem do bloco de fontes montado por código, não do prompt.
 
 ---
 

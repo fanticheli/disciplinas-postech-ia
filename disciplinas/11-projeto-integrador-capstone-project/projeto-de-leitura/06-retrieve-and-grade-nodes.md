@@ -19,7 +19,7 @@ E a regra do chefe é só um bilhete escrito: não há mágica, é um prompt int
 
 ### O que é
 - Agente = partes chamadas **nós**. **retrieve**: pega a pergunta do estado, gera o embedding e consulta o Postgres. Devolve o top-k, **default 5**.
-- O nó **não importa nenhum cliente global**: é uma factory que recebe um cliente de embeddings e uma função de busca. A função de busca fica em `db/retrieve-similar.ts`, usando o operador de cosseno do Drizzle; a similaridade é, por convenção, 1 menos a distância.
+- O nó **não importa nenhum cliente global**: é uma factory que recebe um cliente de embeddings e uma função de busca. A função de busca fica em `db/retrieve-similar.ts`, usando o operador de cosseno do Drizzle; a aula adota a convenção similaridade = 1 menos a distância, mas o repo só usa a distância (`RetrievedDoc` tem apenas `distance`).
 - **Inversão de dependência** resolve dois problemas: trocar de fornecedor (Gemini por OpenAI) e testar sem Vertex AI nem banco, com um fake que já devolve valores.
 - Padrões de projeto importam mais com agentes: (1) custo, porque quanto menos o agente muda, mais barato; (2) revisão de PR, o gargalo atual. Refatoração tem de ser cirúrgica.
 - Skills: ao criar o retrieve, o Claude Code chamou a skill `langgraph-node` (criada antes pelo professor). Sem skill de Drizzle, o agente lê o código da biblioteca. Ler o código continua sendo responsabilidade de quem desenvolve.
@@ -34,7 +34,7 @@ E a regra do chefe é só um bilhete escrito: não há mágica, é um prompt int
 - 3) O teste unitário injeta um embedding falso e uma busca falsa e roda sem Postgres e sem Vertex. Com `!` no Claude Code, filtre só o teste do retrieve (sem gastar tokens).
 - 4) Prompt do grade: nó em `nodes/grade.ts` + prompt em `prompts/grade.ts`, factory recebendo o cliente de LLM por parâmetro.
 - 5) O prompt monta primeiro o contexto: sem documentos aparece '(nenhum documento encontrado)'. Depois o system prompt aplica a regra de suficiência.
-- 6) Dois testes do grade: do prompt (sem LLM, verifica se monta o conteúdo certo) e do nó (fake chat model injetado).
+- 6) Dois testes do grade, segundo a aula: do prompt (sem LLM, verifica se monta o conteúdo certo) e do nó (fake chat model injetado).
 - 7) Quando `sufficient` é falso, o fluxo segue para o nó de busca na web usando `missingAspects` (Aulas 10 a 12).
 
 ### Onde aplicar
@@ -108,6 +108,7 @@ Li os dois nós, a função de busca, os dois prompts e o formatador de contexto
 - Hipótese (não testada): como o prompt descreve o contexto como 'indicadores financeiros trimestrais, CVM' e manda tratar qualitativas como insuficientes, uma pergunta qualitativa respondida só por documentos web recuperados poderia continuar sendo classificada como insuficiente. A aula (Aula 11) descreve o oposto na segunda pergunta.
 - Achado: o `retrieve.ts` aceita `topK` opcional no estado (usado pelo `/debug/retrieve`); a aula fala só em constante 5.
 - Achado: o código mistura português e inglês (`buscar`, `makeRetrieveNode`).
+- Achado: o repo só tem teste do nó grade (`grade.test.ts`, 3 casos); não há teste do prompt do grade.
 
 ---
 

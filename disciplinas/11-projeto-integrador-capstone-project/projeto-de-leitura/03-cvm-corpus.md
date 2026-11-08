@@ -48,7 +48,7 @@ E se o órgão oficial publicar um arquivo faltando, o formulário não quebra a
 
 ### Vantagens e limites
 **Vantagens**
-- Custo zero por execução e resultado reprodutível byte a byte (teste de snapshot).
+- Custo zero por execução e resultado reprodutível byte a byte (teste de igualdade exata da string gerada).
 - Sem alucinação numérica: o texto deriva do dado estruturado.
 - Metadados (fonte, período, data) permitem citação com data-base e política de expiração.
 - JSONs versionados no repo: a coleta só roda na preparação do material.
@@ -109,7 +109,7 @@ Li todo o código-fonte do pacote (coleta, normalização, template), os nomes d
 - `pnpm --filter @hero/corpus run test` (Vitest; não executei)
 
 **Armadilhas e achados no código**
-- Achado: a aula diz que a busca das contas é "pelo nome"; no código só **lucro líquido e patrimônio líquido** são buscados por descrição. Receita (3.01), lucro bruto (3.03), ativo (1) e caixa (6.01) seguem por código, estáveis na amostra segundo o comentário do arquivo.
+- Nuance: a aula fala em buscar as contas "pelo nome", mas admite o código de conta (a apostila também diz que o filtro usa o código definido no início do arquivo). No código só **lucro líquido e patrimônio líquido** são buscados por descrição; receita (3.01), lucro bruto (3.03), ativo (1) e caixa (6.01) seguem por código, estáveis na amostra segundo o comentário do arquivo.
 - Achado: o template só cita receita líquida, lucro líquido, margem líquida e caixa operacional; lucro bruto, ativo total e patrimônio líquido são coletados mas não entram no texto indexado (registrado no CLAUDE.md como achado do D.5).
 - Achado: a falha de 2025 da demo não se reproduz no snapshot do repo (existe 4T25 para as 20 empresas). O tratamento atual cobre qualquer 404, não só 2025.
 - Achado: no seed, `select-quarters.ts` já tem o tratamento de 404; o repo completo acrescenta testes (`select-quarters.test.ts`, `parse-csv.test.ts`, fixture) e exporta as funções puras para teste.

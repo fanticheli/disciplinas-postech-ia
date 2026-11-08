@@ -9,7 +9,7 @@ O **disclaimer** é uma faixa sempre visível (sem @if, sem fechar, sem modal) q
 
 ## 👵 Explicando para a vovó
 
-O disclaimer é a placa "informativo, não é recomendação" na porta de uma consultoria: fica fixa, sem botão de fechar, porque a lei pede que o cliente a veja sempre. O guardrail do backend é o segurança lá dentro; a placa só deixa a regra clara para quem chega.
+O disclaimer é a placa "informativo, não é recomendação" na porta de uma consultoria: fica fixa, sem botão de fechar, por diretriz da CVM, para que o cliente a veja sempre. O guardrail do backend é o segurança lá dentro; a placa só deixa a regra clara para quem chega.
 
 O E2E com mocks é um ensaio geral com figurantes: o palco, a luz e o roteiro são reais, mas os atores caros (Vertex AI e Serper) são substituídos por dublês que sempre dizem a mesma fala. Barato e repetível, mas não prova que os atores reais estão em forma.
 

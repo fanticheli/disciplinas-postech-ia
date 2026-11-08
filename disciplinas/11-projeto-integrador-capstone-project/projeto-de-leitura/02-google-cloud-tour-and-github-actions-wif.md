@@ -11,7 +11,7 @@ A arquitetura usa **Cloud Run** (API serverless), **Firebase Hosting** (Angular 
 
 Imagine um prédio com portaria. O jeito antigo de dar acesso ao entregador é copiar uma chave mestra e deixá-la numa gaveta (o JSON no secret): se alguém arromba a gaveta, a chave serve para sempre.
 
-O jeito novo é a portaria conhecer o entregador: ele mostra um crachá que vale minutos, emitido na hora pela transportadora e só aceito se vier da transportadora certa. Na portaria, ele recebe um uniforme temporário de "entregador do prédio" e, ao terminar, tudo é descartado. Não sobra chave para roubar.
+O jeito novo é a portaria conhecer o entregador: ele mostra um crachá de curtíssima duração, emitido na hora pela transportadora e só aceito se vier da transportadora certa. Na portaria, ele recebe um uniforme temporário de "entregador do prédio" e, ao terminar, tudo é descartado. Não sobra chave para roubar.
 
 ---
 

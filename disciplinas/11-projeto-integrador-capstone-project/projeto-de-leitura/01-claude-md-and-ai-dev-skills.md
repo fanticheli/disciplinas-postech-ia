@@ -112,7 +112,7 @@ Li o CLAUDE.md, o frontmatter e o início das quatro skills próprias, os symlin
 
 **Projeto:** [.claude/CLAUDE.md e .claude/skills/ (repo seed)](https://github.com/unipds-engenharia-de-ia-aplicada/ai-researcher-seed/tree/main/.claude)
 
-O seed traz o CLAUDE.md enxuto (205 linhas) e 5 skills (3 delas por symlink ou instaladas), sem frontend-design nem langfuse. Comparei por diff e listagem; não executei.
+O seed traz o CLAUDE.md enxuto (205 linhas) e 5 skills: 3 próprias (`angular-component`, `fastify-route`, `langgraph-node`) e 2 por symlink (`angular-developer`, `angular-new-app`, para `.agents/skills/*`, instaladas por `npx skills add`), sem frontend-design nem langfuse. Comparei por diff e listagem; não executei.
 
 **Fluxo**
 1. `.claude/CLAUDE.md`: mesmas seções, mas "Estado atual" só até o Bloco C (walking skeleton) e declara que `packages/agent` e `packages/mcp-server` ainda não existem.

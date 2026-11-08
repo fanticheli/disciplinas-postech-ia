@@ -95,7 +95,7 @@ Li o código-fonte (langfuse.ts, index.ts da API, stdio.ts, http.ts, app.ts, ser
 **Fluxo**
 1. `packages/agent/src/observability/langfuse.ts`: `registrarLangfuseTracing()` cria `new NodeTracerProvider({ spanProcessors: [new LangfuseSpanProcessor()] }).register()`; idempotente (flag `tracerRegistrado`).
 2. Mesmo arquivo: `configurado()` exige `LANGFUSE_PUBLIC_KEY` e `LANGFUSE_SECRET_KEY`; sem elas, retorna sem registrar e o processo sobe.
-3. `criarLangfuseCallbacks()` devolve `[new CallbackHandler()]` ou array vazio, então o call site nunca precisa de branch.
+3. `criarLangfuseCallbacks()` devolve `[new CallbackHandler()]` ou array vazio, então o call site nunca precisa de branch. O CLAUDE.md justifica o pacote com escopo (`@langfuse/langchain` + `@langfuse/otel`) em vez do legado `langfuse-langchain`, que exigiria a dependência `langchain` inteira.
 4. `apps/api/src/index.ts`: chama `registrarLangfuseTracing()` antes de `build()` e do `listen`.
 5. `packages/mcp-server/src/stdio.ts` e `http.ts`: cada um chama `registrarLangfuseTracing()` no topo (os 3 processos da aula).
 6. `apps/api/src/app.ts`: `obterGrafo().stream(input, { callbacks: [...criarLangfuseCallbacks(), criarMetricsCallback()] })` para `/chat`, e `invoke` com os mesmos callbacks para `/api/mcp`.
@@ -109,7 +109,6 @@ Li o código-fonte (langfuse.ts, index.ts da API, stdio.ts, http.ts, app.ts, ser
 - `pnpm test` (inclui `langfuse.test.ts`; não executei)
 
 **Armadilhas e achados no código**
-- Achado: o prompt da aula cita `criarLangfuseCallbacks()`, mas o repo usa pacote com escopo `@langfuse/langchain` + `@langfuse/otel` (v5); o CLAUDE.md registra que o legado `langfuse-langchain` exigiria a dependência `langchain` inteira.
 - Achado: o dashboard da aula mostra "Gemini 3.5 Flash"; a tabela de preços do repo tem `gemini-3.5-flash-lite`, `gemini-3.6-flash` e `gemini-embedding-001`. Divergência de nome de modelo entre vídeo e código atual.
 - Achado: `LANGFUSE_BASE_URL` fixo em `us.cloud.langfuse.com` no deploy.yml; é o caso de região casando com o projeto, mas quem criar projeto em outra região precisa trocar.
 - Exportação OTLP é assíncrona e best-effort (CLAUDE.md afirma ter confirmado com credenciais falsas; não reproduzi).

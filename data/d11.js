@@ -342,7 +342,7 @@ STUDY.push({
     {
      "proj": ".claude/CLAUDE.md e .claude/skills/ (repo seed)",
      "link": "https://github.com/unipds-engenharia-de-ia-aplicada/ai-researcher-seed/tree/main/.claude",
-     "resumo": "O seed traz o CLAUDE.md enxuto (205 linhas) e 5 skills (3 delas por symlink ou instaladas), sem frontend-design nem langfuse. Comparei por diff e listagem; não executei.",
+     "resumo": "O seed traz o CLAUDE.md enxuto (205 linhas) e 5 skills: 3 próprias (<code>angular-component</code>, <code>fastify-route</code>, <code>langgraph-node</code>) e 2 por symlink (<code>angular-developer</code>, <code>angular-new-app</code>, para <code>.agents/skills/*</code>, instaladas por <code>npx skills add</code>), sem frontend-design nem langfuse. Comparei por diff e listagem; não executei.",
      "fluxo": [
       "<code>.claude/CLAUDE.md</code>: mesmas seções, mas \"Estado atual\" só até o Bloco C (walking skeleton) e declara que <code>packages/agent</code> e <code>packages/mcp-server</code> ainda não existem.",
       "<code>.claude/skills/</code>: <code>angular-component</code>, <code>fastify-route</code>, <code>langgraph-node</code> e symlinks para <code>angular-developer</code> e <code>angular-new-app</code>.",
@@ -368,7 +368,7 @@ STUDY.push({
    "oneliner": "A arquitetura usa <b>Cloud Run</b> (API serverless), <b>Firebase Hosting</b> (Angular + rewrite de <code>/api</code>), <b>Artifact Registry</b>, <b>Cloud SQL com pgvector</b>, <b>Vertex AI</b> e <b>Secret Manager</b>, tudo disparado por <b>GitHub Actions</b>. A esteira autentica por <b>Workload Identity Federation</b>: token OIDC curto, service account impersonada, nada guardado.",
    "vovo": [
     "Imagine um prédio com portaria. O jeito antigo de dar acesso ao entregador é copiar uma chave mestra e deixá-la numa gaveta (o JSON no secret): se alguém arromba a gaveta, a chave serve para sempre.",
-    "O jeito novo é a portaria conhecer o entregador: ele mostra um crachá que vale minutos, emitido na hora pela transportadora e só aceito se vier da transportadora certa. Na portaria, ele recebe um uniforme temporário de \"entregador do prédio\" e, ao terminar, tudo é descartado. Não sobra chave para roubar."
+    "O jeito novo é a portaria conhecer o entregador: ele mostra um crachá de curtíssima duração, emitido na hora pela transportadora e só aceito se vier da transportadora certa. Na portaria, ele recebe um uniforme temporário de \"entregador do prédio\" e, ao terminar, tudo é descartado. Não sobra chave para roubar."
    ],
    "oque": [
     "<b>GitHub Actions</b>: a esteira de DevOps; toda ação na infra é disparada por ela. Passa pelos quality gates e, no fim, faz deploy no Google Cloud.",
@@ -581,7 +581,7 @@ STUDY.push({
     "Normalização de unidades (milhares, milhões): converta uma vez, na fronteira, e guarde o valor cheio."
    ],
    "pros": [
-    "Custo zero por execução e resultado reprodutível byte a byte (teste de snapshot).",
+    "Custo zero por execução e resultado reprodutível byte a byte (teste de igualdade exata da string gerada).",
     "Sem alucinação numérica: o texto deriva do dado estruturado.",
     "Metadados (fonte, período, data) permitem citação com data-base e política de expiração.",
     "JSONs versionados no repo: a coleta só roda na preparação do material."
@@ -685,7 +685,7 @@ STUDY.push({
       "<code>pnpm --filter @hero/corpus run test</code> (Vitest; não executei)"
      ],
      "armadilhas": [
-      "Achado: a aula diz que a busca das contas é \"pelo nome\"; no código só <b>lucro líquido e patrimônio líquido</b> são buscados por descrição. Receita (3.01), lucro bruto (3.03), ativo (1) e caixa (6.01) seguem por código, estáveis na amostra segundo o comentário do arquivo.",
+      "Nuance: a aula fala em buscar as contas &quot;pelo nome&quot;, mas admite o código de conta (a apostila também diz que o filtro usa o código definido no início do arquivo). No código só <b>lucro líquido e patrimônio líquido</b> são buscados por descrição; receita (3.01), lucro bruto (3.03), ativo (1) e caixa (6.01) seguem por código, estáveis na amostra segundo o comentário do arquivo.",
       "Achado: o template só cita receita líquida, lucro líquido, margem líquida e caixa operacional; lucro bruto, ativo total e patrimônio líquido são coletados mas não entram no texto indexado (registrado no CLAUDE.md como achado do D.5).",
       "Achado: a falha de 2025 da demo não se reproduz no snapshot do repo (existe 4T25 para as 20 empresas). O tratamento atual cobre qualquer 404, não só 2025.",
       "Achado: no seed, <code>select-quarters.ts</code> já tem o tratamento de 404; o repo completo acrescenta testes (<code>select-quarters.test.ts</code>, <code>parse-csv.test.ts</code>, fixture) e exporta as funções puras para teste.",
@@ -856,7 +856,7 @@ STUDY.push({
      "armadilhas": [
       "Achado: o timeout curto do health é de <i>conexão</i> (2000 ms); o <code>SELECT 1</code> em si não tem timeout de consulta no código.",
       "Achado: no repo completo o health ganha <code>config: { rateLimit: false }</code> (Bloco G), não presente no seed.",
-      "Achado: a UI do seed só mostra <code>status: ... · database: ...</code> se a API responde; em erro HTTP (como o 403 do Cloud Run privado) o texto é \"Não foi possível consultar /api/health.\", não <code>degraded</code>/<code>error</code> como a aula descreve. <code>degraded</code> aparece quando a API responde 200 mas o banco falha (ex.: falta de permissão no secret)."
+      "Achado: a UI do seed só mostra <code>status: ... · database: ...</code> se a API responde; em erro HTTP (como o 403 do Cloud Run privado) o texto é \"Não foi possível consultar /api/health.\", não <code>degraded</code>/<code>error</code> como a aula descreve. <code>degraded</code> aparece quando a API responde 200 mas o banco falha (ex.: falta de permissão no secret). O 403 do Firebase alcançando o Cloud Run privado é inferência a partir do código da UI; não executei."
      ]
     },
     {
@@ -930,7 +930,7 @@ STUDY.push({
     "<b>HNSW</b> organiza os registros em camadas. Sem índice, a busca é full scan (aceitável com os 80 registros do projeto); com índice é rápida porém <b>aproximada</b>: o registro mais adequado pode ficar fora do top-k. Se nenhuma perda é aceitável, a apostila aponta outro caminho: tabelas relacionais comuns e um agente instruído a dizer que não achou.",
     "<b>Drizzle</b> é usado mais pelas migrations (rastreabilidade e rollback) do que pelas consultas, que são mais SQL. Gerar a migration não é aplicá-la: <code>pnpm db:migrate</code> aplica.",
     "<b>Embeddings: custo e consistência</b>. Barato porque a carga é rara (uma vez ou a cada trimestre) e a busca é consultada o tempo todo. O modelo da carga e o da busca <b>têm de ser o mesmo</b>, senão a busca não encontra direito.",
-    "<b>768 dimensões</b>: o Vertex AI devolve 3.072 por padrão e a extensão aceita no máximo 2.000 (para indexar); o README de infra fixa 768. Sem esse parâmetro o vetor estoura o tamanho da coluna."
+    "<b>768 dimensões</b>: o Vertex AI devolve 3.072 por padrão e a extensão aceita no máximo 2.000 (para indexar); quem fixa 768 é a aula (e o código, em <code>EMBEDDING_DIMENSIONS</code>). Sem esse parâmetro o vetor estoura o tamanho da coluna."
    ],
    "como": [
     "1) Prompt ao Claude Code: schema Drizzle em <code>packages/agent/src/db/schema.ts</code> com todos os campos do corpus, os seis indicadores como bigint, <code>paragraph</code>, coluna <code>embedding vector(768)</code>, índice único em (ticker, period) e índice HNSW com operador de cosseno. Gerar a migration com drizzle-kit.",
@@ -986,7 +986,7 @@ STUDY.push({
     ],
     [
      "Distância do cosseno",
-     "Operador <code>&lt;=&gt;</code>; o projeto obtém similaridade como 1 menos a distância."
+     "Operador <code>&lt;=&gt;</code>; a aula (Aula 9) trata a similaridade como 1 menos a distância; o repo só usa a distância (<code>cosineDistance</code> com <code>orderBy(distance).limit(k)</code>)."
     ],
     [
      "HNSW",
@@ -1051,7 +1051,7 @@ STUDY.push({
      "armadilhas": [
       "Achado: os nomes do código são em português (<code>semear</code>, <code>emLotes</code>, <code>criarEmbeddingsReal</code>, tabela <code>documentos</code>); o prompt da aula também fala em português. Ao refazer, o padrão do repo é esse.",
       "Achado: o código tem comentários explicando o limite de 2.000 dimensões e o motivo de <code>apiKey: ''</code> (a lib usaria GOOGLE_API_KEY e a Predict API devolveria 401). É um detalhe de autenticação que a aula não menciona.",
-      "Achado: a aula diz que o Vertex devolve 3.072 por padrão e que o README fixa 768; no código o limite é a constante <code>EMBEDDING_DIMENSIONS</code> usada tanto no schema quanto no cliente, então os dois não divergem.",
+      "Achado: a aula diz que o Vertex devolve 3.072 por padrão e fixa 768 (o <code>infra/README.md</code> do repo não cita 768 nem 3072); no código o limite é a constante <code>EMBEDDING_DIMENSIONS</code> usada tanto no schema quanto no cliente, então os dois não divergem.",
       "Achado: o docker-compose é efêmero de propósito (sem volume): depois de reiniciar é preciso migrar e semear de novo.",
       "Achado: <code>criarEmbeddings()</code> (grafo) respeita <code>DEMO=true</code>, mas <code>criarEmbeddingsReal()</code> do seed nunca, por design."
      ]
@@ -1073,7 +1073,7 @@ STUDY.push({
    ],
    "oque": [
     "Agente = partes chamadas <b>nós</b>. <b>retrieve</b>: pega a pergunta do estado, gera o embedding e consulta o Postgres. Devolve o top-k, <b>default 5</b>.",
-    "O nó <b>não importa nenhum cliente global</b>: é uma factory que recebe um cliente de embeddings e uma função de busca. A função de busca fica em <code>db/retrieve-similar.ts</code>, usando o operador de cosseno do Drizzle; a similaridade é, por convenção, 1 menos a distância.",
+    "O nó <b>não importa nenhum cliente global</b>: é uma factory que recebe um cliente de embeddings e uma função de busca. A função de busca fica em <code>db/retrieve-similar.ts</code>, usando o operador de cosseno do Drizzle; a aula adota a convenção similaridade = 1 menos a distância, mas o repo só usa a distância (<code>RetrievedDoc</code> tem apenas <code>distance</code>).",
     "<b>Inversão de dependência</b> resolve dois problemas: trocar de fornecedor (Gemini por OpenAI) e testar sem Vertex AI nem banco, com um fake que já devolve valores.",
     "Padrões de projeto importam mais com agentes: (1) custo, porque quanto menos o agente muda, mais barato; (2) revisão de PR, o gargalo atual. Refatoração tem de ser cirúrgica.",
     "Skills: ao criar o retrieve, o Claude Code chamou a skill <code>langgraph-node</code> (criada antes pelo professor). Sem skill de Drizzle, o agente lê o código da biblioteca. Ler o código continua sendo responsabilidade de quem desenvolve.",
@@ -1088,7 +1088,7 @@ STUDY.push({
     "3) O teste unitário injeta um embedding falso e uma busca falsa e roda sem Postgres e sem Vertex. Com <code>!</code> no Claude Code, filtre só o teste do retrieve (sem gastar tokens).",
     "4) Prompt do grade: nó em <code>nodes/grade.ts</code> + prompt em <code>prompts/grade.ts</code>, factory recebendo o cliente de LLM por parâmetro.",
     "5) O prompt monta primeiro o contexto: sem documentos aparece '(nenhum documento encontrado)'. Depois o system prompt aplica a regra de suficiência.",
-    "6) Dois testes do grade: do prompt (sem LLM, verifica se monta o conteúdo certo) e do nó (fake chat model injetado).",
+    "6) Dois testes do grade, segundo a aula: do prompt (sem LLM, verifica se monta o conteúdo certo) e do nó (fake chat model injetado).",
     "7) Quando <code>sufficient</code> é falso, o fluxo segue para o nó de busca na web usando <code>missingAspects</code> (Aulas 10 a 12)."
    ],
    "aplica": [
@@ -1192,7 +1192,8 @@ STUDY.push({
       "Achado: o prompt do repo não diz 'não invente número' com essas palavras; ele diz que qualitativas são insuficientes mesmo com a empresa certa. A tabela da aula (indicador ausente é insuficiente) é comportamento esperado do modelo, não verificado por teste que eu tenha lido.",
       "Hipótese (não testada): como o prompt descreve o contexto como 'indicadores financeiros trimestrais, CVM' e manda tratar qualitativas como insuficientes, uma pergunta qualitativa respondida só por documentos web recuperados poderia continuar sendo classificada como insuficiente. A aula (Aula 11) descreve o oposto na segunda pergunta.",
       "Achado: o <code>retrieve.ts</code> aceita <code>topK</code> opcional no estado (usado pelo <code>/debug/retrieve</code>); a aula fala só em constante 5.",
-      "Achado: o código mistura português e inglês (<code>buscar</code>, <code>makeRetrieveNode</code>)."
+      "Achado: o código mistura português e inglês (<code>buscar</code>, <code>makeRetrieveNode</code>).",
+      "Achado: o repo só tem teste do nó grade (<code>grade.test.ts</code>, 3 casos); não há teste do prompt do grade."
      ]
     }
    ]
@@ -1327,7 +1328,7 @@ STUDY.push({
       "<code>search/serper.ts</code>: <code>makeSerperProvider</code>, POST com <code>X-API-KEY</code>, <code>AbortSignal.timeout(10_000)</code>, erro se <code>!response.ok</code>, mapeia <code>organic</code> (link vira url).",
       "<code>search/google-custom-search.ts</code>: GET com <code>key</code>, <code>cx</code>, <code>q</code>; mapeia <code>items</code>.",
       "<code>search/index.ts</code>: <code>criarSearchProvider()</code>; <code>DEMO=true</code> devolve fixture; senão <code>SEARCH_PROVIDER ?? 'serper'</code>, exige <code>SERPER_API_KEY</code> (ou <code>GOOGLE_CUSTOM_SEARCH_API_KEY</code> + <code>GOOGLE_CUSTOM_SEARCH_CX</code>) e embrulha em <code>comResiliencia</code>.",
-      "<code>search/resilient-search-provider.ts</code>: retry com backoff (3 tentativas, base 200 ms, dobra) e circuit breaker (3 falhas consecutivas abrem por 30 s); <code>CircuitoAbertoError</code>.",
+      "<code>search/resilient-search-provider.ts</code>: retry com backoff (3 tentativas, base 200 ms, dobra) e circuit breaker (3 falhas consecutivas abrem por 30 s; cada falha contada é uma chamada de <code>search()</code> que já esgotou as 3 tentativas do retry, ou seja, 9 chamadas reais ao provedor); <code>CircuitoAbertoError</code>.",
       "<code>nodes/web-search.ts</code>: <code>RESULTADOS_POR_QUERY = 3</code>, <code>TTL_PADRAO_DIAS = 7</code>; queries por aspecto; try/catch por busca e por página; um embedding por chunk via <code>embedQuery</code>; devolve <code>{}</code> (o efeito é a escrita no banco).",
       "<code>web-search/chunk.ts</code>: <code>RecursiveCharacterTextSplitter</code> com <code>chunkSize 1000</code>, <code>chunkOverlap 100</code>; <code>extract.ts</code>: <code>html-to-text</code> e <code>buscarPagina</code> com timeout de 10 s; <code>to-row.ts</code>: <code>expiresAt = fetchedAt + ttlDias * 24h</code>.",
       "<code>db/retrieve-similar.ts</code>: <code>buscarNaWeb</code> filtra <code>gt(expiresAt, new Date())</code>; <code>combinarResultados</code> junta corpus e web e ordena por distância."
@@ -1463,10 +1464,10 @@ STUDY.push({
     {
      "proj": "packages/agent (src/graph.ts, src/graph-deps.ts, src/graph.test.ts)",
      "link": "https://github.com/unipds-engenharia-de-ia-aplicada/capstone-project-ai-researcher/tree/main/packages/agent/src",
-     "resumo": "Li graph.ts (77 linhas no total), graph-deps.ts e os casos de graph.test.ts. Não executei os testes.",
+     "resumo": "Li graph.ts (84 linhas no total), graph-deps.ts e os casos de graph.test.ts. Não executei os testes.",
      "fluxo": [
       "<code>graph.ts</code>: <code>export const MAX_ITERATIONS = 2</code> e <code>ResearchState = Annotation.Root({ question, documents, sufficient, missingAspects, iterations, answerText })</code>.",
-      "<code>iterations</code> usa <code>reducer: (prev, next) =&gt; prev + next</code> com default 0; os demais campos usam <code>(_prev, next) =&gt; next</code>.",
+      "<code>iterations</code> usa <code>reducer: (prev, next) =&gt; prev + next</code> com default 0; <code>documents</code>, <code>sufficient</code>, <code>missingAspects</code> e <code>answerText</code> usam <code>(_prev, next) =&gt; next</code>; <code>question</code> não tem reducer.",
       "<code>proximoNo(state)</code>: devolve <code>'answer'</code> se <code>sufficient</code>, <code>'answer'</code> se <code>iterations &gt;= MAX_ITERATIONS</code>, senão <code>'webSearch'</code>.",
       "<code>buildGraph(deps)</code>: <code>addNode</code> para <code>retrieve</code>, <code>grade</code>, <code>webSearch</code>, <code>answer</code>; arestas START→retrieve, retrieve→grade, grade→(condicional), webSearch→retrieve, answer→END; <code>compile()</code>.",
       "<code>GraphDeps</code>: <code>embeddings, buscar, gradeLlm, searchProvider, buscarPagina, inserirDocumentoWeb, answerLlm</code> (sete dependências, todas por função ou interface mínima).",
@@ -1481,7 +1482,7 @@ STUDY.push({
       "Achado: no repo final a aresta condicional termina em <code>answer</code>, não em END, nos dois casos (suficiente ou guard). A aula da Aula 12 descreve END; o nó answer só entra na Aula 13.",
       "Achado: a aula diz que na terceira passada o guard impede a busca; no código o trace com LLM sempre insuficiente é <code>retrieve, grade, webSearch, retrieve, grade, answer</code>: duas rodadas de grade e <b>uma única</b> busca web. O teste <code>não entra em laço infinito</code> confirma que as rodadas de grade são exatamente <code>MAX_ITERATIONS</code>.",
       "Achado: o campo da resposta se chama <code>answerText</code> porque LangGraph não deixa nó e canal de estado compartilharem o nome <code>answer</code> (comentário no código).",
-      "Achado: <code>graph.ts</code> tem 77 linhas contra as '~60' da aula (já inclui o nó answer).",
+      "Achado: <code>graph.ts</code> tem 84 linhas contra as '~60' da aula (já inclui o nó answer).",
       "Achado: o <code>webSearch</code> engole falha do provider e o grafo chega ao answer com aviso de contexto incompleto (teste de degradação graciosa)."
      ]
     }
@@ -1494,8 +1495,8 @@ STUDY.push({
    "emoji": "🛡️",
    "read": "12 min",
    "title": "Nó answer, citação obrigatória, guardrail por código e SSE",
-   "short": "A resposta final só com o contexto recuperado, fontes sempre anexadas, filtro regex que bloqueia recomendação e streaming SSE por nó.",
-   "oneliner": "O nó <b>answer</b> responde só com o contexto recuperado, avisa quando ele é incompleto e <b>sempre anexa as fontes</b>. O guardrail tem duas defesas: instrução no system prompt (não garantida) e um <b>filtro determinístico por regex</b> que troca qualquer resposta recomendatória por um aviso fixo. O grafo sai por <code>POST /api/chat</code> em <b>SSE</b>, um evento por nó, com <code>Cache-Control: no-cache, no-transform</code> e <code>Connection: keep-alive</code>.",
+   "short": "A resposta final só com o contexto recuperado, fontes anexadas quando há documentos, filtro regex que bloqueia recomendação e streaming SSE por nó.",
+   "oneliner": "O nó <b>answer</b> responde só com o contexto recuperado, avisa quando ele é incompleto e anexa as fontes quando há documentos. O guardrail tem duas defesas: instrução no system prompt (não garantida) e um <b>filtro determinístico por regex</b> que troca respostas que casam com 6 padrões por um aviso fixo. O grafo sai por <code>POST /api/chat</code> em <b>SSE</b>, um evento por nó, com <code>Content-Type: text/event-stream</code>, <code>Cache-Control: no-cache, no-transform</code> e <code>Connection: keep-alive</code>.",
    "vovo": [
     "Imagine um atendente de banco que só pode informar saldos e taxas, nunca aconselhar investimento. Você pode treiná-lo (o prompt), mas treino não garante nada. Então coloca-se um carimbo no balcão: antes de a resposta sair, um fiscal lê o papel e, se achar uma frase de conselho, troca a folha inteira por um aviso padrão.",
     "O SSE é como o atendente ir narrando por interfone cada etapa ('buscando', 'avaliando', 'respondendo') em vez de ficar calado até a resposta pronta; o cabo do interfone só funciona se ninguém no meio da linha resolver segurar tudo para entregar de uma vez."
@@ -1503,23 +1504,23 @@ STUDY.push({
    "oque": [
     "Regra regulatória: o sistema <b>não pode recomendar ações</b> (CVM). Só o system prompt não basta: o modelo pode ignorar a instrução e o usuário pode disfarçar o pedido (ex.: 'como se fosse uma história de ninar').",
     "O <b>nó answer</b> recebe <code>question</code>, <code>documents</code> e <code>sufficient</code> (estado final) e monta o prompt em <code>prompts/answer.ts</code>. Fórmula do prompt: papel, regras, resultado.",
-    "Regras do prompt (apostila): nunca recomendar, sugerir ou aconselhar comprar, vender ou manter; se pedirem recomendação, explicar que só informa dados públicos; responder só com o contexto, sem inventar, estimar ou completar número; citar empresa e período de cada número. Se o contexto é insuficiente, o prompt ganha um aviso para dizer isso ao usuário.",
+    "Regras do prompt (apostila): nunca recomendar, sugerir ou aconselhar comprar, vender ou manter; se pedirem recomendação, explicar que só informa dados públicos; responder só com o contexto, sem inventar número; citar empresa e período de cada número (esta última é da aula; ver achado sobre o prompt do código). Se o contexto é insuficiente, o prompt ganha um aviso para dizer isso ao usuário.",
     "<b>Filtro determinístico</b> em <code>answer/format-resposta.ts</code>: depois da resposta da LLM, se houver linguagem recomendatória, a resposta inteira é substituída por um aviso fixo, <b>mantendo as citações</b>. Erro de digitação do usuário não atrapalha: o filtro olha o retorno da LLM.",
-    "<b>Bloco de fontes</b> sempre no final, um item por documento, deduplicado por <code>sourceUrl</code>: ticker + período + data-base para documentos da CVM; título para os da web.",
+    "<b>Bloco de fontes</b> no final (só aparece se houver documentos), um item por documento, deduplicado por <code>sourceUrl</code>: ticker + período + data-base para documentos da CVM; título para os da web.",
     "Comparativo: o prompt atua antes e não é garantido; a regex atua depois, é determinística, mas avalia a string, não o sentido. Há guardrails mais elaborados (outro RAG por similaridade, testes de segurança da LLM).",
     "Máximo de iterações pode ser 3, 4 ou 5 (ajuste fino); o que não pode faltar é o limite. Contexto incompleto chega ao answer quando o guard corta.",
     "<b>SSE</b>: como um WebSocket unidirecional (cliente só recebe). A rota <code>POST /api/chat</code> (Fastify) valida <code>{ question }</code> com o schema de <code>@hero/contracts</code>, itera <code>graph.stream()</code> e emite <b>um evento por nó concluído, não por token</b>.",
-    "Headers escritos à mão: <code>Cache-Control: no-cache, no-transform</code> (sem isso o Cloud Run bufferiza e entrega tudo de uma vez) e <code>Connection: keep-alive</code>. Erro no meio do stream: evento SSE de erro e encerra a conexão, sem derrubar o processo.",
+    "Headers escritos à mão (três): <code>Content-Type: text/event-stream</code>, <code>Cache-Control: no-cache, no-transform</code> (sem isso o Cloud Run bufferiza e entrega tudo de uma vez) e <code>Connection: keep-alive</code>. Erro no meio do stream: evento SSE de erro e encerra a conexão, sem derrubar o processo.",
     "Eventos tipados em <code>chat-event.ts</code>: retrieve = documentos resumidos; grade = sufficient, missingAspects, iterations; answer = texto final; webSearch = só o nome. Alimentam o painel de raciocínio do frontend. <b>GraphLike</b> (só <code>stream</code>) é a interface mínima que a rota recebe, para testar com grafo fake."
    ],
    "como": [
     "1) Prompt do answer: <code>packages/agent/src/nodes/answer.ts</code> + <code>prompts/answer.ts</code> + <code>answer/format-resposta.ts</code>; insere o nó no <code>graph.ts</code>.",
     "2) O nó chama <code>llm.invoke(answerPrompt(...))</code> e passa o texto por <code>montarResposta(texto, documents, sufficient)</code>.",
-    "3) <code>montarResposta</code>: regex recomendatória → aviso fixo; se <code>!sufficient</code> acrescenta aviso de contexto incompleto; anexa 'Fontes:' deduplicadas.",
+    "3) <code>montarResposta</code>: regex recomendatória → aviso fixo; se <code>!sufficient</code> acrescenta aviso de contexto incompleto; anexa 'Fontes:' deduplicadas (só se houver documentos).",
     "4) Testes com LLM fake: resposta normal com citação; resposta filtrada quando o LLM diz 'Eu recomendo comprar PETR4 agora'; e um teste de que o próprio prompt manda nunca recomendar.",
     "5) Prompt da rota: <code>apps/api/src/routes/chat.ts</code> com <code>GraphLike</code> injetado, <code>writeHead(200, headers SSE)</code>, <code>for await</code> sobre <code>graph.stream()</code>, tradução por <code>paraEventoSse</code> e evento de erro no catch.",
     "6) Testar a rota com um grafo fake (sem LLM e sem Postgres) e verificar os eventos na ordem dos nós.",
-    "7) No Cloud Run, conferir os dois headers; sem o de cache a resposta deixa de ser SSE."
+    "7) No Cloud Run, conferir os três headers; sem o de cache a resposta deixa de ser SSE."
    ],
    "aplica": [
     "Qualquer domínio regulado (finanças, saúde, jurídico) em que uma frase específica nunca pode sair.",
@@ -1529,8 +1530,8 @@ STUDY.push({
    ],
    "pros": [
     "Regex é determinística, rápida, gratuita e coberta por teste unitário.",
-    "Duas camadas: o prompt reduz a taxa de violação e o filtro garante o caso restante.",
-    "Citação sempre anexada pelo código, não pelo modelo: não depende de a LLM lembrar.",
+    "Duas camadas: o prompt reduz a taxa de violação e o filtro garante só os padrões listados.",
+    "Citação anexada pelo código, não pelo modelo: não depende de a LLM lembrar.",
     "SSE por nó dá visibilidade do raciocínio e funciona com POST."
    ],
    "contras": [
@@ -1558,7 +1559,7 @@ STUDY.push({
     ],
     [
      "Citação obrigatória",
-     "Bloco de fontes sempre anexado pelo código."
+     "Bloco de fontes anexado pelo código quando há documentos."
     ],
     [
      "Data-base",
@@ -1611,7 +1612,7 @@ STUDY.push({
     {
      "proj": "packages/agent (src/nodes/answer.ts, src/prompts/answer.ts, src/answer/format-resposta.ts) e apps/api (src/routes/chat.ts, chat-event.ts)",
      "link": "https://github.com/unipds-engenharia-de-ia-aplicada/capstone-project-ai-researcher/tree/main/apps/api/src/routes",
-     "resumo": "Li os três arquivos do answer e da API, os casos de teste e executei só as seis regex do filtro num script Node avulso, fora do repo, contra 9 frases. Não rodei a suíte do repo.",
+     "resumo": "Li os três arquivos do answer e da API, os casos de teste e conferi à mão 9 frases contra as 6 regex do filtro. Não executei nada nem rodei a suíte do repo.",
      "fluxo": [
       "<code>packages/agent/src/nodes/answer.ts</code>: <code>makeAnswerNode(llm)</code> com <code>AnswerLlmClient { invoke(prompt): Promise&lt;{ content: string }&gt; }</code>; devolve <code>{ answerText }</code>.",
       "<code>prompts/answer.ts</code>: papel de assistente de dados financeiros públicos que 'NUNCA recomenda decisão de investimento', contexto, pergunta e regras; só acrescenta o aviso de contexto incompleto quando <code>sufficient</code> é falso.",
@@ -1625,12 +1626,13 @@ STUDY.push({
       "<code>pnpm dev</code> (API :3000 e web :4200) e <code>curl -N -X POST localhost:3000/api/chat -H 'content-type: application/json' -d '{\"question\":\"Qual a receita da Vale no 3T25?\"}'</code> (precisa de Postgres semeado e Vertex AI, ou <code>DEMO=true</code>; não executei)"
      ],
      "armadilhas": [
-      "Achado (testado com as regex copiadas num script Node): 'Eu recomendo comprar PETR4 agora', 'Vale a pena comprar' e 'Eu recomendaria' são bloqueadas; 'Eu sugeriria vender', 'Eu aconselharia manter' e 'Você deveria vender essa ação' <b>passam</b>. A aula cita 'sugeriria' e 'aconselharia' entre as palavras procuradas; o código só cobre <code>sugir(o|imos|a)</code> e <code>aconselh(o|amos|a)</code>.",
+      "Achado (conferido à mão contra as 6 regex, não executado): 'Eu recomendo comprar PETR4 agora', 'Vale a pena comprar' e 'Eu recomendaria' são bloqueadas; 'Eu sugeriria vender', 'Eu aconselharia manter' e 'Você deveria vender essa ação' <b>passam</b>. A aula cita 'sugeriria' e 'aconselharia' entre as palavras procuradas; o código só cobre <code>sugir(o|imos|a)</code> e <code>aconselh(o|amos|a)</code>.",
       "Achado: a aula diz que a regex procura 'vender' e 'manter'; o código evita palavra solta de propósito (comentário: 'receita de vendas' é legítimo) e usa construções como <code>vale a pena (comprar|vender|manter)</code> e <code>(compre|venda|mantenha) (essa|esta|a) (ação|posição|papel)</code>.",
       "Achado: <code>\\brecomend(a)\\b</code> também casa 'a empresa recomenda dividendos' (falso positivo que troca a resposta inteira pelo aviso).",
       "Achado: a rota chama <code>verificarOrcamento()</code> (orçamento diário de tokens, 429 problem+json) antes do <code>writeHead</code>; a aula não menciona e é a razão de a checagem ficar antes de o stream abrir.",
       "Achado: o erro SSE envia mensagem fixa <code>'Erro ao processar a pergunta.'</code> e loga o erro real no servidor; a rota não repassa o detalhe ao cliente.",
-      "Achado: o filtro substitui o texto mas <code>montarResposta</code> ainda anexa o aviso de incompleto e as fontes, então a resposta bloqueada continua listando as fontes (como a aula diz: 'mantendo as citações')."
+      "Achado: o filtro substitui o texto mas <code>montarResposta</code> ainda anexa o aviso de incompleto e as fontes, então a resposta bloqueada continua listando as fontes (como a aula diz: 'mantendo as citações').",
+      "Achado: as regras do <code>prompts/answer.ts</code> são 'Cite os números exatos do contexto' e 'Não invente número, fato ou data' (ordem: papel, contexto, pergunta, regras); a citação de empresa e período vem do bloco de fontes montado por código, não do prompt."
      ]
     }
    ]
@@ -2431,7 +2433,7 @@ STUDY.push({
    "short": "Faixa de disclaimer fixa, modo demo estendido ao grafo inteiro e teste Playwright de caminho feliz rodando no GitHub Actions.",
    "oneliner": "O <b>disclaimer</b> é uma faixa sempre visível (sem @if, sem fechar, sem modal) que complementa o guardrail do backend. Para testar de ponta a ponta sem gastar Serper e Vertex AI, <b>DEMO=true</b> vira mock do grafo inteiro, e um <b>script Playwright</b> (criado pelo agente, executado na esteira) valida disclaimer, streaming, citação e painel do grafo.",
    "vovo": [
-    "O disclaimer é a placa \"informativo, não é recomendação\" na porta de uma consultoria: fica fixa, sem botão de fechar, porque a lei pede que o cliente a veja sempre. O guardrail do backend é o segurança lá dentro; a placa só deixa a regra clara para quem chega.",
+    "O disclaimer é a placa \"informativo, não é recomendação\" na porta de uma consultoria: fica fixa, sem botão de fechar, por diretriz da CVM, para que o cliente a veja sempre. O guardrail do backend é o segurança lá dentro; a placa só deixa a regra clara para quem chega.",
     "O E2E com mocks é um ensaio geral com figurantes: o palco, a luz e o roteiro são reais, mas os atores caros (Vertex AI e Serper) são substituídos por dublês que sempre dizem a mesma fala. Barato e repetível, mas não prova que os atores reais estão em forma."
    ],
    "oque": [
@@ -2701,7 +2703,7 @@ STUDY.push({
      "fluxo": [
       "<code>packages/agent/src/observability/langfuse.ts</code>: <code>registrarLangfuseTracing()</code> cria <code>new NodeTracerProvider({ spanProcessors: [new LangfuseSpanProcessor()] }).register()</code>; idempotente (flag <code>tracerRegistrado</code>).",
       "Mesmo arquivo: <code>configurado()</code> exige <code>LANGFUSE_PUBLIC_KEY</code> e <code>LANGFUSE_SECRET_KEY</code>; sem elas, retorna sem registrar e o processo sobe.",
-      "<code>criarLangfuseCallbacks()</code> devolve <code>[new CallbackHandler()]</code> ou array vazio, então o call site nunca precisa de branch.",
+      "<code>criarLangfuseCallbacks()</code> devolve <code>[new CallbackHandler()]</code> ou array vazio, então o call site nunca precisa de branch. O CLAUDE.md justifica o pacote com escopo (<code>@langfuse/langchain</code> + <code>@langfuse/otel</code>) em vez do legado <code>langfuse-langchain</code>, que exigiria a dependência <code>langchain</code> inteira.",
       "<code>apps/api/src/index.ts</code>: chama <code>registrarLangfuseTracing()</code> antes de <code>build()</code> e do <code>listen</code>.",
       "<code>packages/mcp-server/src/stdio.ts</code> e <code>http.ts</code>: cada um chama <code>registrarLangfuseTracing()</code> no topo (os 3 processos da aula).",
       "<code>apps/api/src/app.ts</code>: <code>obterGrafo().stream(input, { callbacks: [...criarLangfuseCallbacks(), criarMetricsCallback()] })</code> para <code>/chat</code>, e <code>invoke</code> com os mesmos callbacks para <code>/api/mcp</code>.",
@@ -2715,7 +2717,6 @@ STUDY.push({
       "<code>pnpm test</code> (inclui <code>langfuse.test.ts</code>; não executei)"
      ],
      "armadilhas": [
-      "Achado: o prompt da aula cita <code>criarLangfuseCallbacks()</code>, mas o repo usa pacote com escopo <code>@langfuse/langchain</code> + <code>@langfuse/otel</code> (v5); o CLAUDE.md registra que o legado <code>langfuse-langchain</code> exigiria a dependência <code>langchain</code> inteira.",
       "Achado: o dashboard da aula mostra \"Gemini 3.5 Flash\"; a tabela de preços do repo tem <code>gemini-3.5-flash-lite</code>, <code>gemini-3.6-flash</code> e <code>gemini-embedding-001</code>. Divergência de nome de modelo entre vídeo e código atual.",
       "Achado: <code>LANGFUSE_BASE_URL</code> fixo em <code>us.cloud.langfuse.com</code> no deploy.yml; é o caso de região casando com o projeto, mas quem criar projeto em outra região precisa trocar.",
       "Exportação OTLP é assíncrona e best-effort (CLAUDE.md afirma ter confirmado com credenciais falsas; não reproduzi)."
@@ -2958,7 +2959,7 @@ STUDY.push({
     "Esperar que encerrar o projeto apague tudo na hora: ele fica 30 dias arquivado.",
     "Achado: <code>make destroy</code> do repo não encerra o projeto GCP nem o Firebase Hosting, só remove recursos; o encerramento do projeto continua manual."
    ],
-   "tip": "Peça o README ao agente com a instrução de renderizar os diagramas com o CLI do Mermaid: é o único jeito de garantir que não há erro de parser antes do push.",
+   "tip": "Peça o README ao agente com a instrução de renderizar os diagramas com o CLI do Mermaid: é uma forma de conferir que não há erro de parser antes do push (a aula também confere no GitHub).",
    "cola": [
     [
      "README",
@@ -3037,7 +3038,7 @@ STUDY.push({
       "Abrir o README no GitHub para ver os diagramas renderizados"
      ],
      "armadilhas": [
-      "Achado: o nó principal está como <code>agentGraph</code> no diagrama de arquitetura, como a aula manda; no diagrama do grafo os nós são <code>retrieve</code>, <code>grade</code>, <code>answer</code>, <code>webSearch</code> (não há nó chamado <code>graph</code>).",
+      "Achado: a aula manda nomear <code>agentGraph</code> o nó principal do diagrama do grafo; no repo ele está no diagrama de arquitetura, e no diagrama do grafo os nós são <code>retrieve</code>, <code>grade</code>, <code>answer</code>, <code>webSearch</code> (não há nó chamado <code>graph</code>).",
       "Achado: o CLAUDE.md afirma que os diagramas foram validados com <code>@mermaid-js/mermaid-cli</code> (a aula, na demo, retirou essa frase do prompt); não reproduzi a validação.",
       "Achado: o README traz URLs reais de demo e API de produção (<code>ai-researcher-capstone.web.app</code>) que deixam de funcionar quando o projeto é encerrado (CLAUDE.md registra que <code>pnpm destroy</code> foi executado de verdade no H.5 e o ambiente reconstruído)."
      ]
@@ -3059,7 +3060,7 @@ STUDY.push({
       "Alternativa da aula: Console do GCP, IAM e administrador, Configurações, Encerrar"
      ],
      "armadilhas": [
-      "Achado: aula e repo divergem de mecanismo: console encerra o projeto inteiro (30 dias de arquivo, restaurável); o script apaga recursos um a um sem janela de restauração para o que ele deleta.",
+      "Achado: aula e repo divergem de mecanismo: console encerra o projeto inteiro (30 dias de arquivo, restaurável); o script apaga recursos um a um, sem janela de restauração para a maioria deles; a exceção é o pool de identidade do WIF, que tem soft-delete de 30 dias.",
       "Achado: o CLAUDE.md registra que o Workload Identity Pool tem soft-delete de 30 dias (undelete possível) e que a service account recriada perde roles e binding; a aula não trata disso.",
       "Achado: o script não remove o projeto, então nada impede que algum recurso que ele não conhece continue cobrando; para zerar a conta, encerre o projeto.",
       "Achado: a estimativa do repo para o Cloud SQL é de aproximadamente US$ 10-15 por mês (comentário em destroy.ts, citando o plano); número do repo, não da aula."
@@ -3142,7 +3143,7 @@ STUDY.push({
      "Os k vizinhos mais próximos da pergunta no espaço vetorial; nunca \"o certo\""
     ],
     [
-     "Cosseno (<=>)",
+     "Cosseno (&lt;=&gt;)",
      "Distância por ângulo, usada no projeto; ignora o tamanho do vetor"
     ],
     [

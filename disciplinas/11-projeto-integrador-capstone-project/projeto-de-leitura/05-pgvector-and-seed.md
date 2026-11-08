@@ -26,7 +26,7 @@ O índice HNSW é um atalho de bibliotecário: em vez de medir a distância até
 - **HNSW** organiza os registros em camadas. Sem índice, a busca é full scan (aceitável com os 80 registros do projeto); com índice é rápida porém **aproximada**: o registro mais adequado pode ficar fora do top-k. Se nenhuma perda é aceitável, a apostila aponta outro caminho: tabelas relacionais comuns e um agente instruído a dizer que não achou.
 - **Drizzle** é usado mais pelas migrations (rastreabilidade e rollback) do que pelas consultas, que são mais SQL. Gerar a migration não é aplicá-la: `pnpm db:migrate` aplica.
 - **Embeddings: custo e consistência**. Barato porque a carga é rara (uma vez ou a cada trimestre) e a busca é consultada o tempo todo. O modelo da carga e o da busca **têm de ser o mesmo**, senão a busca não encontra direito.
-- **768 dimensões**: o Vertex AI devolve 3.072 por padrão e a extensão aceita no máximo 2.000 (para indexar); o README de infra fixa 768. Sem esse parâmetro o vetor estoura o tamanho da coluna.
+- **768 dimensões**: o Vertex AI devolve 3.072 por padrão e a extensão aceita no máximo 2.000 (para indexar); quem fixa 768 é a aula (e o código, em `EMBEDDING_DIMENSIONS`). Sem esse parâmetro o vetor estoura o tamanho da coluna.
 
 ### Como funciona
 - 1) Prompt ao Claude Code: schema Drizzle em `packages/agent/src/db/schema.ts` com todos os campos do corpus, os seis indicadores como bigint, `paragraph`, coluna `embedding vector(768)`, índice único em (ticker, period) e índice HNSW com operador de cosseno. Gerar a migration com drizzle-kit.
@@ -75,7 +75,7 @@ O índice HNSW é um atalho de bibliotecário: em vez de medir a distância até
 | Embedding | Vetor numérico de N dimensões que representa um texto. |
 | Top-k | Os k vizinhos mais próximos da pergunta. |
 | pgvector | Extensão do Postgres com tipo vector, operadores de distância e índices. |
-| Distância do cosseno | Operador `<=>`; o projeto obtém similaridade como 1 menos a distância. |
+| Distância do cosseno | Operador `<=>`; a aula (Aula 9) trata a similaridade como 1 menos a distância; o repo só usa a distância (`cosineDistance` com `orderBy(distance).limit(k)`). |
 | HNSW | Índice em camadas para busca de vizinhos: rápido, aproximado. |
 | vector(768) | Coluna do embedding, limitada porque o índice não passa de 2.000 dimensões. |
 | Upsert | Insert que atualiza em conflito; aqui por (ticker, period). |
@@ -109,7 +109,7 @@ Li schema, as duas migrations, drizzle.config.ts, o seed completo, o cliente de 
 **Armadilhas e achados no código**
 - Achado: os nomes do código são em português (`semear`, `emLotes`, `criarEmbeddingsReal`, tabela `documentos`); o prompt da aula também fala em português. Ao refazer, o padrão do repo é esse.
 - Achado: o código tem comentários explicando o limite de 2.000 dimensões e o motivo de `apiKey: ''` (a lib usaria GOOGLE_API_KEY e a Predict API devolveria 401). É um detalhe de autenticação que a aula não menciona.
-- Achado: a aula diz que o Vertex devolve 3.072 por padrão e que o README fixa 768; no código o limite é a constante `EMBEDDING_DIMENSIONS` usada tanto no schema quanto no cliente, então os dois não divergem.
+- Achado: a aula diz que o Vertex devolve 3.072 por padrão e fixa 768 (o `infra/README.md` do repo não cita 768 nem 3072); no código o limite é a constante `EMBEDDING_DIMENSIONS` usada tanto no schema quanto no cliente, então os dois não divergem.
 - Achado: o docker-compose é efêmero de propósito (sem volume): depois de reiniciar é preciso migrar e semear de novo.
 - Achado: `criarEmbeddings()` (grafo) respeita `DEMO=true`, mas `criarEmbeddingsReal()` do seed nunca, por design.
 

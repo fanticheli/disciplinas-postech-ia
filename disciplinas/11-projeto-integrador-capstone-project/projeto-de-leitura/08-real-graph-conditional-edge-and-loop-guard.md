@@ -87,11 +87,11 @@ O contador vai grudado na peça (o estado), não num caderno separado.
 
 **Projeto:** [packages/agent (src/graph.ts, src/graph-deps.ts, src/graph.test.ts)](https://github.com/unipds-engenharia-de-ia-aplicada/capstone-project-ai-researcher/tree/main/packages/agent/src)
 
-Li graph.ts (77 linhas no total), graph-deps.ts e os casos de graph.test.ts. Não executei os testes.
+Li graph.ts (84 linhas no total), graph-deps.ts e os casos de graph.test.ts. Não executei os testes.
 
 **Fluxo**
 1. `graph.ts`: `export const MAX_ITERATIONS = 2` e `ResearchState = Annotation.Root({ question, documents, sufficient, missingAspects, iterations, answerText })`.
-2. `iterations` usa `reducer: (prev, next) => prev + next` com default 0; os demais campos usam `(_prev, next) => next`.
+2. `iterations` usa `reducer: (prev, next) => prev + next` com default 0; `documents`, `sufficient`, `missingAspects` e `answerText` usam `(_prev, next) => next`; `question` não tem reducer.
 3. `proximoNo(state)`: devolve `'answer'` se `sufficient`, `'answer'` se `iterations >= MAX_ITERATIONS`, senão `'webSearch'`.
 4. `buildGraph(deps)`: `addNode` para `retrieve`, `grade`, `webSearch`, `answer`; arestas START→retrieve, retrieve→grade, grade→(condicional), webSearch→retrieve, answer→END; `compile()`.
 5. `GraphDeps`: `embeddings, buscar, gradeLlm, searchProvider, buscarPagina, inserirDocumentoWeb, answerLlm` (sete dependências, todas por função ou interface mínima).
@@ -106,7 +106,7 @@ Li graph.ts (77 linhas no total), graph-deps.ts e os casos de graph.test.ts. Nã
 - Achado: no repo final a aresta condicional termina em `answer`, não em END, nos dois casos (suficiente ou guard). A aula da Aula 12 descreve END; o nó answer só entra na Aula 13.
 - Achado: a aula diz que na terceira passada o guard impede a busca; no código o trace com LLM sempre insuficiente é `retrieve, grade, webSearch, retrieve, grade, answer`: duas rodadas de grade e **uma única** busca web. O teste `não entra em laço infinito` confirma que as rodadas de grade são exatamente `MAX_ITERATIONS`.
 - Achado: o campo da resposta se chama `answerText` porque LangGraph não deixa nó e canal de estado compartilharem o nome `answer` (comentário no código).
-- Achado: `graph.ts` tem 77 linhas contra as '~60' da aula (já inclui o nó answer).
+- Achado: `graph.ts` tem 84 linhas contra as '~60' da aula (já inclui o nó answer).
 - Achado: o `webSearch` engole falha do provider e o grafo chega ao answer com aviso de contexto incompleto (teste de degradação graciosa).
 
 ---

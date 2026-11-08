@@ -117,7 +117,7 @@ Li o API e o contrato do seed (estado da aula) e comparei com o completo por dif
 **Armadilhas e achados no código**
 - Achado: o timeout curto do health é de *conexão* (2000 ms); o `SELECT 1` em si não tem timeout de consulta no código.
 - Achado: no repo completo o health ganha `config: { rateLimit: false }` (Bloco G), não presente no seed.
-- Achado: a UI do seed só mostra `status: ... · database: ...` se a API responde; em erro HTTP (como o 403 do Cloud Run privado) o texto é "Não foi possível consultar /api/health.", não `degraded`/`error` como a aula descreve. `degraded` aparece quando a API responde 200 mas o banco falha (ex.: falta de permissão no secret).
+- Achado: a UI do seed só mostra `status: ... · database: ...` se a API responde; em erro HTTP (como o 403 do Cloud Run privado) o texto é "Não foi possível consultar /api/health.", não `degraded`/`error` como a aula descreve. `degraded` aparece quando a API responde 200 mas o banco falha (ex.: falta de permissão no secret). O 403 do Firebase alcançando o Cloud Run privado é inferência a partir do código da UI; não executei.
 
 **Projeto:** [apps/web, docker-compose.yml, infra/docker (seed)](https://github.com/unipds-engenharia-de-ia-aplicada/ai-researcher-seed/tree/main/apps/web)
 
